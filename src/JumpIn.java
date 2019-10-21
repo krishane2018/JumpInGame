@@ -1,3 +1,4 @@
+import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -13,8 +14,8 @@ public class JumpIn {
 	private ArrayList<JumpInListener> listeners;
 	private Parser parser;
 	private int level;
-	private final int NUM_ROW=5;
-	private final int NUM_COL=5;
+	private final int NUM_ROWS=5;
+	private final int NUM_COLUMNS=5;
 	
 	/**
 	 * 
@@ -62,7 +63,9 @@ public class JumpIn {
 		
 		boolean finished = false;
         while (! finished) {
-            Move move = parser.getAnimal(listeners);
+        	GameObject chosenAnimal = parser.getAnimal(listeners);
+    		String options = displayOptions(chosenAnimal);
+    		Move move = parser.confirmOption(options, chosenAnimal);
             finished = processCommand(move);
             System.out.println(gameBoard.toString());
         }
@@ -72,6 +75,125 @@ public class JumpIn {
         	JumpIn game = new JumpIn(level+1);
         	game.play();
         }
+	}
+	
+	
+	private String displayOptions (GameObject chosenAnimal){
+		
+		String output = "";
+		
+		if (chosenAnimal.getClass().getName().equals("Rabbit")) {
+			ArrayList<Point> rabbitOptions = new ArrayList<Point>();
+			boolean isJump = false;
+			for (int x = (int) (chosenAnimal.getCoordinate().getX()-1); x>-1; x--) {
+				if (gameBoard[(int) chosenAnimal.getCoordinate().getY()][x]!=null && 
+						!(gameBoard[(int) chosenAnimal.getCoordinate().getY()][x].getClass().getName().equals("RabbitHole"))) {
+					isJump = true;
+				}
+				else if (isJump == true){
+					rabbitOptions.add(new Point(x,(int) chosenAnimal.getCoordinate().getY()));
+					break;
+				}
+			}
+			
+			isJump = false;
+			for (int x = (int) (chosenAnimal.getCoordinate().getX()+1); x<NUM_COLUMNS; x++) {
+				if (gameBoard[(int) chosenAnimal.getCoordinate().getY()][x]!=null && 
+						!(gameBoard[(int) chosenAnimal.getCoordinate().getY()][x].getClass().getName().equals("RabbitHole"))) {
+					isJump = true;
+				}
+				else if (isJump == true){
+					rabbitOptions.add(new Point(x,(int) chosenAnimal.getCoordinate().getY()));
+					break;
+				}
+			}
+			
+			isJump = false;
+			for (int y = (int) (chosenAnimal.getCoordinate().getY()-1); y>-1; y--) {
+				if (gameBoard[y][(int) chosenAnimal.getCoordinate().getX()]!=null && 
+						!(gameBoard[y][(int) chosenAnimal.getCoordinate().getX()].getClass().getName().equals("RabbitHole"))) {
+					isJump = true;
+				}
+				else if (isJump == true){
+					rabbitOptions.add(new Point((int) chosenAnimal.getCoordinate().getX(),y));
+					break;
+				}
+			}
+			
+			isJump = false;
+			for (int y = (int) (chosenAnimal.getCoordinate().getY()+1); y<NUM_ROWS; y++) {
+				if (gameBoard[y][(int) chosenAnimal.getCoordinate().getX()]!=null && 
+						!(gameBoard[y][(int) chosenAnimal.getCoordinate().getX()].getClass().getName().equals("RabbitHole"))) {
+					isJump = true;
+				}
+				else if (isJump == true){
+					rabbitOptions.add(new Point((int) chosenAnimal.getCoordinate().getX(),y));
+					break;
+				}
+			}
+			
+			
+			for (Point point : rabbitOptions) {
+				output+="("+point.getX()+","+point.getY()+")\n";
+			}
+			
+		}
+		else {
+				ArrayList<Point[]> foxOptions = new ArrayList<Point[]>();
+				Fox chosenFox = (Fox)(chosenAnimal);
+				if (chosenFox.getDirection().equals("Horizontal")) {
+					for (int x = (int) (chosenFox.getCoordinate().getX()-1); x>-1; x--) {
+						if (gameBoard[(int) chosenFox.getCoordinate().getY()][x]==null) {
+							Point[] tempArray = {new Point(x,(int) chosenFox.getCoordinate().getY()),new Point(x+1,(int) chosenFox.getCoordinate().getY())};
+							foxOptions.add(tempArray);
+						}
+						else {
+							break;
+						}
+					}
+					for (int x = (int) (chosenFox.getCoordinate2().getX()+1); x<NUM_COLUMNS; x++) {
+						if (gameBoard[(int) chosenFox.getCoordinate().getY()][x]==null) {
+							Point[] tempArray = {new Point(x,(int) chosenFox.getCoordinate().getY()),new Point(x+1,(int) chosenFox.getCoordinate().getY())};
+							foxOptions.add(tempArray);
+						}
+						else {
+							break;
+						}
+					}
+				}
+				else {
+					for (int y = (int) (chosenFox.getCoordinate().getY()-1); y>-1; y--) {
+						if (gameBoard[y][(int) chosenFox.getCoordinate().getX()]==null) {
+							Point[] tempArray = {new Point((int) chosenFox.getCoordinate().getX(),y),new Point((int) chosenFox.getCoordinate().getX(),y+1)};
+							foxOptions.add(tempArray);
+						}
+						else {
+							break;
+						}
+					}
+					for (int y = (int) (chosenFox.getCoordinate2().getY()+1); y<NUM_ROWS; y++) {
+						if (gameBoard[y][(int) chosenFox.getCoordinate().getX()]==null) {
+							Point[] tempArray = {new Point((int) chosenFox.getCoordinate().getX(),y),new Point((int) chosenFox.getCoordinate().getX(),y+1)};
+							foxOptions.add(tempArray);
+						}
+						else {
+							break;
+						}
+					}
+				}
+				
+				for (Point[] points : foxOptions) {
+					output+="{";
+					for (Point point: points) {
+						output+="("+point.getX()+","+point.getY()+") ";
+					}
+					output=output.trim();
+					output+="}\n";
+				}
+		}
+		
+		return output;
+		
 	}
 	
 	/**
