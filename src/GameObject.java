@@ -10,6 +10,11 @@ public class GameObject {
 	private Point coordinate;
 	private String name;
 	
+	public GameObject(Point p) {
+		this.coordinate = p;
+		this.name = "";
+		
+	}
 	public GameObject(Point p, String name) {
 		this.coordinate = p;
 		this.name = name;

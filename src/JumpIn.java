@@ -14,9 +14,9 @@ public class JumpIn {
 	private ArrayList<JumpInListener> listeners;
 	private Parser parser;
 	private int level;
-	private final int NUM_ROWS = 5;
-	private final int NUM_COLUMNS = 5;
-
+	private final int NUM_ROWS;
+	private final int NUM_COLUMNS;
+	private final Point[] HOLES;
 	/**
 	 * 
 	 * @param i
@@ -24,7 +24,11 @@ public class JumpIn {
 	public JumpIn(int i) {
 		level = i;
 		listeners = new ArrayList<JumpInListener>();
-		gameBoard = new LevelSelector(level);
+		LevelSelector l = new LevelSelector(level, this);
+		gameBoard = l.getBoard();
+		HOLES = l.getHoles();
+		NUM_ROWS = 5;
+		NUM_COLUMNS = 5;
 	}
 
 	/**
@@ -220,7 +224,7 @@ public class JumpIn {
 	 * @return
 	 */
 	private boolean processCommand(Move move) {
-		JumpInEvent event = new JumpInEvent(this, move.getGameObject, move.end.x, move.end.y);
+		JumpInEvent event = new JumpInEvent(this, move.getGameObject(), move.end.x, move.end.y);
 		gameBoard[move.initial.y][move.initial.x] = null;
 		gameBoard[move.end.y][move.end.x] = move.getGameObject;
 		for (int i = 0; i < listeners.size(); i++) {
