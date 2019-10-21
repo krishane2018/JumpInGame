@@ -26,11 +26,12 @@ public class Parser {
 		
 		for (JumpInListener animal: animalOptions) {
 			GameObject tempAnimal = (GameObject)animal;
-			if (tempAnimal.getName().equals(command)){
+			if (tempAnimal.getName().equalsIgnoreCase(command)){
 				return tempAnimal;
 			}
 		}
 		
+		System.out.println("Invalid input.");
 		return (getAnimal(animalOptions));
 		
 		
@@ -41,7 +42,6 @@ public class Parser {
 		for (int i=1;i<=options.size();i++) {
 			userOptions.put(i, userOptions.get(i-1));
 		}
-		Scanner input = new Scanner(System.in);
 		System.out.println("Please enter one of the following options (using the digits):");
 		System.out.println(displayOptions);
 		int selectedOption = Integer.valueOf(input.nextLine());
@@ -51,7 +51,7 @@ public class Parser {
 					, chosenRabbit.getCoordinate(), chosenRabbit);
 		}
 		else {
-			input.close();
+			System.out.println("Invalid Input");
 			return confirmOption(options, chosenRabbit, displayOptions);
 		}
 	}
@@ -62,7 +62,6 @@ public class Parser {
 		for (int i=1;i<=options.size();i++) {
 			userOptions.put(i, userOptions.get(i-1));
 		}
-		Scanner input = new Scanner(System.in);
 		System.out.println("Please enter one of the following options (using the digits):");
 		System.out.println(displayOptions);
 		int selectedOption = Integer.valueOf(input.nextLine());
@@ -72,7 +71,7 @@ public class Parser {
 			return new Move(chosenFox.getCoordinate(), chosenFox.getCoordinate(), chosenDestination[0], chosenDestination[1], chosenFox);
 		}
 		else {
-			input.close();
+			System.out.println("Invalid input.");
 			return confirmOption(options, chosenFox, displayOptions);
 		}
 	}

@@ -144,13 +144,13 @@ public class JumpIn {
 			uniformCoordinate = (int) chosenRabbit.getCoordinate().getX();
 			upperBound = NUM_ROWS;
 			isObstacle = (Integer y) -> gameBoard[y][uniformCoordinate] != null
-					&& !(gameBoard[y][uniformCoordinate].getClass().getName().equals("RabbitHole"));
+					&& !(gameBoard[y][uniformCoordinate].getClass().getSimpleName().equals("RabbitHole"));
 		} else {
 			changingCoordinate = (int) chosenRabbit.getCoordinate().getX();
 			uniformCoordinate = (int) chosenRabbit.getCoordinate().getY();
 			upperBound = NUM_COLUMNS;
 			isObstacle = (Integer x) -> gameBoard[uniformCoordinate][x] != null
-					&& !(gameBoard[uniformCoordinate][x].getClass().getName().equals("RabbitHole"));
+					&& !(gameBoard[uniformCoordinate][x].getClass().getSimpleName().equals("RabbitHole"));
 		}
 		if (movingDirection.equals("Left") || movingDirection.equals("Up")) {
 			checkBounds = (Integer x) -> x > -1;
@@ -166,6 +166,8 @@ public class JumpIn {
 				isJump = true;
 			} else if (isJump == true) {
 				rabbitOptions.add(new Point(uniformCoordinate, i));
+				break;
+			} else if (!isObstacle.apply(i)) {
 				break;
 			}
 		}
