@@ -3,10 +3,18 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 /**
+ * This is the main class for the "Jump in" game application. This is a
+ * simple puzzle game to get rabbits into a rabbit hole to hide from the
+ * foxes.
+ * 
+ * Rules: 
+ * Rabbits can only jump over obstacles to move, which can either be Fox or a mushroom.
+ * The user can move rabbits up, down, left or right. The Fox on the other hand
+ * can only be moved forwards or backwards. To win the game, the user has to 
+ * strategically move the pieces to get all the rabbits into a rabbit hole.
+ * 
  * 
  * @author Kush Gopeechund
- * 
- * 
  *
  */
 public class JumpIn {
@@ -20,6 +28,7 @@ public class JumpIn {
 	private final Point[] HOLES;
 
 	/**
+	 * Selects the level to initialize the array list and the game board.
 	 * 
 	 * @param i
 	 */
@@ -32,6 +41,7 @@ public class JumpIn {
 	}
 
 	/**
+	 * Finds out the appropriate symbol to show in the visual board.
 	 * 
 	 * @param y
 	 * @param x
@@ -50,6 +60,7 @@ public class JumpIn {
 	}
 
 	/**
+	 * Checks if a location on the board is a hole.
 	 * 
 	 * @param x
 	 * @param y
@@ -65,7 +76,7 @@ public class JumpIn {
 	}
 
 	/**
-	 * 
+	 * Prints a wwelcome statement.
 	 */
 	public void printWelcome() {
 		System.out.println("Welcome to JumpIn!");
@@ -73,7 +84,8 @@ public class JumpIn {
 	}
 
 	/**
-	 * 
+	 * Main play routine. Runs through loop till finished then asks whether to continue 
+	 * to the next level or exit.
 	 */
 	public void play() {
 
@@ -105,6 +117,12 @@ public class JumpIn {
 		}
 	}
 
+	/**
+	 * Adds a listener
+	 * 
+	 * @param j
+	 * @return
+	 */
 	public boolean addListener(JumpInListener j) {
 		return listeners.add(j);
 	}
@@ -253,6 +271,7 @@ public class JumpIn {
 	}
 
 	/**
+	 * Checks if all the rabbits are in a hole.
 	 * 
 	 * @return
 	 */
@@ -270,6 +289,7 @@ public class JumpIn {
 	}
 
 	/**
+	 * Notifies listener when a move is made.
 	 * 
 	 * @param move
 	 * @return
@@ -298,7 +318,7 @@ public class JumpIn {
 	}
 
 	/**
-	 * 
+	 * Converts the game board to a string so it can be displayed
 	 */
 	public String toString() {
 		String board = "";
@@ -314,10 +334,6 @@ public class JumpIn {
 		return board;
 	}
 
-	/**
-	 * 
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		JumpIn game = new JumpIn(1);
 		game.printWelcome();
