@@ -23,8 +23,8 @@ public class JumpIn {
 	 * 
 	 * @param i
 	 */
-	public JumpIn(int i) {
-		level = i;
+	public JumpIn(int level) {
+		this.level = level;
 		listeners = new ArrayList<JumpInListener>();
 		LevelSelector l = new LevelSelector(level, this);
 		gameBoard = l.getBoard();
