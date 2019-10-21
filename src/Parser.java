@@ -23,7 +23,7 @@ public class Parser {
 		
 		for (JumpInListener animal: animalOptions) {
 			GameObject tempAnimal = (GameObject)animal;
-			if (tempAnimal.getName().equals(command)){
+			if (tempAnimal.getName().equalsIgnoreCase(command)){
 				return tempAnimal;
 			}
 		}
@@ -34,7 +34,7 @@ public class Parser {
 	}
 
 	public Move confirmOption(String options, GameObject chosenAnimal) {
-		Scanner input = new Scanner(System.in);
+//		Scanner input = new Scanner(System.in);
 		System.out.println("Please enter one of the following options:");
 		System.out.println(options);
 		String selectedOption = input.nextLine();
@@ -47,6 +47,28 @@ public class Parser {
 		else {
 			input.close();
 			return confirmOption(options, chosenAnimal);
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @author Aashna Narang
+	 * 
+	 * 
+	 *
+	 */
+	public String playAgain() {
+		System.out.println(
+				"Congrats! \nPease type \"continue\" if you would like to go to the next level.\nType \"exit\" if you would like to stop.");
+		String command = input.nextLine();
+		if(command.equalsIgnoreCase("continue")) {
+			return "continue";
+		} else if (command.equalsIgnoreCase("exit")){
+			return "exit";
+		} else {
+			System.out.println("Command does not exist.");
+			return playAgain();
 		}
 	}
 	
