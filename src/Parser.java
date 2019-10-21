@@ -80,8 +80,9 @@ public class Parser {
 	/**
 	 * 
 	 * @author Aashna Narang
-	 * 
-	 * 
+	 *
+	 * Ask the user if they would like to play the next level or quit the game
+	 * @return A string containing the command the user selected
 	 *
 	 */
 	public String playAgain() {
