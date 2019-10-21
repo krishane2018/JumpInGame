@@ -233,9 +233,9 @@ public class JumpIn {
 	 */
 	public String toString() {
 		String board = "";
-		for (int i = 0; i < NUM_ROW; i++) {
+		for (int i = 0; i < NUM_ROWS; i++) {
 			board += "---------------------\n";
-			for (int j = 0; j < NUM_COL; j++) {
+			for (int j = 0; j < NUM_COLUMNS; j++) {
 				board += "| ";
 				objectToString(j, i);
 			}
