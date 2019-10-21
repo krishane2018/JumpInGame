@@ -1,3 +1,7 @@
+/**
+*@author Krishan Easparan
+**/
+
 import java.awt.Point;
 
 public class Move {
