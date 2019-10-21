@@ -18,6 +18,7 @@ public class JumpIn {
 	private final static int NUM_ROWS = 5;
 	private final static int NUM_COLUMNS = 5;
 	private final Point[] HOLES;
+
 	/**
 	 * 
 	 * @param i
@@ -36,18 +37,31 @@ public class JumpIn {
 	 * @param x
 	 * @return
 	 */
-	public String objectToString(int y, int x) {
-		if (gameBoard[y][x].getClass().getName() == "Rabbit") {
-			return "R ";
-		} else if (gameBoard[y][x].getClass().getName() == "Fox") {
-			return "F ";
-		} else if (gameBoard[y][x].getClass().getName() == "Hole") {
-			return "O ";
-		} else if (gameBoard[y][x].getClass().getName() == "Mushroom") {
-			return "M ";
-		} else {
-			return "  ";
+
+	public String objectToString(int x, int y) {
+		if (isHole(x, y) && gameBoard[y][x].getClass().getSimpleName() == "Rabbit") {
+			return gameBoard[y][x].getName() + "H";
+		} else if (isHole(x, y)) {
+			return "H";
+		} else if (!(gameBoard[y][x].equals(""))) {
+			return gameBoard[y][x].getName();
 		}
+		return "  ";
+	}
+
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	private boolean isHole(int x, int y) {
+		for (int i = 0; i < HOLES.length; i++) {
+			if (HOLES[i].getX() == x && HOLES[i].getY() == y) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -64,21 +78,22 @@ public class JumpIn {
 	public void play() {
 
 		boolean finished = false;
-		while (!finished) { 
+		while (!finished) {
 			GameObject chosenAnimal = parser.getAnimal(listeners);
 			Move move = new Move();
-			//Presents users with move options after the user has chosen the animal they would like 
-			//to move.
+			// Presents users with move options after the user has chosen the animal they
+			// would like
+			// to move.
 			if (chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
-				ArrayList <Point> options = determineOptions((Rabbit) chosenAnimal);
-				move = parser.confirmOption(options, (Rabbit)chosenAnimal, displayOptions(options));
+				ArrayList<Point> options = determineOptions((Rabbit) chosenAnimal);
+				move = parser.confirmOption(options, (Rabbit) chosenAnimal, displayOptions(options));
 			}
 
 			else if (chosenAnimal.getClass().getSimpleName().equals("Fox")) {
-				ArrayList<Point[]>options = determineOptions((Fox) chosenAnimal);
-				move = parser.confirmOption(options, (Fox)chosenAnimal,displayOptions(options));
+				ArrayList<Point[]> options = determineOptions((Fox) chosenAnimal);
+				move = parser.confirmOption(options, (Fox) chosenAnimal, displayOptions(options));
 			}
-			
+
 			finished = processCommand(move);
 			System.out.println(gameBoard.toString());
 		}
@@ -95,22 +110,22 @@ public class JumpIn {
 
 	public boolean addListener(JumpInListener j) {
 		return listeners.add(j);
-
 	}
+
 	/**
 	 * 
 	 * @param options
 	 * @return
 	 */
-	private <E> String displayOptions(ArrayList<E> options) {
 
+	private <E> String displayOptions(ArrayList<E> options) {
 		String output = "";
 		if (options.get(0).getClass().getSimpleName().equals("Point")) {
 			for (E element : options) {
 				Point point = (Point) element;
 				output += "(" + point.getX() + "," + point.getY() + ")\n";
+			}
 
-		}
 		} else if (options.get(0).getClass().getSimpleName().equals("Point[]")) {
 			for (E element : options) {
 				Point[] points = (Point[]) (element);
@@ -124,9 +139,9 @@ public class JumpIn {
 			}
 
 		}
-
 		return output;
 	}
+
 	/**
 	 * 
 	 * @param chosenRabbit
@@ -140,6 +155,7 @@ public class JumpIn {
 		rabbitOptionsHelper(chosenRabbit, "Down", rabbitOptionsArrayList);
 		return rabbitOptionsArrayList;
 	}
+
 	/**
 	 * 
 	 * @param chosenFox
@@ -156,12 +172,13 @@ public class JumpIn {
 		}
 		return foxOptionsArrayList;
 	}
-/**
- * 
- * @param chosenRabbit
- * @param movingDirection
- * @param rabbitOptions
- */
+
+	/**
+	 * 
+	 * @param chosenRabbit
+	 * @param movingDirection
+	 * @param rabbitOptions
+	 */
 	private void rabbitOptionsHelper(Rabbit chosenRabbit, String movingDirection, ArrayList<Point> rabbitOptions) {
 
 		int changingCoordinate;
@@ -207,12 +224,13 @@ public class JumpIn {
 		}
 
 	}
-/**
- * 
- * @param chosenFox
- * @param movingDirection
- * @param foxOptions
- */
+
+	/**
+	 * 
+	 * @param chosenFox
+	 * @param movingDirection
+	 * @param foxOptions
+	 */
 	private void foxOptionsHelper(Fox chosenFox, String movingDirection, ArrayList<Point[]> foxOptions) {
 
 		int changingCoordinate = 0;
@@ -270,17 +288,16 @@ public class JumpIn {
 	 * @return
 	 */
 	private boolean checkWin() {
-		int count = 0;
 		for (int i = 0; i < listeners.size(); i++) {
-			GameObject g = (GameObject)listeners.get(i);
-			if (g.getName() == "Rabbit") {
-				Rabbit r = (Rabbit)g;
-				if(r.getStatus() == true) {
-					count++;
+			GameObject g = (GameObject) listeners.get(i);
+			if (g.getClass().getSimpleName() == "Rabbit") {
+				Rabbit r = (Rabbit) g;
+				if (r.getStatus() == false) {
+					return false;
 				}
 			}
 		}
-		return count == 5;
+		return true;
 	}
 
 	/**
@@ -289,11 +306,21 @@ public class JumpIn {
 	 * @return
 	 */
 	private boolean processCommand(Move move) {
-		JumpInEvent event = new JumpInEvent(this, move.getGameObject(), move.end.x, move.end.y);
-		gameBoard[move.initial.y][move.initial.x] = null;
-		gameBoard[move.end.y][move.end.x] = move.getGameObject;
+		JumpInEvent event;
+		if (move.getChosenAnimal().getClass().getSimpleName() == "Rabbit") {
+			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), HOLES);
+			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = null;
+			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
+		} else {
+			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), move.getFinalLocation2(),
+					HOLES);
+			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = null;
+			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = null;
+			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
+			gameBoard[move.getFinalLocation2().y][move.getFinalLocation2().x] = move.getChosenAnimal();
+		}
 		for (int i = 0; i < listeners.size(); i++) {
-			if (listeners.get(i).equals(move.getGameObject)) {
+			if ((GameObject) listeners.get(i) == move.getChosenAnimal()) {
 				listeners.get(i).handleEvent(event);
 			}
 		}
