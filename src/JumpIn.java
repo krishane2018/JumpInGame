@@ -1,5 +1,6 @@
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.function.Function;
 
 /**
  * 
@@ -64,7 +65,14 @@ public class JumpIn {
 		boolean finished = false;
         while (! finished) {
         	GameObject chosenAnimal = parser.getAnimal(listeners);
-    		String options = displayOptions(chosenAnimal);
+        	String options;
+        	if (chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
+        		options = displayOptions(determineOptions((Rabbit)chosenAnimal));
+        	}
+        	
+        	else if (chosenAnimal.getClass().getSimpleName().equals("Fox")) {
+        		options = displayOptions(determineOptions((Fox)chosenAnimal));
+        	}
     		Move move = parser.confirmOption(options, chosenAnimal);
             finished = processCommand(move);
             System.out.println(gameBoard.toString());
@@ -77,124 +85,145 @@ public class JumpIn {
         }
 	}
 	
-	
-	private String displayOptions (GameObject chosenAnimal){
-		
+	private <E> String displayOptions(ArrayList<E> options) {
 		String output = "";
-		
-		if (chosenAnimal.getClass().getName().equals("Rabbit")) {
-			ArrayList<Point> rabbitOptions = new ArrayList<Point>();
-			boolean isJump = false;
-			for (int x = (int) (chosenAnimal.getCoordinate().getX()-1); x>-1; x--) {
-				if (gameBoard[(int) chosenAnimal.getCoordinate().getY()][x]!=null && 
-						!(gameBoard[(int) chosenAnimal.getCoordinate().getY()][x].getClass().getName().equals("RabbitHole"))) {
-					isJump = true;
-				}
-				else if (isJump == true){
-					rabbitOptions.add(new Point(x,(int) chosenAnimal.getCoordinate().getY()));
-					break;
-				}
+		if (options.get(0).getClass().getSimpleName().equals("Point")) {
+			for (E element : options) {
+				Point point = (Point) element;
+				output += "(" + point.getX() + "," + point.getY() + ")\n";
 			}
-			
-			isJump = false;
-			for (int x = (int) (chosenAnimal.getCoordinate().getX()+1); x<NUM_COLUMNS; x++) {
-				if (gameBoard[(int) chosenAnimal.getCoordinate().getY()][x]!=null && 
-						!(gameBoard[(int) chosenAnimal.getCoordinate().getY()][x].getClass().getName().equals("RabbitHole"))) {
-					isJump = true;
+		} else if (options.get(0).getClass().getSimpleName().equals("Point[]")) {
+			for (E element : options) {
+				Point[] points = (Point[]) (element);
+				output += "{";
+				for (Point point : points) {
+					output += "(" + point.getX() + "," + point.getY() + ") ";
 				}
-				else if (isJump == true){
-					rabbitOptions.add(new Point(x,(int) chosenAnimal.getCoordinate().getY()));
-					break;
-				}
+				output = output.trim();
+				output += "}\n";
 			}
-			
-			isJump = false;
-			for (int y = (int) (chosenAnimal.getCoordinate().getY()-1); y>-1; y--) {
-				if (gameBoard[y][(int) chosenAnimal.getCoordinate().getX()]!=null && 
-						!(gameBoard[y][(int) chosenAnimal.getCoordinate().getX()].getClass().getName().equals("RabbitHole"))) {
-					isJump = true;
-				}
-				else if (isJump == true){
-					rabbitOptions.add(new Point((int) chosenAnimal.getCoordinate().getX(),y));
-					break;
-				}
-			}
-			
-			isJump = false;
-			for (int y = (int) (chosenAnimal.getCoordinate().getY()+1); y<NUM_ROWS; y++) {
-				if (gameBoard[y][(int) chosenAnimal.getCoordinate().getX()]!=null && 
-						!(gameBoard[y][(int) chosenAnimal.getCoordinate().getX()].getClass().getName().equals("RabbitHole"))) {
-					isJump = true;
-				}
-				else if (isJump == true){
-					rabbitOptions.add(new Point((int) chosenAnimal.getCoordinate().getX(),y));
-					break;
-				}
-			}
-			
-			
-			for (Point point : rabbitOptions) {
-				output+="("+point.getX()+","+point.getY()+")\n";
-			}
-			
 		}
-		else {
-				ArrayList<Point[]> foxOptions = new ArrayList<Point[]>();
-				Fox chosenFox = (Fox)(chosenAnimal);
-				if (chosenFox.getDirection().equals("Horizontal")) {
-					for (int x = (int) (chosenFox.getCoordinate().getX()-1); x>-1; x--) {
-						if (gameBoard[(int) chosenFox.getCoordinate().getY()][x]==null) {
-							Point[] tempArray = {new Point(x,(int) chosenFox.getCoordinate().getY()),new Point(x+1,(int) chosenFox.getCoordinate().getY())};
-							foxOptions.add(tempArray);
-						}
-						else {
-							break;
-						}
-					}
-					for (int x = (int) (chosenFox.getCoordinate2().getX()+1); x<NUM_COLUMNS; x++) {
-						if (gameBoard[(int) chosenFox.getCoordinate().getY()][x]==null) {
-							Point[] tempArray = {new Point(x,(int) chosenFox.getCoordinate().getY()),new Point(x+1,(int) chosenFox.getCoordinate().getY())};
-							foxOptions.add(tempArray);
-						}
-						else {
-							break;
-						}
-					}
-				}
-				else {
-					for (int y = (int) (chosenFox.getCoordinate().getY()-1); y>-1; y--) {
-						if (gameBoard[y][(int) chosenFox.getCoordinate().getX()]==null) {
-							Point[] tempArray = {new Point((int) chosenFox.getCoordinate().getX(),y),new Point((int) chosenFox.getCoordinate().getX(),y+1)};
-							foxOptions.add(tempArray);
-						}
-						else {
-							break;
-						}
-					}
-					for (int y = (int) (chosenFox.getCoordinate2().getY()+1); y<NUM_ROWS; y++) {
-						if (gameBoard[y][(int) chosenFox.getCoordinate().getX()]==null) {
-							Point[] tempArray = {new Point((int) chosenFox.getCoordinate().getX(),y),new Point((int) chosenFox.getCoordinate().getX(),y+1)};
-							foxOptions.add(tempArray);
-						}
-						else {
-							break;
-						}
-					}
-				}
-				
-				for (Point[] points : foxOptions) {
-					output+="{";
-					for (Point point: points) {
-						output+="("+point.getX()+","+point.getY()+") ";
-					}
-					output=output.trim();
-					output+="}\n";
-				}
-		}
-		
+
 		return output;
-		
 	}
+
+	private ArrayList<Point> determineOptions(Rabbit chosenRabbit) {
+		ArrayList<Point> rabbitOptionsArrayList = new ArrayList<Point>();
+		rabbitOptionsHelper(chosenRabbit, "Left", rabbitOptionsArrayList);
+		rabbitOptionsHelper(chosenRabbit, "Right", rabbitOptionsArrayList);
+		rabbitOptionsHelper(chosenRabbit, "Up", rabbitOptionsArrayList);
+		rabbitOptionsHelper(chosenRabbit, "Down", rabbitOptionsArrayList);
+		return rabbitOptionsArrayList;
+	}
+
+	private ArrayList<Point[]> determineOptions(Fox chosenFox) {
+		ArrayList<Point[]> foxOptionsArrayList = new ArrayList<Point[]>();
+		if (chosenFox.getDirection().equals("Vertical")) {
+			foxOptionsHelper(chosenFox, "Up", foxOptionsArrayList);
+			foxOptionsHelper(chosenFox, "Down", foxOptionsArrayList);
+		} else if (chosenFox.getDirection().equals("Horizontal")) {
+			foxOptionsHelper(chosenFox, "Left", foxOptionsArrayList);
+			foxOptionsHelper(chosenFox, "Right", foxOptionsArrayList);
+		}
+		return foxOptionsArrayList;
+	}
+
+	private void rabbitOptionsHelper(Rabbit chosenRabbit, String movingDirection, ArrayList<Point> rabbitOptions) {
+
+		int changingCoordinate;
+		int uniformCoordinate;
+		int upperBound;
+		int startingPosition;
+		boolean isJump = false;
+		Function<Integer, Boolean> checkBounds;
+		Function<Integer, Integer> increment;
+		Function<Integer, Boolean> isObstacle;
+
+		if (movingDirection.equals("Up") || movingDirection.equals("Down")) {
+			changingCoordinate = (int) chosenRabbit.getCoordinate().getY();
+			uniformCoordinate = (int) chosenRabbit.getCoordinate().getX();
+			upperBound = NUM_ROWS;
+			isObstacle = (Integer y) -> gameBoard[y][uniformCoordinate] != null
+					&& !(gameBoard[y][uniformCoordinate].getClass().getName().equals("RabbitHole"));
+		} else {
+			changingCoordinate = (int) chosenRabbit.getCoordinate().getX();
+			uniformCoordinate = (int) chosenRabbit.getCoordinate().getY();
+			upperBound = NUM_COLUMNS;
+			isObstacle = (Integer x) -> gameBoard[uniformCoordinate][x] != null
+					&& !(gameBoard[uniformCoordinate][x].getClass().getName().equals("RabbitHole"));
+		}
+		if (movingDirection.equals("Left") || movingDirection.equals("Up")) {
+			checkBounds = (Integer x) -> x > -1;
+			increment = (Integer x) -> x - 1;
+			startingPosition = changingCoordinate - 1;
+		} else {
+			checkBounds = (Integer x) -> x < upperBound;
+			increment = (Integer x) -> x + 1;
+			startingPosition = changingCoordinate + 1;
+		}
+		for (int i = startingPosition; checkBounds.apply(i); i = increment.apply(i)) {
+			if (isObstacle.apply(i)) {
+				isJump = true;
+			} else if (isJump == true) {
+				rabbitOptions.add(new Point(uniformCoordinate, i));
+				break;
+			}
+		}
+
+	}
+
+	private void foxOptionsHelper(Fox chosenFox, String movingDirection, ArrayList<Point[]> foxOptions) {
+
+		int changingCoordinate = 0;
+		int uniformCoordinate;
+		int upperBound;
+		int startingPosition;
+		Function<Integer, Boolean> checkBounds;
+		Function<Integer, Integer> increment;
+		Function<Integer, Boolean> isEmpty;
+
+		if (movingDirection.equals("Up") || movingDirection.equals("Down")) {
+			if (movingDirection.equals("Up")) {
+				changingCoordinate = (int) chosenFox.getCoordinate().getY();
+
+			} else if (movingDirection.equals("Down")) {
+				changingCoordinate = (int) chosenFox.getCoordinate2().getY();
+			}
+			uniformCoordinate = (int) chosenFox.getCoordinate().getX();
+			upperBound = NUM_ROWS;
+			isEmpty = (Integer y) -> gameBoard[y][uniformCoordinate] == null;
+		} else {
+			if (movingDirection.equals("Left")) {
+				changingCoordinate = (int) chosenFox.getCoordinate().getX();
+			} else if (movingDirection.equals("Right")) {
+				changingCoordinate = (int) chosenFox.getCoordinate2().getX();
+			}
+
+			uniformCoordinate = (int) chosenFox.getCoordinate().getY();
+			upperBound = NUM_COLUMNS;
+			isEmpty = (Integer x) -> gameBoard[uniformCoordinate][x] == null;
+		}
+		if (movingDirection.equals("Left") || movingDirection.equals("Up")) {
+			checkBounds = (Integer x) -> x > -1;
+			increment = (Integer x) -> x - 1;
+			startingPosition = changingCoordinate - 1;
+		} else {
+			checkBounds = (Integer x) -> x < upperBound;
+			increment = (Integer x) -> x + 1;
+			startingPosition = changingCoordinate + 1;
+		}
+		for (int i = startingPosition; checkBounds.apply(i); i = increment.apply(i)) {
+			if (isEmpty.apply(i)) {
+				Point[] tempArray = { new Point(i, (int) chosenFox.getCoordinate().getY()),
+						new Point(i + 1, (int) chosenFox.getCoordinate().getY()) };
+				foxOptions.add(tempArray);
+			} else {
+				break;
+			}
+		}
+
+	}
+	
 	
 	/**
 	 * 
