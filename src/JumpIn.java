@@ -36,7 +36,7 @@ public class JumpIn {
 	 * @return
 	 */
 	public String objectToString(int x, int y) {
-		if(gameBoard[y][x]!=null) {
+		if (gameBoard[y][x] != null) {
 			return gameBoard[y][x].getName();
 		}
 		return "  ";
@@ -200,13 +200,13 @@ public class JumpIn {
 	 * 
 	 * @return
 	 */
-	//fix
+	// fix
 	private boolean checkWin() {
-		for(int i = 0; i < listeners.size(); i++) {
-			GameObject g = (GameObject)listeners.get(i);
-			if(g.getClass().getName() == "Rabbit") {
-				Rabbit r = (Rabbit)g;
-				if(r.getStatus() == false) {
+		for (int i = 0; i < listeners.size(); i++) {
+			GameObject g = (GameObject) listeners.get(i);
+			if (g.getClass().getName() == "Rabbit") {
+				Rabbit r = (Rabbit) g;
+				if (r.getStatus() == false) {
 					return false;
 				}
 			}
@@ -229,7 +229,7 @@ public class JumpIn {
 		gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = null;
 		gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 		for (int i = 0; i < listeners.size(); i++) {
-			if ((GameObject)listeners.get(i)==move.getChosenAnimal()) {
+			if ((GameObject) listeners.get(i) == move.getChosenAnimal()) {
 				listeners.get(i).handleEvent(event);
 			}
 		}
