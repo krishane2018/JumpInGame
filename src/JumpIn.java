@@ -202,15 +202,16 @@ public class JumpIn {
 	 */
 	//fix
 	private boolean checkWin() {
-		boolean win=false;
-		for(int i=0;i<NUM_ROWS;i++) {
-			for(int j=0;j<NUM_COLUMNS;j++) {
-				if(gameBoard[j][i].getName()=="Rabbit") {
-					win = gameBoard[j][i].get
+		for(int i = 0; i < listeners.size(); i++) {
+			GameObject g = (GameObject)listeners.get(i);
+			if(g.getClass().getName() == "Rabbit") {
+				Rabbit r = (Rabbit)g;
+				if(r.getStatus() == false) {
+					return false;
 				}
 			}
 		}
-		return win;
+		return true;
 	}
 
 	/**
@@ -228,7 +229,7 @@ public class JumpIn {
 		gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = null;
 		gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 		for (int i = 0; i < listeners.size(); i++) {
-			if (listeners.get(i).equals(move.getChosenAnimal())) {
+			if ((GameObject)listeners.get(i)==move.getChosenAnimal()) {
 				listeners.get(i).handleEvent(event);
 			}
 		}
