@@ -64,9 +64,11 @@ public class JumpIn {
 	public void play() {
 
 		boolean finished = false;
-		while (!finished) {
+		while (!finished) { 
 			GameObject chosenAnimal = parser.getAnimal(listeners);
 			Move move = new Move();
+			//Presents users with move options after the user has chosen the animal they would like 
+			//to move.
 			if (chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
 				ArrayList <Point> options = determineOptions((Rabbit) chosenAnimal);
 				move = parser.confirmOption(options, (Rabbit)chosenAnimal, displayOptions(options));
@@ -95,7 +97,11 @@ public class JumpIn {
 		return listeners.add(j);
 
 	}
-	
+	/**
+	 * 
+	 * @param options
+	 * @return
+	 */
 	private <E> String displayOptions(ArrayList<E> options) {
 
 		String output = "";
@@ -121,7 +127,11 @@ public class JumpIn {
 
 		return output;
 	}
-
+	/**
+	 * 
+	 * @param chosenRabbit
+	 * @return
+	 */
 	private ArrayList<Point> determineOptions(Rabbit chosenRabbit) {
 		ArrayList<Point> rabbitOptionsArrayList = new ArrayList<Point>();
 		rabbitOptionsHelper(chosenRabbit, "Left", rabbitOptionsArrayList);
@@ -130,7 +140,11 @@ public class JumpIn {
 		rabbitOptionsHelper(chosenRabbit, "Down", rabbitOptionsArrayList);
 		return rabbitOptionsArrayList;
 	}
-
+	/**
+	 * 
+	 * @param chosenFox
+	 * @return
+	 */
 	private ArrayList<Point[]> determineOptions(Fox chosenFox) {
 		ArrayList<Point[]> foxOptionsArrayList = new ArrayList<Point[]>();
 		if (chosenFox.getDirection().equals("Vertical")) {
@@ -142,7 +156,12 @@ public class JumpIn {
 		}
 		return foxOptionsArrayList;
 	}
-
+/**
+ * 
+ * @param chosenRabbit
+ * @param movingDirection
+ * @param rabbitOptions
+ */
 	private void rabbitOptionsHelper(Rabbit chosenRabbit, String movingDirection, ArrayList<Point> rabbitOptions) {
 
 		int changingCoordinate;
@@ -158,13 +177,13 @@ public class JumpIn {
 			changingCoordinate = (int) chosenRabbit.getCoordinate().getY();
 			uniformCoordinate = (int) chosenRabbit.getCoordinate().getX();
 			upperBound = NUM_ROWS;
-			isObstacle = (Integer y) -> gameBoard[y][uniformCoordinate] != null
+			isObstacle = (Integer y) -> !(gameBoard[y][uniformCoordinate].getName().equals(""))
 					&& !(gameBoard[y][uniformCoordinate].getClass().getSimpleName().equals("RabbitHole"));
 		} else {
 			changingCoordinate = (int) chosenRabbit.getCoordinate().getX();
 			uniformCoordinate = (int) chosenRabbit.getCoordinate().getY();
 			upperBound = NUM_COLUMNS;
-			isObstacle = (Integer x) -> gameBoard[uniformCoordinate][x] != null
+			isObstacle = (Integer x) -> !(gameBoard[uniformCoordinate][x].getName().equals(""))
 					&& !(gameBoard[uniformCoordinate][x].getClass().getSimpleName().equals("RabbitHole"));
 		}
 		if (movingDirection.equals("Left") || movingDirection.equals("Up")) {
@@ -188,7 +207,12 @@ public class JumpIn {
 		}
 
 	}
-
+/**
+ * 
+ * @param chosenFox
+ * @param movingDirection
+ * @param foxOptions
+ */
 	private void foxOptionsHelper(Fox chosenFox, String movingDirection, ArrayList<Point[]> foxOptions) {
 
 		int changingCoordinate = 0;
@@ -208,7 +232,7 @@ public class JumpIn {
 			}
 			uniformCoordinate = (int) chosenFox.getCoordinate().getX();
 			upperBound = NUM_ROWS;
-			isEmpty = (Integer y) -> gameBoard[y][uniformCoordinate] == null;
+			isEmpty = (Integer y) -> gameBoard[y][uniformCoordinate].getName().equals("");
 		} else {
 			if (movingDirection.equals("Left")) {
 				changingCoordinate = (int) chosenFox.getCoordinate().getX();
@@ -218,7 +242,7 @@ public class JumpIn {
 
 			uniformCoordinate = (int) chosenFox.getCoordinate().getY();
 			upperBound = NUM_COLUMNS;
-			isEmpty = (Integer x) -> gameBoard[uniformCoordinate][x] == null;
+			isEmpty = (Integer x) -> gameBoard[uniformCoordinate][x].getName().equals("");
 		}
 		if (movingDirection.equals("Left") || movingDirection.equals("Up")) {
 			checkBounds = (Integer x) -> x > -1;
