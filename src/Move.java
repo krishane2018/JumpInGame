@@ -1,3 +1,4 @@
+
 /**
 *@author Krishan Easparan
 **/
@@ -7,12 +8,41 @@ import java.awt.Point;
 public class Move {
 	private Point initialLocation;
 	private Point finalLocation;
+	private Point initialLocation2;
+	private Point finalLocation2;
 	private GameObject chosenAnimal;
-	
-	public Move (Point initialLocation, Point finalLocation, GameObject chosenAnimal) {
-		this.initialLocation=initialLocation;
-		this.finalLocation=finalLocation;
-		this.chosenAnimal=chosenAnimal;
+
+	public Move(Point initialLocation, Point finalLocation, GameObject chosenAnimal) {
+		this.initialLocation = initialLocation;
+		this.finalLocation = finalLocation;
+		this.chosenAnimal = chosenAnimal;
+		this.initialLocation2 = new Point(); 
+		this.finalLocation2 = new Point();
+	}
+
+	public Move(Point initialLocation, Point initialLocation2, Point finalLocation, Point finalLocation2,
+			GameObject chosenAnimal) {
+		this.initialLocation = initialLocation;
+		this.finalLocation = finalLocation;
+		this.initialLocation2 = initialLocation2;
+		this.finalLocation2 = finalLocation2;
+		this.chosenAnimal = chosenAnimal;
+	}
+
+	public Point getInitialLocation2() {
+		return initialLocation2;
+	}
+
+	public void setInitialLocation2(Point initialLocation2) {
+		this.initialLocation2 = initialLocation2;
+	}
+
+	public Point getFinalLocation2() {
+		return finalLocation2;
+	}
+
+	public void setFinalLocation2(Point finalLocation2) {
+		this.finalLocation2 = finalLocation2;
 	}
 
 	public Point getInitialLocation() {
