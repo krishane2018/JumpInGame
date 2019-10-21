@@ -200,11 +200,10 @@ public class JumpIn {
 	 * 
 	 * @return
 	 */
-	// fix
 	private boolean checkWin() {
 		for (int i = 0; i < listeners.size(); i++) {
 			GameObject g = (GameObject) listeners.get(i);
-			if (g.getClass().getName() == "Rabbit") {
+			if (g.getClass().getSimpleName() == "Rabbit") {
 				Rabbit r = (Rabbit) g;
 				if (r.getStatus() == false) {
 					return false;
@@ -221,7 +220,7 @@ public class JumpIn {
 	 */
 	private boolean processCommand(Move move) {
 		JumpInEvent event;
-		if (move.getChosenAnimal().getClass().getName() == "Rabbit") {
+		if (move.getChosenAnimal().getClass().getSimpleName() == "Rabbit") {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), HOLES);
 		} else {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), HOLES); // fix for fox
