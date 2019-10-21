@@ -76,4 +76,27 @@ public class Parser {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * @author Aashna Narang
+	 * 
+	 * 
+	 *
+	 */
+	public String playAgain() {
+		System.out.println(
+				"Congrats! \nPease type \"continue\" if you would like to go to the next level.\nType \"exit\" if you would like to stop.");
+		String command = input.nextLine();
+		if(command.equalsIgnoreCase("continue")) {
+			return "continue";
+		} else if (command.equalsIgnoreCase("exit")){
+			input.close();
+			return "exit";
+		} else {
+			System.out.println("Command does not exist.");
+			return playAgain();
+		}
+	}
+	
 }

@@ -10,14 +10,14 @@ import java.util.function.Function;
  *
  */
 public class JumpIn {
-	
+
 	private GameObject[][] gameBoard;
 	private ArrayList<JumpInListener> listeners;
 	private Parser parser;
 	private int level;
-	private final int NUM_ROWS=5;
-	private final int NUM_COLUMNS=5;
-	
+	private final static int NUM_ROWS = 5;
+	private final static int NUM_COLUMNS = 5;
+	private final Point[] HOLES;
 	/**
 	 * 
 	 * @param i
@@ -25,9 +25,11 @@ public class JumpIn {
 	public JumpIn(int i) {
 		level = i;
 		listeners = new ArrayList<JumpInListener>();
-		gameBoard = new LevelSelector(level);
+		LevelSelector l = new LevelSelector(level, this);
+		gameBoard = l.getBoard();
+		HOLES = l.getHoles();
 	}
-	
+
 	/**
 	 * 
 	 * @param y
@@ -35,20 +37,19 @@ public class JumpIn {
 	 * @return
 	 */
 	public String objectToString(int y, int x) {
-		if(gameBoard[y][x].getClass().getName()=="Rabbit") {
+		if (gameBoard[y][x].getClass().getName() == "Rabbit") {
 			return "R ";
-		}else if(gameBoard[y][x].getClass().getName()=="Fox") {
+		} else if (gameBoard[y][x].getClass().getName() == "Fox") {
 			return "F ";
-		}else if(gameBoard[y][x].getClass().getName()=="Hole") {
+		} else if (gameBoard[y][x].getClass().getName() == "Hole") {
 			return "O ";
-		}
-		else if(gameBoard[y][x].getClass().getName()=="Mushroom") {
+		} else if (gameBoard[y][x].getClass().getName() == "Mushroom") {
 			return "M ";
-		}else {
+		} else {
 			return "  ";
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -56,42 +57,54 @@ public class JumpIn {
 		System.out.println("Welcome to JumpIn!");
 		System.out.println("Please type \"play\" to start the game.\n");
 	}
-	
+
 	/**
 	 * 
 	 */
 	public void play() {
-		
+
 		boolean finished = false;
-        while (! finished) {
-        	GameObject chosenAnimal = parser.getAnimal(listeners);
-        	String options;
-        	if (chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
-        		options = displayOptions(determineOptions((Rabbit)chosenAnimal));
-        	}
-        	
-        	else if (chosenAnimal.getClass().getSimpleName().equals("Fox")) {
-        		options = displayOptions(determineOptions((Fox)chosenAnimal));
-        	}
-    		Move move = parser.confirmOption(options, chosenAnimal);
-            finished = processCommand(move);
-            System.out.println(gameBoard.toString());
-        }
-        System.out.println("Congrats! \nPease type \"continue\" if you would like to go to the next level.\nType \"exit\" if you would like to stop.");
-        String status = parser.getNext();
-        if(status == "continue") {
-        	JumpIn game = new JumpIn(level+1);
-        	game.play();
-        }
+		while (!finished) {
+			GameObject chosenAnimal = parser.getAnimal(listeners);
+			Move move = new Move();
+			if (chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
+				ArrayList <Point> options = determineOptions((Rabbit) chosenAnimal);
+				move = parser.confirmOption(options, (Rabbit)chosenAnimal, displayOptions(options));
+			}
+
+			else if (chosenAnimal.getClass().getSimpleName().equals("Fox")) {
+				ArrayList<Point[]>options = determineOptions((Fox) chosenAnimal);
+				move = parser.confirmOption(options, (Fox)chosenAnimal,displayOptions(options));
+			}
+			
+			finished = processCommand(move);
+			System.out.println(gameBoard.toString());
+		}
+		System.out.println(
+				"Congrats! \nPease type \"continue\" if you would like to go to the next level.\nType \"exit\" if you would like to stop.");
+		String status = parser.playAgain();
+		if (status == "continue") {
+			JumpIn game = new JumpIn(level + 1);
+			game.play();
+		} else if (status == "exit") {
+			return;
+		}
+	}
+
+	public boolean addListener(JumpInListener j) {
+		return listeners.add(j);
+
 	}
 	
 	private <E> String displayOptions(ArrayList<E> options) {
+
 		String output = "";
 		if (options.get(0).getClass().getSimpleName().equals("Point")) {
 			for (E element : options) {
 				Point point = (Point) element;
 				output += "(" + point.getX() + "," + point.getY() + ")\n";
-			}
+
+		}
 		} else if (options.get(0).getClass().getSimpleName().equals("Point[]")) {
 			for (E element : options) {
 				Point[] points = (Point[]) (element);
@@ -101,7 +114,9 @@ public class JumpIn {
 				}
 				output = output.trim();
 				output += "}\n";
+
 			}
+
 		}
 
 		return output;
@@ -225,57 +240,60 @@ public class JumpIn {
 		}
 
 	}
-	
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	private boolean checkWin() {
-		boolean win=false;
-		for(int i = 0;i<listeners.size();i++) {
-			if(listeners.get(i).getName()=="Rabbit") {
-				win = listeners.get(i).getStatus;
+		int count = 0;
+		for (int i = 0; i < listeners.size(); i++) {
+			GameObject g = (GameObject)listeners.get(i);
+			if (g.getName() == "Rabbit") {
+				Rabbit r = (Rabbit)g;
+				if(r.getStatus() == true) {
+					count++;
+				}
 			}
 		}
-		return win;
+		return count == 5;
 	}
-	
+
 	/**
 	 * 
 	 * @param move
 	 * @return
 	 */
 	private boolean processCommand(Move move) {
-		JumpInEvent event = new JumpInEvent(this,move.getGameObject,move.end.x,move.end.y);
-		gameBoard[move.initial.y][move.initial.x]=null;
-		gameBoard[move.end.y][move.end.x]=move.getGameObject;
-		for(int i = 0;i<listeners.size();i++) {
-			if(listeners.get(i).equals(move.getGameObject)) {
+		JumpInEvent event = new JumpInEvent(this, move.getGameObject(), move.end.x, move.end.y);
+		gameBoard[move.initial.y][move.initial.x] = null;
+		gameBoard[move.end.y][move.end.x] = move.getGameObject;
+		for (int i = 0; i < listeners.size(); i++) {
+			if (listeners.get(i).equals(move.getGameObject)) {
 				listeners.get(i).handleEvent(event);
 			}
 		}
-		
+
 		return checkWin();
 	}
-	
+
 	/**
 	 * 
 	 */
-	public String toString(){
-		String board ="";
-		for(int i=0;i<NUM_ROW;i++) {
+	public String toString() {
+		String board = "";
+		for (int i = 0; i < NUM_ROWS; i++) {
 			board += "---------------------\n";
-			for(int j=0;j<NUM_COL;j++) {
+			for (int j = 0; j < NUM_COLUMNS; j++) {
 				board += "| ";
-				objectToString(j,i);
+				objectToString(j, i);
 			}
 			board += "|\n";
 		}
 		board += "---------------------\n";
 		return board;
 	}
-	
+
 	/**
 	 * 
 	 * @param args
@@ -284,7 +302,7 @@ public class JumpIn {
 		JumpIn game = new JumpIn(1);
 		game.printWelcome();
 		game.play();
-		
+
 	}
 
 }
