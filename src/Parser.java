@@ -65,6 +65,7 @@ public class Parser {
 		if(command.equalsIgnoreCase("continue")) {
 			return "continue";
 		} else if (command.equalsIgnoreCase("exit")){
+			input.close()
 			return "exit";
 		} else {
 			System.out.println("Command does not exist.");
