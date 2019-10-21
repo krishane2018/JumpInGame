@@ -26,6 +26,14 @@ public class GameObject {
 	public Point getCoordinate() {
 		return coordinate;
 	}
+	
+	public int getX1() {
+		return (int) this.coordinate.getX();
+	}
+	
+	public int getY1() {
+		return (int) this.coordinate.getY();
+	}
 
 	public void setCoordinate(Point coordinate) {
 		this.coordinate = coordinate;

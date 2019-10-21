@@ -24,6 +24,14 @@ public class Fox extends GameObject implements JumpInListener{
 		this.coordinate2 = coordinate2;
 	}
 
+	public int getX2() {
+		return (int) this.coordinate2.getX();
+	}
+	
+	public int getY2() {
+		return (int) this.coordinate2.getY();
+	}
+	
 	public String getDirection() {
 		return direction;
 	}

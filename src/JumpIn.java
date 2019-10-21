@@ -77,6 +77,10 @@ public class JumpIn {
 		}
 	}
 
+	public boolean addListener(JumpInListener j) {
+		return listeners.add(j);
+	}
+	
 	private String displayOptions(GameObject chosenAnimal) {
 
 		String output = "";
