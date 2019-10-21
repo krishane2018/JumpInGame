@@ -225,7 +225,8 @@ public class JumpIn {
 			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = null;
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 		} else {
-			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), move.getFinalLocation2(), HOLES);
+			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), move.getFinalLocation2(),
+					HOLES);
 			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = null;
 			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = null;
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
