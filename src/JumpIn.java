@@ -222,11 +222,15 @@ public class JumpIn {
 		JumpInEvent event;
 		if (move.getChosenAnimal().getClass().getSimpleName() == "Rabbit") {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), HOLES);
+			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = null;
+			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 		} else {
-			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), HOLES); // fix for fox
+			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), move.getFinalLocation2(), HOLES);
+			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = null;
+			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = null;
+			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
+			gameBoard[move.getFinalLocation2().y][move.getFinalLocation2().x] = move.getChosenAnimal();
 		}
-		gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = null;
-		gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 		for (int i = 0; i < listeners.size(); i++) {
 			if ((GameObject) listeners.get(i) == move.getChosenAnimal()) {
 				listeners.get(i).handleEvent(event);
