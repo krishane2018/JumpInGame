@@ -29,6 +29,10 @@ public class Move {
 		this.chosenAnimal = chosenAnimal;
 	}
 
+	public Move() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Point getInitialLocation2() {
 		return initialLocation2;
 	}

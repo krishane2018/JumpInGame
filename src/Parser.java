@@ -3,6 +3,7 @@
 **/
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Parser {
@@ -16,8 +17,10 @@ public class Parser {
 	
 	public GameObject getAnimal(ArrayList<JumpInListener> animalOptions) {
 		System.out.println("Enter one of the following 2 character strings to choose which animal"
-				+ "to move:\n "
-				+ "Bunnies: B1, B2, B3 or Foxes: F1, F2");
+				+ "to move:\n ");
+		for (JumpInListener animal: animalOptions) {
+			System.out.print(((GameObject)animal).getName()+" ");
+		}
 		
 		String command = input.nextLine();
 		
@@ -28,25 +31,48 @@ public class Parser {
 			}
 		}
 		
+		System.out.println("Invalid input.");
 		return (getAnimal(animalOptions));
 		
 		
 	}
 
-	public Move confirmOption(String options, GameObject chosenAnimal) {
-//		Scanner input = new Scanner(System.in);
-		System.out.println("Please enter one of the following options:");
-		System.out.println(options);
-		String selectedOption = input.nextLine();
-		if (options.contains(selectedOption)) {
-			String[] point = options.split(",");
+	public Move confirmOption(ArrayList<Point> options, Rabbit chosenRabbit, String displayOptions) {
+		HashMap<Integer, Point> userOptions = new HashMap<Integer, Point>();
+		for (int i=1;i<=options.size();i++) {
+			userOptions.put(i, userOptions.get(i-1));
+		}
+		System.out.println("Please enter one of the following options (using the digits):");
+		System.out.println(displayOptions);
+		int selectedOption = Integer.valueOf(input.nextLine());
+		if (userOptions.keySet().contains(selectedOption)) {
 			input.close();
-			return new Move(new Point(Integer.valueOf(point[0]),Integer.valueOf(point[1]))
-					, chosenAnimal.getCoordinate(), chosenAnimal);
+			return new Move(new Point(userOptions.get(selectedOption))
+					, chosenRabbit.getCoordinate(), chosenRabbit);
 		}
 		else {
+			System.out.println("Invalid Input");
+			return confirmOption(options, chosenRabbit, displayOptions);
+		}
+	}
+	
+	
+	public Move confirmOption(ArrayList<Point[]> options, Fox chosenFox, String displayOptions) {
+		HashMap<Integer, Point[]> userOptions = new HashMap<Integer, Point[]>();
+		for (int i=1;i<=options.size();i++) {
+			userOptions.put(i, userOptions.get(i-1));
+		}
+		System.out.println("Please enter one of the following options (using the digits):");
+		System.out.println(displayOptions);
+		int selectedOption = Integer.valueOf(input.nextLine());
+		if (userOptions.keySet().contains(selectedOption)) {
 			input.close();
-			return confirmOption(options, chosenAnimal);
+			Point[] chosenDestination = userOptions.get(selectedOption);
+			return new Move(chosenFox.getCoordinate(), chosenFox.getCoordinate(), chosenDestination[0], chosenDestination[1], chosenFox);
+		}
+		else {
+			System.out.println("Invalid input.");
+			return confirmOption(options, chosenFox, displayOptions);
 		}
 	}
 	
