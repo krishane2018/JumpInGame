@@ -76,7 +76,7 @@ public class JumpIn {
 	}
 
 	/**
-	 * Prints a wwelcome statement.
+	 * Prints a welcome statement.
 	 */
 	public void printWelcome() {
 		System.out.println("Welcome to JumpIn!");
