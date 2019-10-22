@@ -2,7 +2,7 @@
 
 Welcome to Jump In! This is a text base puzzle game where the player
 has to figure out how to get all the rabbits into a hole to win. The player 
-has to to maneuver the rabbits and foxes to find the a solution.
+has to to maneuver the rabbits and foxes to find the solution.
 
 
 Rules: 
