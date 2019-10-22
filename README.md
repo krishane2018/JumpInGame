@@ -22,3 +22,7 @@ player selects a rabbit, they will be prompted to type in the possible moves suc
 up, down, left, and right. If a fox is selected, they will also be promted to type in
 the possible moves, but also number of positions. Once all the rabbits are in a hole, 
 you will be asked if you would like to go to the next level or to stop.
+
+Iportant:
+
+If you import the project from GitHub, make sure to import the correct JRE Library
