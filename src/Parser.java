@@ -25,13 +25,13 @@ public class Parser {
 	 */
 
 	public GameObject getAnimal(ArrayList<JumpInListener> animalOptions) {
-		System.out.println("Enter one of the following 2 character strings to choose which animal" + "to move:\n ");
+		System.out.println("Enter one of the following 2 character strings to choose which animal" + " to move:\n ");
 		for (JumpInListener animal : animalOptions) {
 			System.out.print(((GameObject) animal).getName() + " ");
 		}
 		System.out.println("");
 
-		String command =  "R1"; //input.nextLine();
+		String command =  input.nextLine();
 
 		for (JumpInListener animal : animalOptions) {
 			GameObject tempAnimal = (GameObject) animal;
@@ -61,11 +61,15 @@ public class Parser {
 		for (int i = 1; i <= options.size(); i++) {
 			userOptions.put(i, options.get(i - 1));
 		}
+		if (options.isEmpty()) {
+			System.out.println(displayOptions);
+			return new Move();
+		}
 		System.out.println("Please enter one of the following options (using the digits):");
 		System.out.println(displayOptions);
-		int selectedOption = 1;//Integer.valueOf(input.nextLine());
+		int selectedOption = Integer.valueOf(input.nextLine());
 		if (userOptions.keySet().contains(selectedOption)) {
-			return new Move(new Point(userOptions.get(selectedOption)), chosenRabbit.getCoordinate(), chosenRabbit);
+			return new Move(chosenRabbit.getCoordinate(), new Point(userOptions.get(selectedOption)), chosenRabbit);
 		} else {
 			System.out.println("Invalid Input");
 			return confirmOption(options, chosenRabbit, displayOptions);
@@ -87,6 +91,9 @@ public class Parser {
 		HashMap<Integer, Point[]> userOptions = new HashMap<Integer, Point[]>();
 		for (int i = 1; i <= options.size(); i++) {
 			userOptions.put(i, userOptions.get(i - 1));
+		}
+		if (options.isEmpty()) {
+			return new Move();
 		}
 		System.out.println("Please enter one of the following options (using the digits):");
 		System.out.println(displayOptions);

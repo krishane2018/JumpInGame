@@ -40,12 +40,11 @@ public class JumpIn {
 	 */
 
 	public String objectToString(int x, int y) {
-		System.out.println(gameBoard[y][x].getName());
 		if (isHole(x, y) && gameBoard[y][x].getClass().getSimpleName().equals("Rabbit")) {
 			return gameBoard[y][x].getName() + "H";
 		} else if (isHole(x, y)) {
 			return "H";
-		} else if (!(gameBoard[y][x].equals(""))) {
+		} else if (!(gameBoard[y][x].getClass().getSimpleName().equals(""))) {
 			return gameBoard[y][x].getName();
 		}
 		return "  ";
@@ -81,6 +80,7 @@ public class JumpIn {
 
 		boolean finished = false;
 		while (!finished) {
+			System.out.println(toString());
 			GameObject chosenAnimal = parser.getAnimal(listeners);
 			Move move = new Move();
 			// Presents users with move options after the user has chosen the animal they
@@ -98,8 +98,6 @@ public class JumpIn {
 			finished = processCommand(move);
 			System.out.println(toString());
 		}
-		System.out.println(
-				"Congrats! \nPease type \"continue\" if you would like to go to the next level.\nType \"exit\" if you would like to stop.");
 		String status = parser.playAgain();
 		if (status == "continue") {
 			JumpIn game = new JumpIn(level + 1);
@@ -124,10 +122,15 @@ public class JumpIn {
 	private <E> String displayOptions(ArrayList<E> options) {
 		String output = "";
 		int counter = 1;
-		if (options.get(0).getClass().getSimpleName().equals("Point")) {
+		
+		if (options.isEmpty()) {
+			output = "No options available.";
+		}
+		else if (options.get(0).getClass().getSimpleName().equals("Point")) {
 			for (E element : options) {
 				Point point = (Point) element;
 				output += counter +" (" + point.getX() + "," + point.getY() + ")\n";
+				counter++;
 			}
 
 		} else if (options.get(0).getClass().getSimpleName().equals("Point[]")) {
@@ -137,6 +140,7 @@ public class JumpIn {
 				for (Point point : points) {
 					output += "(" + point.getX() + "," + point.getY() + ") ";
 				}
+				counter++;
 				output = output.trim();
 				output += "}\n";
 
@@ -199,6 +203,7 @@ public class JumpIn {
 		Function<Integer, Boolean> checkBounds;
 		Function<Integer, Integer> increment;
 		Function<Integer, Boolean> isObstacle;
+		Function<Integer, Point> newPoint;
 
 		/*The following if statements are used to set up expressions and variables so that they can
 		be used to make the for loop as general as possible (to avoid repeating code).*/
@@ -207,12 +212,14 @@ public class JumpIn {
 			changingCoordinate = (int) chosenRabbit.getCoordinate().getY();
 			uniformCoordinate = (int) chosenRabbit.getCoordinate().getX();
 			upperBound = NUM_ROWS;
+			newPoint = (Integer x) -> new Point(uniformCoordinate, x); 
 			//The following lambda determines if a board space is not empty.
 			isObstacle = (Integer y) -> !(gameBoard[y][uniformCoordinate].getName().equals(""));
 		} else {
 			changingCoordinate = (int) chosenRabbit.getCoordinate().getX();
 			uniformCoordinate = (int) chosenRabbit.getCoordinate().getY();
 			upperBound = NUM_COLUMNS;
+			newPoint = (Integer x) -> new Point(x, uniformCoordinate);
 			//The following lambda determines if a board space is not empty.
 			isObstacle = (Integer x) -> !(gameBoard[uniformCoordinate][x].getName().equals(""));
 		}
@@ -220,6 +227,8 @@ public class JumpIn {
 			checkBounds = (Integer x) -> x > -1; // lambda for boolean expression of for loop
 			increment = (Integer x) -> x - 1; //lambda for update expression of for loop
 			startingPosition = changingCoordinate - 1;
+			
+			
 		} else {
 			checkBounds = (Integer x) -> x < upperBound; // lambda for boolean expression of for loop
 			increment = (Integer x) -> x + 1; //lambda for update expression of for loop
@@ -231,7 +240,7 @@ public class JumpIn {
 			if (isObstacle.apply(i)) {
 				isJump = true;
 			} else if (isJump == true) {
-				rabbitOptions.add(new Point(uniformCoordinate, i));
+				rabbitOptions.add(newPoint.apply(i));
 				break;
 			} else if (!isObstacle.apply(i)) {
 				break;
@@ -330,18 +339,24 @@ public class JumpIn {
 	 */
 	private boolean processCommand(Move move) {
 		JumpInEvent event;
+		if (move.isNoMove()) {
+			return false;
+		}
 		if (move.getChosenAnimal().getClass().getSimpleName() == "Rabbit") {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), HOLES);
-			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = null;
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
+			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(new Point(move.getInitialLocation().x, move.getInitialLocation().y));
 		} else {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), move.getFinalLocation2(),
 					HOLES);
-			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = null;
-			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = null;
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 			gameBoard[move.getFinalLocation2().y][move.getFinalLocation2().x] = move.getChosenAnimal();
+			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(new Point(move.getInitialLocation().x, move.getInitialLocation().y));;
+			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = new GameObject(new Point(move.getInitialLocation2().x, move.getInitialLocation2().y));;
+			
 		}
+		
+		
 		for (int i = 0; i < listeners.size(); i++) {
 			if ((GameObject) listeners.get(i) == move.getChosenAnimal()) {
 				listeners.get(i).handleEvent(event);
@@ -357,14 +372,13 @@ public class JumpIn {
 	public String toString() {
 		String board = "";
 		for (int i = 0; i < NUM_ROWS; i++) {
-			board += "---------------------\n";
+			board += "--------------------------\n";
 			for (int j = 0; j < NUM_COLUMNS; j++) {
-				board += "| ";
-				objectToString(j, i);
+				board += String.format("|%4s", objectToString(j, i));
 			}
 			board += "|\n";
 		}
-		board += "---------------------\n";
+		board += "--------------------------\n";
 		return board;
 	}
 

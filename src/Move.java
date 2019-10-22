@@ -11,6 +11,7 @@ public class Move {
 	private Point initialLocation2;
 	private Point finalLocation2;
 	private GameObject chosenAnimal;
+	private boolean noMove;
 
 	public Move(Point initialLocation, Point finalLocation, GameObject chosenAnimal) {
 		this.initialLocation = initialLocation;
@@ -18,6 +19,7 @@ public class Move {
 		this.chosenAnimal = chosenAnimal;
 		this.initialLocation2 = new Point(); 
 		this.finalLocation2 = new Point();
+		noMove = false;
 	}
 
 	public Move(Point initialLocation, Point initialLocation2, Point finalLocation, Point finalLocation2,
@@ -27,10 +29,11 @@ public class Move {
 		this.initialLocation2 = initialLocation2;
 		this.finalLocation2 = finalLocation2;
 		this.chosenAnimal = chosenAnimal;
+		noMove = false;
 	}
 
 	public Move() {
-		// TODO Auto-generated constructor stub
+		noMove = true;
 	}
 
 	public Point getInitialLocation2() {
@@ -72,4 +75,9 @@ public class Move {
 	public void setChosenAnimal(GameObject chosenAnimal) {
 		this.chosenAnimal = chosenAnimal;
 	}
+
+	public boolean isNoMove() {
+		return noMove;
+	}
+
 }

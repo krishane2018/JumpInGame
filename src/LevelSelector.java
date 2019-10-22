@@ -41,7 +41,7 @@ public class LevelSelector {
 			game.addListener(r1);
 			game.addListener(r2);
 
-			board[2][0] = r1;
+			board[0][2] = r1;
 			board[4][0] = r2;
 			board[2][0] = m1;
 			board[3][0] = m2;
