@@ -63,7 +63,7 @@ public class LevelSelector {
 			board[2][3] = redRabbit2;
 			board[0][1] = mush21;
 			board[1][2] = mush22;
-			board[3][1] = mush23;
+			board[2][1] = mush23;
 		} else if (level == 3) {
 
 			// based on JumpIn' level 16 (C)

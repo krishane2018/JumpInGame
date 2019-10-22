@@ -79,8 +79,8 @@ public class JumpIn {
 	public void play() {
 
 		boolean finished = false;
+		System.out.println(toString());
 		while (!finished) {
-			System.out.println(toString());
 			GameObject chosenAnimal = parser.getAnimal(listeners);
 			Move move = new Move();
 			// Presents users with move options after the user has chosen the animal they
@@ -322,9 +322,10 @@ public class JumpIn {
 	private boolean checkWin() {
 		for (int i = 0; i < listeners.size(); i++) {
 			GameObject g = (GameObject) listeners.get(i);
-			if (g.getClass().getSimpleName() == "Rabbit") {
+			if (g.getClass().getSimpleName().equals("Rabbit")) {
 				Rabbit r = (Rabbit) g;
 				if (r.getStatus() == false) {
+					System.out.println(r.getName());
 					return false;
 				}
 			}
@@ -387,7 +388,7 @@ public class JumpIn {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(1);
+		JumpIn game = new JumpIn(3);
 		game.printWelcome();
 		game.play();
 

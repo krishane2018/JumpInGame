@@ -46,6 +46,10 @@ public class Rabbit extends GameObject implements JumpInListener{
 			for(Point p : e.getHoles()) {		
 				if(p.equals(super.getCoordinate())) {
 					this.status = true;
+					break;
+				}
+				else {
+					this.status = false;
 				}
 			}	
 		}
