@@ -208,15 +208,13 @@ public class JumpIn {
 			uniformCoordinate = (int) chosenRabbit.getCoordinate().getX();
 			upperBound = NUM_ROWS;
 			//The following lambda determines if a board space is not empty.
-			isObstacle = (Integer y) -> !(gameBoard[y][uniformCoordinate].getName().equals(""))
-					&& !(gameBoard[y][uniformCoordinate].getClass().getSimpleName().equals("RabbitHole"));
+			isObstacle = (Integer y) -> !(gameBoard[y][uniformCoordinate].getName().equals(""));
 		} else {
 			changingCoordinate = (int) chosenRabbit.getCoordinate().getX();
 			uniformCoordinate = (int) chosenRabbit.getCoordinate().getY();
 			upperBound = NUM_COLUMNS;
 			//The following lambda determines if a board space is not empty.
-			isObstacle = (Integer x) -> !(gameBoard[uniformCoordinate][x].getName().equals(""))
-					&& !(gameBoard[uniformCoordinate][x].getClass().getSimpleName().equals("RabbitHole"));
+			isObstacle = (Integer x) -> !(gameBoard[uniformCoordinate][x].getName().equals(""));
 		}
 		if (movingDirection.equals("Left") || movingDirection.equals("Up")) {
 			checkBounds = (Integer x) -> x > -1; // lambda for boolean expression of for loop
