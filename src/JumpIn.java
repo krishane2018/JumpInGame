@@ -17,7 +17,7 @@ public class JumpIn {
 	private int level;
 	private final static int NUM_ROWS = 5;
 	private final static int NUM_COLUMNS = 5;
-	private final Point[] HOLES;
+	private Point[] HOLES;
 
 	/**
 	 * 
@@ -40,7 +40,7 @@ public class JumpIn {
 	 */
 
 	public String objectToString(int x, int y) {
-		System.out.println(x+" "+y);
+		System.out.println(gameBoard[y][x].getName());
 		if (isHole(x, y) && gameBoard[y][x].getClass().getSimpleName().equals("Rabbit")) {
 			return gameBoard[y][x].getName() + "H";
 		} else if (isHole(x, y)) {

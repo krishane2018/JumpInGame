@@ -2,7 +2,7 @@ import java.awt.Point;
 
 public class LevelSelector {
 	private GameObject[][] board;
-	private final Point[] HOLES = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0),
+	private static final Point[] HOLES = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0),
 			new Point(4, 4) };
 
 	public LevelSelector(int level, JumpIn game) {
