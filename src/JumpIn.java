@@ -2,6 +2,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+
 /**
  * This is the main class for the "Jump in" game application. This is a
  * simple puzzle game to get rabbits into a rabbit hole to hide from the
