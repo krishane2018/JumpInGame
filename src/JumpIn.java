@@ -266,6 +266,8 @@ public class JumpIn {
 		Function<Integer, Boolean> checkBounds;
 		Function<Integer, Integer> increment;
 		Function<Integer, Boolean> isEmpty;
+		Function<Integer, Point> newPoint;
+		Function<Integer, Integer> secondValue;
 
 		/*The following if statements are used to set up expressions and variables so that they can
 		be used to make the for loop as general as possible (to avoid repeating code).*/
@@ -279,6 +281,7 @@ public class JumpIn {
 			}
 			uniformCoordinate = (int) chosenFox.getCoordinate().getX();
 			upperBound = NUM_ROWS;
+			newPoint = (Integer x) -> new Point(uniformCoordinate, x); 
 			//The following lambda determines if a board space is empty.
 			isEmpty = (Integer y) -> gameBoard[y][uniformCoordinate].getName().equals("");
 		} else {
@@ -290,6 +293,8 @@ public class JumpIn {
 
 			uniformCoordinate = (int) chosenFox.getCoordinate().getY();
 			upperBound = NUM_COLUMNS;
+			newPoint = (Integer x) -> new Point(x, uniformCoordinate);
+
 			//The following lambda determines if a board space is not empty.
 			isEmpty = (Integer x) -> gameBoard[uniformCoordinate][x].getName().equals("");
 		}
@@ -297,16 +302,17 @@ public class JumpIn {
 			checkBounds = (Integer x) -> x > -1;	// lambda for boolean expression of for loop
 			increment = (Integer x) -> x - 1;// lambda for boolean expression of for loop
 			startingPosition = changingCoordinate - 1;
+			secondValue = (Integer x) -> x + 1;
 		} else {
 			checkBounds = (Integer x) -> x < upperBound;// lambda for boolean expression of for loop
 			increment = (Integer x) -> x + 1;// lambda for boolean expression of for loop
 			startingPosition = changingCoordinate + 1;
+			secondValue = (Integer x) -> x-1;
 		}
 		//General for loop
 		for (int i = startingPosition; checkBounds.apply(i); i = increment.apply(i)) {
 			if (isEmpty.apply(i)) {
-				Point[] tempArray = { new Point(i, (int) chosenFox.getCoordinate().getY()),
-						new Point(i + 1, (int) chosenFox.getCoordinate().getY()) };
+				Point[] tempArray = {newPoint.apply(i), newPoint.apply(secondValue.apply(i))};
 				foxOptions.add(tempArray);
 			} else {
 				break;
@@ -345,16 +351,15 @@ public class JumpIn {
 		}
 		if (move.getChosenAnimal().getClass().getSimpleName() == "Rabbit") {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), HOLES);
-			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(new Point(move.getInitialLocation().x, move.getInitialLocation().y));
+			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 		} else {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), move.getFinalLocation2(),
 					HOLES);
-			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
-			gameBoard[move.getFinalLocation2().y][move.getFinalLocation2().x] = move.getChosenAnimal();
 			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(new Point(move.getInitialLocation().x, move.getInitialLocation().y));;
 			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = new GameObject(new Point(move.getInitialLocation2().x, move.getInitialLocation2().y));;
-			
+			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
+			gameBoard[move.getFinalLocation2().y][move.getFinalLocation2().x] = move.getChosenAnimal();
 		}
 		
 		

@@ -19,6 +19,8 @@ public class Fox extends GameObject implements JumpInListener{
 		super(p1, name);
 		this.coordinate2 = p2; 
 		this.direction = direction;
+		correctPointOrdering();
+		
 	}
 
 	/**
@@ -69,6 +71,28 @@ public class Fox extends GameObject implements JumpInListener{
 		this.direction = direction;
 	}
 	
+	private void correctPointOrdering() {
+		Point p1 = this.getCoordinate();
+		Point p2 = this.getCoordinate2();
+		
+		if (direction.equals("Vertical")) {
+			double y1 = p1.getY();
+			double y2 = p2.getY();
+			if (y2<y1) {
+				p1.setLocation(p1.getX(), y2);
+				p2.setLocation(p2.getX(), y1);
+			}
+		}
+		else if(direction.equals("Horizontal")) {
+			double x1 = p1.getX();
+			double x2 = p2.getX();
+			if (x2<x1) {
+				p1.setLocation(x2, p1.getY());
+				p2.setLocation(x1, p2.getY());
+			} 
+		}
+	}
+	
 	@Override
 	/**
 	 * Handle an event created from the JumpIn model
@@ -79,6 +103,7 @@ public class Fox extends GameObject implements JumpInListener{
 		if(f.equals(this)) {
 			super.setCoordinate(e.getCoordinate1());
 			setCoordinate2(e.getCoordinate2());
+			correctPointOrdering();
 		}
 	}
 	

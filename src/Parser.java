@@ -4,6 +4,7 @@
 **/
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -90,7 +91,8 @@ public class Parser {
 	public Move confirmOption(ArrayList<Point[]> options, Fox chosenFox, String displayOptions) {
 		HashMap<Integer, Point[]> userOptions = new HashMap<Integer, Point[]>();
 		for (int i = 1; i <= options.size(); i++) {
-			userOptions.put(i, userOptions.get(i - 1));
+			
+			userOptions.put(i, options.get(i - 1));
 		}
 		if (options.isEmpty()) {
 			return new Move();
@@ -100,6 +102,12 @@ public class Parser {
 		int selectedOption = Integer.valueOf(input.nextLine());
 		if (userOptions.keySet().contains(selectedOption)) {
 			Point[] chosenDestination = userOptions.get(selectedOption);
+			System.out.println(Arrays.toString(chosenDestination));
+			System.out.println(chosenFox.getCoordinate());
+			System.out.println(chosenFox.getCoordinate2());
+			System.out.println(chosenDestination[0]);
+			System.out.println(chosenDestination[1]);
+			System.out.println(chosenFox);
 			return new Move(chosenFox.getCoordinate(), chosenFox.getCoordinate2(), chosenDestination[0],
 					chosenDestination[1], chosenFox);
 		} else {
