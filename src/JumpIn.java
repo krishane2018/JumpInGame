@@ -28,7 +28,7 @@ public class JumpIn {
 		listeners = new ArrayList<JumpInListener>();
 		LevelSelector l = new LevelSelector(level, this);
 		gameBoard = l.getBoard();
-		HOLES = l.getHoles();
+		HOLES = LevelSelector.getHoles();
 		parser = new Parser();
 	}
 
@@ -94,12 +94,15 @@ public class JumpIn {
 				ArrayList<Point[]> options = determineOptions((Fox) chosenAnimal);
 				move = parser.confirmOption(options, (Fox) chosenAnimal, displayOptions(options));
 			}
-			//Moves the animal to the user's selected position on the game board. 
+			// Moves the animal to the user's selected position on the game board.
 			finished = processCommand(move);
 			System.out.println(toString());
 		}
 		String status = parser.playAgain();
 		if (status == "continue") {
+			if (level == 3) {
+				System.out.println("You completed all of the level!");
+			}
 			JumpIn game = new JumpIn(level + 1);
 			game.play();
 		} else if (status == "exit") {
@@ -115,28 +118,28 @@ public class JumpIn {
 	 * Used to display options in console for user.
 	 * 
 	 * @author Krishan Easparan
-	 * @param options An ArrayList containing the options the user can pick to move the animal.
+	 * @param options An ArrayList containing the options the user can pick to move
+	 *                the animal.
 	 * @return A string representation of the options.
 	 */
 
 	private <E> String displayOptions(ArrayList<E> options) {
 		String output = "";
 		int counter = 1;
-		
+
 		if (options.isEmpty()) {
 			output = "No options available.";
-		}
-		else if (options.get(0).getClass().getSimpleName().equals("Point")) {
+		} else if (options.get(0).getClass().getSimpleName().equals("Point")) {
 			for (E element : options) {
 				Point point = (Point) element;
-				output += counter +" (" + point.getX() + "," + point.getY() + ")\n";
+				output += counter + " (" + point.getX() + "," + point.getY() + ")\n";
 				counter++;
 			}
 
 		} else if (options.get(0).getClass().getSimpleName().equals("Point[]")) {
 			for (E element : options) {
 				Point[] points = (Point[]) (element);
-				output += counter+" {";
+				output += counter + " {";
 				for (Point point : points) {
 					output += "(" + point.getX() + "," + point.getY() + ") ";
 				}
@@ -151,11 +154,12 @@ public class JumpIn {
 	}
 
 	/**
-	 * Used to determine move options for the rabbit chosen by the user. 
+	 * Used to determine move options for the rabbit chosen by the user.
 	 * 
 	 * @author Krishan Easparan
 	 * @param chosenRabbit The rabbit that the user chose to move.
-	 * @return An ArrayList containing the options the user can pick to move the rabbit.
+	 * @return An ArrayList containing the options the user can pick to move the
+	 *         rabbit.
 	 */
 	private ArrayList<Point> determineOptions(Rabbit chosenRabbit) {
 		ArrayList<Point> rabbitOptionsArrayList = new ArrayList<Point>();
@@ -171,7 +175,8 @@ public class JumpIn {
 	 * 
 	 * @author Krishan Easparan
 	 * @param chosenFox The fox that the user chose to move.
-	 * @return An ArrayList containing the options the user can pick to move the fox.
+	 * @return An ArrayList containing the options the user can pick to move the
+	 *         fox.
 	 */
 	private ArrayList<Point[]> determineOptions(Fox chosenFox) {
 		ArrayList<Point[]> foxOptionsArrayList = new ArrayList<Point[]>();
@@ -189,13 +194,14 @@ public class JumpIn {
 	 * Used as helper method for determineOptions().
 	 * 
 	 * @author Krishan Easparan
-	 * @param chosenRabbit The rabbit that the user chose to move.
+	 * @param chosenRabbit    The rabbit that the user chose to move.
 	 * @param movingDirection The direction that the rabbit is trying to move in.
-	 * @param rabbitOptions An ArrayList containing the options the user can pick to move the rabbit.
+	 * @param rabbitOptions   An ArrayList containing the options the user can pick
+	 *                        to move the rabbit.
 	 */
 	private void rabbitOptionsHelper(Rabbit chosenRabbit, String movingDirection, ArrayList<Point> rabbitOptions) {
 
-		int changingCoordinate;					//initialization of variables
+		int changingCoordinate; // initialization of variables
 		int uniformCoordinate;
 		int upperBound;
 		int startingPosition;
@@ -205,37 +211,39 @@ public class JumpIn {
 		Function<Integer, Boolean> isObstacle;
 		Function<Integer, Point> newPoint;
 
-		/*The following if statements are used to set up expressions and variables so that they can
-		be used to make the for loop as general as possible (to avoid repeating code).*/
-		
-		if (movingDirection.equals("Up") || movingDirection.equals("Down")) { 
+		/*
+		 * The following if statements are used to set up expressions and variables so
+		 * that they can be used to make the for loop as general as possible (to avoid
+		 * repeating code).
+		 */
+
+		if (movingDirection.equals("Up") || movingDirection.equals("Down")) {
 			changingCoordinate = (int) chosenRabbit.getCoordinate().getY();
 			uniformCoordinate = (int) chosenRabbit.getCoordinate().getX();
 			upperBound = NUM_ROWS;
-			newPoint = (Integer x) -> new Point(uniformCoordinate, x); 
-			//The following lambda determines if a board space is not empty.
+			newPoint = (Integer x) -> new Point(uniformCoordinate, x);
+			// The following lambda determines if a board space is not empty.
 			isObstacle = (Integer y) -> !(gameBoard[y][uniformCoordinate].getName().equals(""));
 		} else {
 			changingCoordinate = (int) chosenRabbit.getCoordinate().getX();
 			uniformCoordinate = (int) chosenRabbit.getCoordinate().getY();
 			upperBound = NUM_COLUMNS;
 			newPoint = (Integer x) -> new Point(x, uniformCoordinate);
-			//The following lambda determines if a board space is not empty.
+			// The following lambda determines if a board space is not empty.
 			isObstacle = (Integer x) -> !(gameBoard[uniformCoordinate][x].getName().equals(""));
 		}
 		if (movingDirection.equals("Left") || movingDirection.equals("Up")) {
 			checkBounds = (Integer x) -> x > -1; // lambda for boolean expression of for loop
-			increment = (Integer x) -> x - 1; //lambda for update expression of for loop
+			increment = (Integer x) -> x - 1; // lambda for update expression of for loop
 			startingPosition = changingCoordinate - 1;
-			
-			
+
 		} else {
 			checkBounds = (Integer x) -> x < upperBound; // lambda for boolean expression of for loop
-			increment = (Integer x) -> x + 1; //lambda for update expression of for loop
+			increment = (Integer x) -> x + 1; // lambda for update expression of for loop
 			startingPosition = changingCoordinate + 1;
 		}
-		
-		//General for loop
+
+		// General for loop
 		for (int i = startingPosition; checkBounds.apply(i); i = increment.apply(i)) {
 			if (isObstacle.apply(i)) {
 				isJump = true;
@@ -253,13 +261,14 @@ public class JumpIn {
 	 * 
 	 * 
 	 * @author Krishan Easparan
-	 * @param chosenFox The fox chosen by the user to move.
+	 * @param chosenFox       The fox chosen by the user to move.
 	 * @param movingDirection The direction that the fox is trying to move in.
-	 * @param foxOptions An ArrayList containing the options the user can pick to move the fox.
+	 * @param foxOptions      An ArrayList containing the options the user can pick
+	 *                        to move the fox.
 	 */
 	private void foxOptionsHelper(Fox chosenFox, String movingDirection, ArrayList<Point[]> foxOptions) {
 
-		int changingCoordinate = 0;						//initialization of variables
+		int changingCoordinate = 0; // initialization of variables
 		int uniformCoordinate;
 		int upperBound;
 		int startingPosition;
@@ -269,9 +278,12 @@ public class JumpIn {
 		Function<Integer, Point> newPoint;
 		Function<Integer, Integer> secondValue;
 
-		/*The following if statements are used to set up expressions and variables so that they can
-		be used to make the for loop as general as possible (to avoid repeating code).*/
-		
+		/*
+		 * The following if statements are used to set up expressions and variables so
+		 * that they can be used to make the for loop as general as possible (to avoid
+		 * repeating code).
+		 */
+
 		if (movingDirection.equals("Up") || movingDirection.equals("Down")) {
 			if (movingDirection.equals("Up")) {
 				changingCoordinate = (int) chosenFox.getCoordinate().getY();
@@ -283,6 +295,7 @@ public class JumpIn {
 			upperBound = NUM_ROWS;
 			newPoint = (Integer x) -> new Point(uniformCoordinate, x); 
 			//The following lambda determines if a board space is empty.
+
 			isEmpty = (Integer y) -> gameBoard[y][uniformCoordinate].getName().equals("");
 		} else {
 			if (movingDirection.equals("Left")) {
@@ -296,10 +309,11 @@ public class JumpIn {
 			newPoint = (Integer x) -> new Point(x, uniformCoordinate);
 
 			//The following lambda determines if a board space is not empty.
+
 			isEmpty = (Integer x) -> gameBoard[uniformCoordinate][x].getName().equals("");
 		}
 		if (movingDirection.equals("Left") || movingDirection.equals("Up")) {
-			checkBounds = (Integer x) -> x > -1;	// lambda for boolean expression of for loop
+			checkBounds = (Integer x) -> x > -1; // lambda for boolean expression of for loop
 			increment = (Integer x) -> x - 1;// lambda for boolean expression of for loop
 			startingPosition = changingCoordinate - 1;
 			secondValue = (Integer x) -> x + 1;
@@ -309,7 +323,7 @@ public class JumpIn {
 			startingPosition = changingCoordinate + 1;
 			secondValue = (Integer x) -> x-1;
 		}
-		//General for loop
+		// General for loop
 		for (int i = startingPosition; checkBounds.apply(i); i = increment.apply(i)) {
 			if (isEmpty.apply(i)) {
 				Point[] tempArray = {newPoint.apply(i), newPoint.apply(secondValue.apply(i))};
@@ -353,6 +367,7 @@ public class JumpIn {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), HOLES);
 			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(new Point(move.getInitialLocation().x, move.getInitialLocation().y));
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
+
 		} else {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), move.getFinalLocation2(),
 					HOLES);
@@ -361,8 +376,7 @@ public class JumpIn {
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 			gameBoard[move.getFinalLocation2().y][move.getFinalLocation2().x] = move.getChosenAnimal();
 		}
-		
-		
+
 		for (int i = 0; i < listeners.size(); i++) {
 			if ((GameObject) listeners.get(i) == move.getChosenAnimal()) {
 				listeners.get(i).handleEvent(event);
