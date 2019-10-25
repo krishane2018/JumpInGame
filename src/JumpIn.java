@@ -100,11 +100,13 @@ public class JumpIn {
 		}
 		String status = parser.playAgain();
 		if (status == "continue") {
-			if (level == 3) {
+			if (level >= 3) {
 				System.out.println("You completed all of the level!");
+			}else {
+				JumpIn game = new JumpIn(level + 1);
+				game.play();
 			}
-			JumpIn game = new JumpIn(level + 1);
-			game.play();
+			
 		} else if (status == "exit") {
 			return;
 		}
