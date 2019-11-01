@@ -15,8 +15,8 @@ public class JumpIn {
 	private ArrayList<JumpInListener> listeners;
 	private Parser parser;
 	private int level;
-	private final static int NUM_ROWS = 5;
-	private final static int NUM_COLUMNS = 5;
+	public final static int NUM_ROWS = 5;
+	public final static int NUM_COLUMNS = 5;
 	private Point[] HOLES;
 
 	/**

@@ -3,16 +3,16 @@ import java.awt.Point;
 
 import javax.swing.*;
 
-public class JumpInView extends JFrame {
-	private JButton[][] buttons;
+public class JumpInView extends JFrame implements JumpInListener {
+	private GameButton[][] buttons;
 	private JumpIn model;
 	
 	public JumpInView(JumpIn model){
 		this.model = model;
-		int rows = model.getNumRows();
-		int cols = model.getNumColumns();
-		//model.addView(this);
-		buttons = new JButton[rows][cols];
+		int rows = JumpIn.NUM_ROWS;
+		int cols = JumpIn.NUM_COLUMNS;
+		model.addListener(this);
+		buttons = new GameButton[rows][cols];
 		JPanel panel = new JPanel();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridLayout g = new GridLayout(rows, cols);
@@ -29,6 +29,20 @@ public class JumpInView extends JFrame {
 		this.setResizable(true);
 		this.setSize(500,500);
 		this.setVisible(true);
+		
+	}
+
+	public GameButton[][] getButtons() {
+		return buttons;
+	}
+
+	public void setButtons(GameButton[][] buttons) {
+		this.buttons = buttons;
+	}
+
+	@Override
+	public void handleEvent(JumpInEvent e) {
+		//update view (move piece, update coordinates)
 		
 	}
 
