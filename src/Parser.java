@@ -25,9 +25,10 @@ public class Parser {
 	 * @return A GameObject representing the animal the user has chosen.
 	 */
 
-	public GameObject getAnimal(ArrayList<JumpInListener> animalOptions) {
+	public MovableAnimal getAnimal(ArrayList<JumpInListener> animalOptions) {
 		System.out.println("Enter one of the following 2 character strings to choose which animal" + " to move:\n ");
 		for (JumpInListener animal : animalOptions) {
+			
 			System.out.print(((GameObject) animal).getName() + " ");
 		}
 		System.out.println("");
@@ -35,7 +36,7 @@ public class Parser {
 		String command =  input.nextLine();
 
 		for (JumpInListener animal : animalOptions) {
-			GameObject tempAnimal = (GameObject) animal;
+			MovableAnimal tempAnimal = (MovableAnimal) animal;
 			if (tempAnimal.getName().equalsIgnoreCase(command)) {
 				return tempAnimal;
 			}

@@ -121,8 +121,8 @@ public class Fox extends MovableAnimal {
 		
 		if (direction.equals("Horizontal")) {
 			
-			startingPosition1 = this.getX1();
-			startingPosition2 = this.getX2();
+			startingPosition1 = this.getX1() - 1 ;
+			startingPosition2 = this.getX2() + 1 ;
 			uniformCoordinate = this.getY1();
 			
 			
@@ -130,71 +130,45 @@ public class Fox extends MovableAnimal {
 		
 		else if (direction.equals("Vertical")) {
 			
-			startingPosition1 = this.getY1();
-			startingPosition2 = this.getY2();
+			startingPosition1 = this.getY1() - 1;
+			startingPosition2 = this.getY2() + 1;
 			uniformCoordinate = this.getX1();
 			
 		}
 		
 		helperdetermineOptions(options, startingPosition1,
-				uniformCoordinate,  Utility.getCheckLowerBounds(),
+				uniformCoordinate,  Utility.getCheckBounds(),
 				Utility.getDecrement(), Utility.getIncrement(),
 				gameBoard, this.direction);
 		
 		helperdetermineOptions(options, startingPosition2,
-				uniformCoordinate,  Utility.getCheckUpperBounds(),
+				uniformCoordinate,  Utility.getCheckBounds(),
 				Utility.getIncrement(), Utility.getDecrement(),
 				gameBoard, this.direction);
 		
 		return options;
 	}
 
-	private void helperdetermineOptions(ArrayList<Point[]> options, int startingPosition,
-			int uniformCoordinate,  Function<Integer, Boolean> checkBounds,
-			Function<Integer, Integer> increment, Function<Integer, Integer> offset,
+	
+	@Override
+	protected int forLoopBody(ArrayList options, int changingCoordinate,
+			int uniformCoordinate, Function<Integer, Integer> offset, 
 			GameObject[][] gameBoard, String direction) {
 		
-		for (int i = startingPosition; checkBounds.apply(i); i=increment.apply(i)) {
-			if (isSpaceAvailable(direction, gameBoard, i, uniformCoordinate)) {
-//				Point [] tempArray = {makePoint(i, uniformCoordinate), makePoint(offset.apply(i), uniformCoordinate)};
-//				options.add(tempArray);
-				addOption(i, uniformCoordinate, options, offset, direction);
-			}
-			else {
-				break;
-			}
+		if (moveLogic(direction, gameBoard, changingCoordinate, uniformCoordinate)) {
+			addOption(changingCoordinate, uniformCoordinate, options, offset, direction);
+		}
+		else {
+			return Utility.getNumColumns()+1;
 		}
 		
+		return changingCoordinate;
 	}
 	
-	
-	private boolean isSpaceAvailable(String direction, GameObject[][] gameBoard, 
-			int changingCoordinate, int uniformCoordinate) {
-		
-		if (direction.equals("Vertical")) {
-			return moveLogic(gameBoard[changingCoordinate][uniformCoordinate]);
-		}
-		else if (direction.equals("Horizontal")) {
-			return moveLogic(gameBoard[uniformCoordinate][changingCoordinate]);
-		}
-		return false;
-	}
-	
-	protected boolean moveLogic(GameObject space) {
+	protected boolean moveLogicHelper(GameObject space) {
 		return space.getName().equals("");
 	}
 	
-	private Point makePoint (int changingCoordinate, int uniformCoordinate) {
-		if (direction.equals("Vertical")) {
-			return new Point (uniformCoordinate, changingCoordinate);
-		}
-		else if (direction.equals("Horizontal")) {
-			return new Point (changingCoordinate, uniformCoordinate);
-		}
-		else {
-			throw new IllegalArgumentException();
-		}
-	}
 	
 	protected void addOption(int changingCoordinate, int uniformCoordinate, ArrayList options, 
 			Function<Integer, Integer> offset, String direction) {

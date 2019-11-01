@@ -1,12 +1,15 @@
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.function.Function;
 /**
  * 
  * @author Aashna Narang
  * 
  */
-public class Rabbit extends GameObject implements JumpInListener{
+public class Rabbit extends MovableAnimal{
 	// If the rabbit is inside a rabbit hole or not
 	private boolean status; 
+	private boolean isJump; // Can the rabbit make a jump move
 	
 	/**
 	 * Constructor to create a rabbit game piece
@@ -67,6 +70,81 @@ public class Rabbit extends GameObject implements JumpInListener{
 		
 		Rabbit r = (Rabbit) o;
 		return (super.getCoordinate() == r.getCoordinate() & this.status == r.getStatus() & super.getName() == r.getName());
+	}
+
+	@Override
+	public ArrayList determineOptions(GameObject[][] gameBoard) {
+		
+		ArrayList<Point> options = new ArrayList<Point>();
+		int x = this.getX1();
+		int y = this.getY1();
+		
+		helperdetermineOptions(options, x-1,
+				y,  Utility.getCheckBounds(),
+				Utility.getDecrement(), Utility.getIncrement(),
+				gameBoard, "Horizontal");
+		
+		this.isJump = false;
+		
+		helperdetermineOptions(options, x+1,
+				y,  Utility.getCheckBounds(),
+				Utility.getIncrement(), Utility.getDecrement(),
+				gameBoard, "Horizontal");
+		
+		this.isJump = false;
+
+		
+		helperdetermineOptions(options, y-1,
+				x,  Utility.getCheckBounds(),
+				Utility.getDecrement(), Utility.getIncrement(),
+				gameBoard, "Vertical");
+		
+		this.isJump = false;
+
+		
+		helperdetermineOptions(options, y+1,
+				x,  Utility.getCheckBounds(),
+				Utility.getIncrement(), Utility.getDecrement(),
+				gameBoard, "Vertical");
+		
+		return options;
+	}
+
+	@Override
+	protected int forLoopBody(ArrayList options, int changingCoordinate, int uniformCoordinate,
+			Function<Integer, Integer> offset, GameObject[][] gameBoard, String direction) {
+		
+		if (moveLogic(direction, gameBoard, changingCoordinate, uniformCoordinate)) {
+			isJump = true;
+		}
+		
+		else {
+			if (isJump==true) {
+				addOption(changingCoordinate, uniformCoordinate, options, offset, direction);
+			}
+			return Utility.getNumRows()+1;
+		}
+		
+		return changingCoordinate;
+		
+	}
+
+	@Override
+	protected boolean moveLogicHelper(GameObject space) {
+		return !(space.getName().equals(""));
+		
+	}
+
+	@Override
+	protected void addOption(int changingCoordinate, int uniformCoordinate, ArrayList options,
+			Function<Integer, Integer> offset, String direction) {
+		if (direction.equals("Vertical")) {
+			options.add(new Point (uniformCoordinate, changingCoordinate));
+		}
+		else if (direction.equals("Horizontal")) {
+			options.add(new Point (changingCoordinate, uniformCoordinate));
+		}
+		
 	}
 	
 	
