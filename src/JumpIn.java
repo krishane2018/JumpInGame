@@ -127,7 +127,6 @@ public class JumpIn {
 			if (g.getClass().getSimpleName().equals("Rabbit")) {
 				Rabbit r = (Rabbit) g;
 				if (r.getStatus() == false) {
-					System.out.println(r.getName());
 					return false;
 				}
 			}
