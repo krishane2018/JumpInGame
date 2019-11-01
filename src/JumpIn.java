@@ -403,6 +403,14 @@ public class JumpIn {
 		board += "--------------------------\n";
 		return board;
 	}
+	
+	public int getNumRows() {
+		return JumpIn.NUM_ROWS;
+	}
+	
+	public int getNumColumns() {
+		return JumpIn.NUM_COLUMNS;
+	}
 
 	/**
 	 * 
@@ -410,8 +418,9 @@ public class JumpIn {
 	 */
 	public static void main(String[] args) {
 		JumpIn game = new JumpIn(1);
-		game.printWelcome();
-		game.play();
+		// game.printWelcome();
+		// game.play();
+		JumpInView view = new JumpInView(game);
 
 	}
 
