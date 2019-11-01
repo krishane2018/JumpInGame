@@ -103,12 +103,6 @@ public class Parser {
 		int selectedOption = Integer.valueOf(input.nextLine());
 		if (userOptions.keySet().contains(selectedOption)) {
 			Point[] chosenDestination = userOptions.get(selectedOption);
-			System.out.println(Arrays.toString(chosenDestination));
-			System.out.println(chosenFox.getCoordinate());
-			System.out.println(chosenFox.getCoordinate2());
-			System.out.println(chosenDestination[0]);
-			System.out.println(chosenDestination[1]);
-			System.out.println(chosenFox);
 			return new Move(chosenFox.getCoordinate(), chosenFox.getCoordinate2(), chosenDestination[0],
 					chosenDestination[1], chosenFox);
 		} else {

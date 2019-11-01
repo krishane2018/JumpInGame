@@ -44,5 +44,7 @@ public abstract class MovableAnimal extends GameObject implements JumpInListener
 	protected abstract void addOption(int changingCoordinate, int uniformCoordinate, ArrayList options, 
 			Function<Integer, Integer> offset, String direction);
 
+	public abstract String displayOptions(ArrayList options);
+
 	
 }

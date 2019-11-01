@@ -88,11 +88,11 @@ public class JumpIn {
 			ArrayList options = chosenAnimal.determineOptions(gameBoard);
 
 			if (chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
-				move = parser.confirmOption(options, (Rabbit) chosenAnimal, displayOptions(options));
+				move = parser.confirmOption(options, (Rabbit) chosenAnimal, chosenAnimal.displayOptions(options));
 			}
 
 			else if (chosenAnimal.getClass().getSimpleName().equals("Fox")) {
-				move = parser.confirmOption(options, (Fox) chosenAnimal, displayOptions(options));
+				move = parser.confirmOption(options, (Fox) chosenAnimal, chosenAnimal.displayOptions(options));
 			}			
 			// Moves the animal to the user's selected position on the game board.
 			finished = processCommand(move);
@@ -115,46 +115,6 @@ public class JumpIn {
 	public boolean addListener(JumpInListener j) {
 		return listeners.add(j);
 	}
-
-	/**
-	 * Used to display options in console for user.
-	 * 
-	 * @author Krishan Easparan
-	 * @param options An ArrayList containing the options the user can pick to move
-	 *                the animal.
-	 * @return A string representation of the options.
-	 */
-
-	private <E> String displayOptions(ArrayList<E> options) {
-		String output = "";
-		int counter = 1;
-
-		if (options.isEmpty()) {
-			output = "No options available.";
-		} else if (options.get(0).getClass().getSimpleName().equals("Point")) {
-			for (E element : options) {
-				Point point = (Point) element;
-				output += counter + " (" + point.getX() + "," + point.getY() + ")\n";
-				counter++;
-			}
-
-		} else if (options.get(0).getClass().getSimpleName().equals("Point[]")) {
-			for (E element : options) {
-				Point[] points = (Point[]) (element);
-				output += counter + " {";
-				for (Point point : points) {
-					output += "(" + point.getX() + "," + point.getY() + ") ";
-				}
-				counter++;
-				output = output.trim();
-				output += "}\n";
-
-			}
-
-		}
-		return output;
-	}
-
 
 
 	/**
@@ -229,7 +189,7 @@ public class JumpIn {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(1);
+		JumpIn game = new JumpIn(3);
 		game.printWelcome();
 		game.play();
 

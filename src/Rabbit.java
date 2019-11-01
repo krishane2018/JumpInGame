@@ -73,11 +73,30 @@ public class Rabbit extends MovableAnimal{
 	}
 
 	@Override
+	public String displayOptions(ArrayList options) {
+		String output = "";
+		int counter = 1;
+		if (options.isEmpty()) {
+			output = "No options available.";
+		} 
+		else {
+			for (Object element : options) {
+				Point point = (Point) element;
+				output += counter + " (" + point.getX() + "," + point.getY() + ")\n";
+				counter++;
+			}
+		}
+		return output;
+	}
+	
+	@Override
 	public ArrayList determineOptions(GameObject[][] gameBoard) {
 		
 		ArrayList<Point> options = new ArrayList<Point>();
 		int x = this.getX1();
 		int y = this.getY1();
+		
+		this.isJump = false;
 		
 		helperdetermineOptions(options, x-1,
 				y,  Utility.getCheckBounds(),

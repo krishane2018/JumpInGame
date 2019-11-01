@@ -185,6 +185,30 @@ public class Fox extends MovableAnimal {
 		options.add(tempArray);
 	}
 
+	@Override
+	public String displayOptions(ArrayList options) {
+		String output = "";
+		int counter = 1;
+		
+		if (options.isEmpty()) {
+			output = "No options available.";
+		} 
+		else {
+			for (Object element : options) {
+				Point[] points = (Point[]) (element);
+				output += counter + " {";
+				for (Point point : points) {
+					output += "(" + point.getX() + "," + point.getY() + ") ";
+				}
+				counter++;
+				output = output.trim();
+				output += "}\n";
+
+			}
+		}
+		return output;
+	}
+
 	
 	
 
