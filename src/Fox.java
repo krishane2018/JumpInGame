@@ -113,10 +113,8 @@ public class Fox extends MovableAnimal {
 	@Override
 	public ArrayList determineOptions(GameObject[][] gameBoard) {
 		ArrayList<Point[]> options = new ArrayList<Point[]>();
-		int startingPosition1=-1;
-		int startingPosition2=-1;
-		int uniformCoordinate=-1;
-		
+		int startingPosition1, startingPosition2, uniformCoordinate;
+		startingPosition1 = startingPosition2 = uniformCoordinate = -1;
 		
 		
 		if (direction.equals("Horizontal")) {
@@ -173,16 +171,18 @@ public class Fox extends MovableAnimal {
 	protected void addOption(int changingCoordinate, int uniformCoordinate, ArrayList options, 
 			Function<Integer, Integer> offset, String direction) {
 		
+		Point[] tempArray = new Point[0];
+		
 		if (direction.equals("Vertical")) {
-			Point[] tempArray = {new Point (uniformCoordinate, changingCoordinate),
+			 tempArray =  new Point[] {new Point (uniformCoordinate, changingCoordinate),
 					new Point (uniformCoordinate, offset.apply(changingCoordinate))};
-			options.add(tempArray);
 		}
 		else if (direction.equals("Horizontal")) {
-			Point[] tempArray = { new Point (changingCoordinate, uniformCoordinate), 
+			tempArray = new Point[] { new Point (changingCoordinate, uniformCoordinate), 
 					new Point (offset.apply(changingCoordinate), uniformCoordinate)};
-			options.add(tempArray);
 		}
+		
+		options.add(tempArray);
 	}
 
 	

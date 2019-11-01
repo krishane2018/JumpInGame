@@ -44,10 +44,5 @@ public abstract class MovableAnimal extends GameObject implements JumpInListener
 	protected abstract void addOption(int changingCoordinate, int uniformCoordinate, ArrayList options, 
 			Function<Integer, Integer> offset, String direction);
 
-	protected int forLoopBody(ArrayList options, int changingCoordinate, int uniformCoordinate,
-			Function<Integer, Integer> offset, GameObject[][] gameBoard, String direction, boolean isJump) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 }
