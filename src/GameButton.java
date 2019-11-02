@@ -1,17 +1,8 @@
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Shape;
-
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.border.Border;
-import java.util.Arrays;
+
 
 /**
  * 
@@ -23,13 +14,12 @@ public class GameButton extends JButton {
 	// Either the action is 0 = nothing, 1 = selected, 2 = move animal to here
 	private int act;
 	// add way to check which type of button if needed
-//	private final String[] PICTURE_OPTIONS = {"whiteRabbit", "brownRabbit", "greyRabbit", "hole", "greenCircle", "foxVertical", "foxHorizontal", "mushroom", "holeWhiteRabbit", "holeBrownRabbit", "holeGreyRabbit"};
 
 	public GameButton(Point coordinate) {
 		this(Resources.GREEN_CIRCLE, coordinate);
 	}
 	
-	public GameButton(Icon icon, Point coordinate) {
+	public GameButton(ImageIcon icon, Point coordinate) {
 		super(icon);
 		this.coordinate = coordinate;
 		act = 0;

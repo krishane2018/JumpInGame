@@ -1,5 +1,6 @@
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.function.Function;
 
 /**
@@ -15,6 +16,7 @@ public class JumpIn {
 	private ArrayList<JumpInListener> listeners;
 	private Parser parser;
 	private int level;
+	private LevelSelector levelSelector;
 	public final static int NUM_ROWS = 5;
 	public final static int NUM_COLUMNS = 5;
 	private Point[] holes;
@@ -26,10 +28,18 @@ public class JumpIn {
 	public JumpIn(int level) {
 		this.level = level;
 		listeners = new ArrayList<JumpInListener>();
-		LevelSelector l = new LevelSelector(level, this);
-		gameBoard = l.getBoard();
+		levelSelector = new LevelSelector(level, this);
+		gameBoard = levelSelector.getBoard();
 		holes = LevelSelector.getHoles();
 		parser = new Parser();
+	}
+
+	public GameObject[][] getGameBoard() {
+		return gameBoard;
+	}
+
+	public void setGameBoard(GameObject[][] gameBoard) {
+		this.gameBoard = gameBoard;
 	}
 
 	/**
@@ -415,6 +425,18 @@ public class JumpIn {
 	public int getNumColumns() {
 		return JumpIn.NUM_COLUMNS;
 	}
+	
+	public ArrayList<Point> getInitialMushroomPositions() {
+		return levelSelector.getMushroomPositions();
+	}
+	
+	public ArrayList<Point> getInitialRabbitPositions() {
+		return levelSelector.getRabbitInitialPositions();
+	}
+	
+	public HashMap<ArrayList<Point>, String> getInitialFoxPositions() {
+		return levelSelector.getFoxInitialPositions();
+	}
 
 	/**
 	 * 
@@ -422,9 +444,8 @@ public class JumpIn {
 	 */
 	public static void main(String[] args) {
 		JumpIn game = new JumpIn(1);
-		// game.printWelcome();
-		// game.play();
 		JumpInView view = new JumpInView(game);
+		// JumpInController controller = new JumpInController(game, view);
 
 	}
 
