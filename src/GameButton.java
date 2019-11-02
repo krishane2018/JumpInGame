@@ -32,11 +32,6 @@ public class GameButton extends JButton {
 		this.setBackground(new Color(70,170,70));
 		this.coordinate = coordinate;
 		this.setBorder(new RoundedBorder(15));
-//		this.setIcon(icon);
-//		this.setIcon(icon); 
-//		g.setColor(new Color(60,150,80));
-//		g.fillOval(this.getHorizontalAlignment(), this.getVerticalAlignment(), 20, 20);
-//		this.paint(g);
 	}
 	
 	public GameButton(Point coordinate, String picture) {
