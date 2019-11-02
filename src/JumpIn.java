@@ -17,7 +17,7 @@ public class JumpIn {
 	private int level;
 	public final static int NUM_ROWS = 5;
 	public final static int NUM_COLUMNS = 5;
-	private Point[] HOLES;
+	private Point[] holes;
 
 	/**
 	 * 
@@ -28,7 +28,7 @@ public class JumpIn {
 		listeners = new ArrayList<JumpInListener>();
 		LevelSelector l = new LevelSelector(level, this);
 		gameBoard = l.getBoard();
-		HOLES = LevelSelector.getHoles();
+		holes = LevelSelector.getHoles();
 		parser = new Parser();
 	}
 
@@ -50,6 +50,10 @@ public class JumpIn {
 		return "  ";
 	}
 
+	public int getLevel() {
+		return level;
+	}
+
 	/**
 	 * 
 	 * @param x
@@ -57,8 +61,8 @@ public class JumpIn {
 	 * @return
 	 */
 	private boolean isHole(int x, int y) {
-		for (int i = 0; i < HOLES.length; i++) {
-			if (HOLES[i].getX() == x && HOLES[i].getY() == y) {
+		for (int i = 0; i < holes.length; i++) {
+			if (holes[i].getX() == x && holes[i].getY() == y) {
 				return true;
 			}
 		}
@@ -366,13 +370,13 @@ public class JumpIn {
 			return false;
 		}
 		if (move.getChosenAnimal().getClass().getSimpleName() == "Rabbit") {
-			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), HOLES);
+			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), holes);
 			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(new Point(move.getInitialLocation().x, move.getInitialLocation().y));
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 
 		} else {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), move.getFinalLocation2(),
-					HOLES);
+					holes);
 			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(new Point(move.getInitialLocation().x, move.getInitialLocation().y));;
 			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = new GameObject(new Point(move.getInitialLocation2().x, move.getInitialLocation2().y));;
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
