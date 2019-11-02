@@ -11,20 +11,9 @@ public abstract class MovableAnimal extends GameObject implements JumpInListener
 
 	public abstract ArrayList determineOptions(GameObject[][] gameBoard);
 	
-	protected void helperdetermineOptions(ArrayList options, int startingPosition,
+	protected abstract boolean helperDetermineOptions(ArrayList options, int startingPosition,
 			int uniformCoordinate,  Function<Integer, Boolean> checkBounds,
 			Function<Integer, Integer> increment, Function<Integer, Integer> offset,
-			GameObject[][] gameBoard, String direction) {
-		
-		for (int i = startingPosition; checkBounds.apply(i); i=increment.apply(i)) {
-			
-			i = forLoopBody(options, i, uniformCoordinate, offset, gameBoard, direction);
-		}
-		
-	}
-	
-	protected abstract int forLoopBody(ArrayList options, int changingCoordinate,
-			int uniformCoordinate, Function<Integer, Integer> offset, 
 			GameObject[][] gameBoard, String direction);
 	
 	protected boolean moveLogic(String direction, GameObject[][] gameBoard, 

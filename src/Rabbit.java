@@ -95,33 +95,25 @@ public class Rabbit extends MovableAnimal{
 		ArrayList<Point> options = new ArrayList<Point>();
 		int x = this.getX1();
 		int y = this.getY1();
-		
-		this.isJump = false;
-		
-		helperdetermineOptions(options, x-1,
+				
+		helperDetermineOptions(options, x-1,
 				y,  Utility.getCheckBounds(),
 				Utility.getDecrement(), Utility.getIncrement(),
 				gameBoard, "Horizontal");
-		
-		this.isJump = false;
-		
-		helperdetermineOptions(options, x+1,
+				
+		helperDetermineOptions(options, x+1,
 				y,  Utility.getCheckBounds(),
 				Utility.getIncrement(), Utility.getDecrement(),
 				gameBoard, "Horizontal");
 		
-		this.isJump = false;
-
 		
-		helperdetermineOptions(options, y-1,
+		helperDetermineOptions(options, y-1,
 				x,  Utility.getCheckBounds(),
 				Utility.getDecrement(), Utility.getIncrement(),
 				gameBoard, "Vertical");
 		
-		this.isJump = false;
-
 		
-		helperdetermineOptions(options, y+1,
+		helperDetermineOptions(options, y+1,
 				x,  Utility.getCheckBounds(),
 				Utility.getIncrement(), Utility.getDecrement(),
 				gameBoard, "Vertical");
@@ -129,22 +121,29 @@ public class Rabbit extends MovableAnimal{
 		return options;
 	}
 
-	@Override
-	protected int forLoopBody(ArrayList options, int changingCoordinate, int uniformCoordinate,
-			Function<Integer, Integer> offset, GameObject[][] gameBoard, String direction) {
+	protected boolean helperDetermineOptions(ArrayList options, int changingCoordinate,
+			int uniformCoordinate,  Function<Integer, Boolean> checkBounds,
+			Function<Integer, Integer> increment, Function<Integer, Integer> offset,
+			GameObject[][] gameBoard, String direction) {
+		
+		if (!checkBounds.apply(changingCoordinate)) {
+			return false;
+		}
 		
 		if (moveLogic(direction, gameBoard, changingCoordinate, uniformCoordinate)) {
-			isJump = true;
+			boolean canJump = helperDetermineOptions(options,  increment.apply(changingCoordinate),
+					 uniformCoordinate,   checkBounds,
+					 increment,  offset,
+					 gameBoard,  direction);
+			if (canJump == true) {
+				addOption(increment.apply(changingCoordinate), uniformCoordinate, options, offset, direction);
+			}
+			return false;
 		}
 		
 		else {
-			if (isJump==true) {
-				addOption(changingCoordinate, uniformCoordinate, options, offset, direction);
-			}
-			return Utility.getNumRows()+1;
+			return true;
 		}
-		
-		return changingCoordinate;
 		
 	}
 

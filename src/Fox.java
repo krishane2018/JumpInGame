@@ -134,12 +134,12 @@ public class Fox extends MovableAnimal {
 			
 		}
 		
-		helperdetermineOptions(options, startingPosition1,
+		helperDetermineOptions(options, startingPosition1,
 				uniformCoordinate,  Utility.getCheckBounds(),
 				Utility.getDecrement(), Utility.getIncrement(),
 				gameBoard, this.direction);
 		
-		helperdetermineOptions(options, startingPosition2,
+		helperDetermineOptions(options, startingPosition2,
 				uniformCoordinate,  Utility.getCheckBounds(),
 				Utility.getIncrement(), Utility.getDecrement(),
 				gameBoard, this.direction);
@@ -147,21 +147,29 @@ public class Fox extends MovableAnimal {
 		return options;
 	}
 
-	
-	@Override
-	protected int forLoopBody(ArrayList options, int changingCoordinate,
-			int uniformCoordinate, Function<Integer, Integer> offset, 
+	protected boolean helperDetermineOptions(ArrayList options, int changingCoordinate,
+			int uniformCoordinate,  Function<Integer, Boolean> checkBounds,
+			Function<Integer, Integer> increment, Function<Integer, Integer> offset,
 			GameObject[][] gameBoard, String direction) {
+		
+		if (!checkBounds.apply(changingCoordinate)) {
+			return false;
+		}
 		
 		if (moveLogic(direction, gameBoard, changingCoordinate, uniformCoordinate)) {
 			addOption(changingCoordinate, uniformCoordinate, options, offset, direction);
-		}
-		else {
-			return Utility.getNumColumns()+1;
+			return helperDetermineOptions(options,  increment.apply(changingCoordinate),
+					 uniformCoordinate,   checkBounds,
+					 increment,  offset,
+					 gameBoard,  direction);
 		}
 		
-		return changingCoordinate;
+		else {
+			return false;
+		}
+		
 	}
+	
 	
 	protected boolean moveLogicHelper(GameObject space) {
 		return space.getName().equals("");
