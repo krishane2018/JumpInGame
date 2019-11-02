@@ -1,6 +1,5 @@
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.function.Function;
 
 /**
  * 
@@ -85,7 +84,7 @@ public class JumpIn {
 			Move move = new Move();
 			// Presents users with move options after the user has chosen the animal they
 			// would like to move.
-			ArrayList options = chosenAnimal.determineOptions(gameBoard);
+			ArrayList<Object> options = chosenAnimal.determineOptions(gameBoard);
 
 			if (chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
 				move = parser.confirmOption(options, (Rabbit) chosenAnimal, chosenAnimal.displayOptions(options));
@@ -188,7 +187,7 @@ public class JumpIn {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(3);
+		JumpIn game = new JumpIn(1);
 		game.printWelcome();
 		game.play();
 

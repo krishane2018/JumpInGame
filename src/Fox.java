@@ -1,5 +1,4 @@
 import java.awt.Point;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.function.Function;
 /**
@@ -111,8 +110,8 @@ public class Fox extends MovableAnimal {
 	}
 
 	@Override
-	public ArrayList determineOptions(GameObject[][] gameBoard) {
-		ArrayList<Point[]> options = new ArrayList<Point[]>();
+	public ArrayList<Object> determineOptions(GameObject[][] gameBoard) {
+		ArrayList<Object> options = new ArrayList<Object>();
 		int startingPosition1, startingPosition2, uniformCoordinate;
 		startingPosition1 = startingPosition2 = uniformCoordinate = -1;
 		
@@ -147,7 +146,7 @@ public class Fox extends MovableAnimal {
 		return options;
 	}
 
-	protected boolean helperDetermineOptions(ArrayList options, int changingCoordinate,
+	protected boolean helperDetermineOptions(ArrayList<Object> options, int changingCoordinate,
 			int uniformCoordinate,  Function<Integer, Boolean> checkBounds,
 			Function<Integer, Integer> increment, Function<Integer, Integer> offset,
 			GameObject[][] gameBoard, String direction) {
@@ -176,7 +175,7 @@ public class Fox extends MovableAnimal {
 	}
 	
 	
-	protected void addOption(int changingCoordinate, int uniformCoordinate, ArrayList options, 
+	protected void addOption(int changingCoordinate, int uniformCoordinate, ArrayList<Object> options, 
 			Function<Integer, Integer> offset, String direction) {
 		
 		Point[] tempArray = new Point[0];
@@ -194,7 +193,7 @@ public class Fox extends MovableAnimal {
 	}
 
 	@Override
-	public String displayOptions(ArrayList options) {
+	public String displayOptions(ArrayList<Object> options) {
 		String output = "";
 		int counter = 1;
 		

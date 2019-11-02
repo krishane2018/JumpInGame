@@ -9,7 +9,6 @@ import java.util.function.Function;
 public class Rabbit extends MovableAnimal{
 	// If the rabbit is inside a rabbit hole or not
 	private boolean status; 
-	private boolean isJump; // Can the rabbit make a jump move
 	
 	/**
 	 * Constructor to create a rabbit game piece
@@ -73,7 +72,7 @@ public class Rabbit extends MovableAnimal{
 	}
 
 	@Override
-	public String displayOptions(ArrayList options) {
+	public String displayOptions(ArrayList<Object> options) {
 		String output = "";
 		int counter = 1;
 		if (options.isEmpty()) {
@@ -90,9 +89,9 @@ public class Rabbit extends MovableAnimal{
 	}
 	
 	@Override
-	public ArrayList determineOptions(GameObject[][] gameBoard) {
+	public ArrayList<Object> determineOptions(GameObject[][] gameBoard) {
 		
-		ArrayList<Point> options = new ArrayList<Point>();
+		ArrayList<Object> options = new ArrayList<Object>();
 		int x = this.getX1();
 		int y = this.getY1();
 				
@@ -121,7 +120,7 @@ public class Rabbit extends MovableAnimal{
 		return options;
 	}
 
-	protected boolean helperDetermineOptions(ArrayList options, int changingCoordinate,
+	protected boolean helperDetermineOptions(ArrayList<Object> options, int changingCoordinate,
 			int uniformCoordinate,  Function<Integer, Boolean> checkBounds,
 			Function<Integer, Integer> increment, Function<Integer, Integer> offset,
 			GameObject[][] gameBoard, String direction) {
@@ -154,7 +153,7 @@ public class Rabbit extends MovableAnimal{
 	}
 
 	@Override
-	protected void addOption(int changingCoordinate, int uniformCoordinate, ArrayList options,
+	protected void addOption(int changingCoordinate, int uniformCoordinate, ArrayList<Object> options,
 			Function<Integer, Integer> offset, String direction) {
 		if (direction.equals("Vertical")) {
 			options.add(new Point (uniformCoordinate, changingCoordinate));

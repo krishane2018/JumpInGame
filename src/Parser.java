@@ -4,7 +4,6 @@
 **/
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -58,10 +57,10 @@ public class Parser {
 	 * @return A Move object containing the information of the user's selected move.
 	 */
 
-	public Move confirmOption(ArrayList<Point> options, Rabbit chosenRabbit, String displayOptions) {
+	public Move confirmOption(ArrayList<Object> options, Rabbit chosenRabbit, String displayOptions) {
 		HashMap<Integer, Point> userOptions = new HashMap<Integer, Point>();
 		for (int i = 1; i <= options.size(); i++) {
-			userOptions.put(i, options.get(i - 1));
+			userOptions.put(i, (Point)options.get(i - 1));
 		}
 		if (options.isEmpty()) {
 			System.out.println(displayOptions);
@@ -89,11 +88,11 @@ public class Parser {
 	 * @return A Move object containing the information of the user's selected move.
 	 */
 
-	public Move confirmOption(ArrayList<Point[]> options, Fox chosenFox, String displayOptions) {
+	public Move confirmOption(ArrayList<Object> options, Fox chosenFox, String displayOptions) {
 		HashMap<Integer, Point[]> userOptions = new HashMap<Integer, Point[]>();
 		for (int i = 1; i <= options.size(); i++) {
 			
-			userOptions.put(i, options.get(i - 1));
+			userOptions.put(i, (Point[])options.get(i - 1));
 		}
 		if (options.isEmpty()) {
 			return new Move();

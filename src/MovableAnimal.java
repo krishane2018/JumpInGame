@@ -9,9 +9,9 @@ public abstract class MovableAnimal extends GameObject implements JumpInListener
 		// TODO Auto-generated constructor stub
 	}
 
-	public abstract ArrayList determineOptions(GameObject[][] gameBoard);
+	public abstract ArrayList<Object> determineOptions(GameObject[][] gameBoard);
 	
-	protected abstract boolean helperDetermineOptions(ArrayList options, int startingPosition,
+	protected abstract boolean helperDetermineOptions(ArrayList<Object> options, int startingPosition,
 			int uniformCoordinate,  Function<Integer, Boolean> checkBounds,
 			Function<Integer, Integer> increment, Function<Integer, Integer> offset,
 			GameObject[][] gameBoard, String direction);
@@ -30,10 +30,10 @@ public abstract class MovableAnimal extends GameObject implements JumpInListener
 	
 	protected abstract boolean moveLogicHelper(GameObject space);
 	
-	protected abstract void addOption(int changingCoordinate, int uniformCoordinate, ArrayList options, 
+	protected abstract void addOption(int changingCoordinate, int uniformCoordinate, ArrayList<Object> options, 
 			Function<Integer, Integer> offset, String direction);
 
-	public abstract String displayOptions(ArrayList options);
+	public abstract String displayOptions(ArrayList<Object> options);
 
 	
 }
