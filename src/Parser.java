@@ -27,12 +27,12 @@ public class Parser {
 	public MovableAnimal getAnimal(ArrayList<JumpInListener> animalOptions) {
 		System.out.println("Enter one of the following 2 character strings to choose which animal" + " to move:\n ");
 		for (JumpInListener animal : animalOptions) {
-			
+
 			System.out.print(((GameObject) animal).getName() + " ");
 		}
 		System.out.println("");
 
-		String command =  input.nextLine();
+		String command = input.nextLine();
 
 		for (JumpInListener animal : animalOptions) {
 			MovableAnimal tempAnimal = (MovableAnimal) animal;
@@ -60,7 +60,7 @@ public class Parser {
 	public Move confirmOption(ArrayList<Object> options, Rabbit chosenRabbit, String displayOptions) {
 		HashMap<Integer, Point> userOptions = new HashMap<Integer, Point>();
 		for (int i = 1; i <= options.size(); i++) {
-			userOptions.put(i, (Point)options.get(i - 1));
+			userOptions.put(i, (Point) options.get(i - 1));
 		}
 		if (options.isEmpty()) {
 			System.out.println(displayOptions);
@@ -91,8 +91,8 @@ public class Parser {
 	public Move confirmOption(ArrayList<Object> options, Fox chosenFox, String displayOptions) {
 		HashMap<Integer, Point[]> userOptions = new HashMap<Integer, Point[]>();
 		for (int i = 1; i <= options.size(); i++) {
-			
-			userOptions.put(i, (Point[])options.get(i - 1));
+
+			userOptions.put(i, (Point[]) options.get(i - 1));
 		}
 		if (options.isEmpty()) {
 			return new Move();
@@ -114,7 +114,8 @@ public class Parser {
 	 * 
 	 * @author Aashna Narang
 	 *
-	 * Ask the user if they would like to play the next level or quit the game
+	 *         Ask the user if they would like to play the next level or quit the
+	 *         game
 	 * @return A string containing the command the user selected
 	 *
 	 */

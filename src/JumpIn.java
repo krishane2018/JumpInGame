@@ -92,7 +92,7 @@ public class JumpIn {
 
 			else if (chosenAnimal.getClass().getSimpleName().equals("Fox")) {
 				move = parser.confirmOption(options, (Fox) chosenAnimal, chosenAnimal.displayOptions(options));
-			}			
+			}
 			// Moves the animal to the user's selected position on the game board.
 			finished = processCommand(move);
 			System.out.println(toString());
@@ -101,11 +101,11 @@ public class JumpIn {
 		if (status == "continue") {
 			if (level >= 3) {
 				System.out.println("You completed all of the level!");
-			}else {
+			} else {
 				JumpIn game = new JumpIn(level + 1);
 				game.play();
 			}
-			
+
 		} else if (status == "exit") {
 			return;
 		}
@@ -114,7 +114,6 @@ public class JumpIn {
 	public boolean addListener(JumpInListener j) {
 		return listeners.add(j);
 	}
-
 
 	/**
 	 * 
@@ -145,14 +144,19 @@ public class JumpIn {
 		}
 		if (move.getChosenAnimal().getClass().getSimpleName() == "Rabbit") {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), HOLES);
-			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(new Point(move.getInitialLocation().x, move.getInitialLocation().y));
+			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(
+					new Point(move.getInitialLocation().x, move.getInitialLocation().y));
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 
 		} else {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), move.getFinalLocation2(),
 					HOLES);
-			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(new Point(move.getInitialLocation().x, move.getInitialLocation().y));;
-			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = new GameObject(new Point(move.getInitialLocation2().x, move.getInitialLocation2().y));;
+			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(
+					new Point(move.getInitialLocation().x, move.getInitialLocation().y));
+			;
+			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = new GameObject(
+					new Point(move.getInitialLocation2().x, move.getInitialLocation2().y));
+			;
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 			gameBoard[move.getFinalLocation2().y][move.getFinalLocation2().x] = move.getChosenAnimal();
 		}
@@ -187,7 +191,7 @@ public class JumpIn {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(1);
+		JumpIn game = new JumpIn(3);
 		game.printWelcome();
 		game.play();
 
