@@ -1,10 +1,16 @@
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
+
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.swing.border.Border;
 import java.util.Arrays;
 
 /**
@@ -12,7 +18,7 @@ import java.util.Arrays;
  * @author Aashna Narang
  *
  */
-public class GameButton extends JButton implements ActionListener, MouseListener {
+public class GameButton extends JButton {
 	private ImageIcon icon;
 	private Point coordinate;
 	// Either the action is picking an animal (0/false) or moving an animal (1/true)
@@ -20,17 +26,21 @@ public class GameButton extends JButton implements ActionListener, MouseListener
 	// add way to check which type of button if needed
 	private final String[] PICTURE_OPTIONS = {"whiteRabbit", "brownRabbit", "greyRabbit", "hole", "foxVertical", "foxHorizontal", "mushroom", "holeWhiteRabbit", "holeBrownRabbit", "holeGreyRabbit"};
 
-	public GameButton(Point coordinate) {
-		icon = new ImageIcon();
+	
+	public GameButton(Point coordinate, ImageIcon icon) {
+		super(icon);
+		this.setBackground(new Color(70,170,70));
 		this.coordinate = coordinate;
-		this.addActionListener(this);
-		this.addMouseListener(this);
-		this.setIcon(icon);
+		this.setBorder(new RoundedBorder(15));
+//		this.setIcon(icon);
+//		this.setIcon(icon); 
+//		g.setColor(new Color(60,150,80));
+//		g.fillOval(this.getHorizontalAlignment(), this.getVerticalAlignment(), 20, 20);
+//		this.paint(g);
 	}
 	
 	public GameButton(Point coordinate, String picture) {
-		this(coordinate);
-		this.setIcon(picture);
+		this(coordinate, new ImageIcon(picture));
 	}
 
 
@@ -69,40 +79,29 @@ public class GameButton extends JButton implements ActionListener, MouseListener
 //	public Boolean getAction(Boolean action) {
 //		return this.action;
 //	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-//		action ? JumpIn.getOptions(coordinate) : JumpIn.moveAnimal(coordinate);
-//		System.out.println(e.getActionCommand());
-//		System.out.println(e.getSource());		
-	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
+	private static class RoundedBorder implements Border {
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	    private int radius;
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-//		System.out.println("Mouse hover");
-		
-	}
+	    RoundedBorder(int radius) {
+	        this.radius = radius;
+	    }
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
+	    public Insets getBorderInsets(Component c) {
+	        return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+	    }
+
+
+	    public boolean isBorderOpaque() {
+	        return true;
+	    }
+
+
+	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	        g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+	    }
+	}
 }

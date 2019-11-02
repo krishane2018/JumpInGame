@@ -1,8 +1,10 @@
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class JumpInController implements MouseListener {
 
+//THIS IS THE LISTENER 
+
+public class JumpInController implements MouseListener {
 	private JumpInView view;
 	private JumpIn model;
 	

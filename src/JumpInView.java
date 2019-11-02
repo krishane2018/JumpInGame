@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
 
@@ -11,25 +12,41 @@ public class JumpInView extends JFrame implements JumpInListener {
 		this.model = model;
 		int rows = JumpIn.NUM_ROWS;
 		int cols = JumpIn.NUM_COLUMNS;
+		
 		model.addListener(this);
 		buttons = new GameButton[rows][cols];
 		JPanel panel = new JPanel();
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		GridLayout g = new GridLayout(rows, cols);
+		GridLayout g = new GridLayout(rows, cols, 0, 0);
 		panel.setLayout(g);
 		for(int i = 0; i < rows; i ++) {
 			for (int j = 0; j < cols; j ++) {
-				buttons[i][j] = new GameButton(new Point(i,j));
+//				buttons[i][j].setBackground(new Color(70,170,70));
+				ImageIcon icon = new ImageIcon("images//greenCircle.png");
+				buttons[i][j] = new GameButton(new Point(i,j), icon);
 				panel.add(buttons[i][j]);
+				
+				//colour for circles
+//				buttons[i][j].setBackground(new Color(60,150,80));
 			}
 		}
 		
+		ImageIcon icon = new ImageIcon("images//brownRabbit.png");
+		buttons[0][0].setIcon(icon);
+
 		this.add(panel);
-		//change if pics look ugly
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(true);
-		this.setSize(500,500);
-		this.setVisible(true);
+		this.setSize(500,500);		
+		this.setVisible(true);	
 		
+		
+//		i = new ImageIcon("images//board.png");
+//		JLabel label = new JLabel(icon);
+//		this.add(label);
+//		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		this.pack();
+//		this.setResizable(true);
+//		this.setVisible(true);
 	}
 
 	public GameButton[][] getButtons() {
