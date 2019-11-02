@@ -23,6 +23,9 @@ public class LevelSelector {
 	 * @param game the JumpIn game object
 	 */
 	public LevelSelector(int level, JumpIn game) {
+		rabbitInitialPositions = new ArrayList<Point>();
+		mushroomPositions = new ArrayList<Point>();
+		foxInitialPositions = new HashMap<ArrayList<Point>, String>();
 		if (1 > level | level > 3) {
 			throw new IllegalArgumentException("Levels must be between 1-3");
 		}
