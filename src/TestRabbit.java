@@ -327,11 +327,6 @@ class TestRabbit {
 		board[2][3] = mush32;
 		board[1][2] = mush21;
 		board[3][2] = mush23;
-		HashSet <Point> options = new HashSet<Point>();
-		options.add(optionMaker(0,2));
-		options.add(optionMaker(4,2));
-		options.add(optionMaker(2,0));
-		options.add(optionMaker(2,4));
 		
 		
 		String output = "1 (0.0,2.0)\n"+
@@ -343,7 +338,22 @@ class TestRabbit {
 
 	}
 		
+	@Test 
+	void testDisplayOptionsNoOptions() {
+		Rabbit rabbit = new Rabbit(new Point(2, 3), "R1");
+		GameObject mush1 = new GameObject(new Point(2, 4), "M1");
+		
 
+		
+		board[3][2] = rabbit;
+		board[4][2] = mush1;
+		
+		String output = "No options available.";
+		
+		assertEquals(rabbit.displayOptions(board), output);
+
+	}
+	
 	@Test
 	void testRabbitConstructorIllegalArgument() {
 		 assertThrows(IllegalArgumentException.class, () -> {

@@ -1,5 +1,7 @@
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -170,7 +172,8 @@ public class Fox extends MovableAnimal {
 	}
 
 	protected boolean moveLogicHelper(GameObject space) {
-		return space.getName().equals("");
+		List<Point> list = Arrays.asList(LevelSelector.getHoles());
+		return space.getName().equals("") && !list.contains(space.getCoordinate());
 	}
 
 	protected void addOption(int changingCoordinate, int uniformCoordinate, ArrayList<Object> options,
