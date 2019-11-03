@@ -1,6 +1,7 @@
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -34,7 +35,12 @@ public class JumpInView extends JFrame implements JumpInListener {
 	GridLayout g;
 	
 	public JumpInView(JumpIn model){
-		play = new JButton("Play");			//
+		play = new JButton("PLAY!");			//
+		play.setBackground(new Color(70,170,70));
+		play.setForeground(Color.white);
+		play.setFocusPainted(false);
+		play.setPreferredSize(new Dimension(100,50));
+		play.setFont(new Font("Arial", Font.BOLD,20));
 		
 		this.model = model;
 		int rows = JumpIn.NUM_ROWS;
@@ -50,11 +56,9 @@ public class JumpInView extends JFrame implements JumpInListener {
 			e.printStackTrace();
 		}
 		JLabel logo = new JLabel(new ImageIcon(img));
-		Dimension logoSize = new Dimension(50,50);
-		logo.setSize(logoSize);
 		menu.add(logo);
 		menu.add(play);								//
-		menu.setBackground(Color.black);
+		menu.setBackground(Color.white);
 		
 		
 		buttons = new GameButton[rows][cols];
