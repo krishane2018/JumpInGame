@@ -14,9 +14,7 @@ public class GameObject {
 	 * @param p The coordinate of the game piece
 	 */
 	public GameObject(Point p) {
-		this.coordinate = p;
-		this.name = "";
-		
+		this(p, "");
 	}
 	
 	/**
