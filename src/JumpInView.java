@@ -43,7 +43,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		actionListener al = new actionListener();	//
 		play.addActionListener(al);					//
 		try {
-			img=ImageIO.read(new File("resources//logo.png"));
+			img=ImageIO.read(new File("resources/logo.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
