@@ -1,13 +1,18 @@
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class JumpInView extends JFrame implements JumpInListener {
@@ -15,40 +20,45 @@ public class JumpInView extends JFrame implements JumpInListener {
 	
 	private GameButton[][] buttons;
 	private JumpIn model;
-	private Image img;
+	private BufferedImage img;
 	private ImageIcon icon;
 	
-	CardLayout layout = new CardLayout();
 	JPanel panel = new JPanel();
-	JPanel menu = new JPanel();
-	JPanel menu2 = new JPanel();
-	JPanel content = new JPanel();
-	JButton play;
+	
+	CardLayout layout = new CardLayout(); 	//new
+	JPanel menu = new JPanel();				//
+	JPanel content = new JPanel();			//
+	
+	JButton play;							//
 	GridLayout g;
 	
 	public JumpInView(JumpIn model){
-		play = new JButton("Play");
+		play = new JButton("Play");			//
 		
 		this.model = model;
 		int rows = JumpIn.NUM_ROWS;
 		int cols = JumpIn.NUM_COLUMNS;
 		model.addListener(this);
 		
-		actionListener al = new actionListener();
-		
-		play.addActionListener(al);
-		
-		menu.add(play);
+		actionListener al = new actionListener();	//
+		play.addActionListener(al);					//
+		try {
+			img=ImageIO.read(new File("resources//logo.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JLabel logo = new JLabel(new ImageIcon(img));
+		menu.add(play);								//
+		menu.setBackground(Color.white);
+		menu.add(logo);
 		
 		buttons = new GameButton[rows][cols];
-		content.setLayout(layout);
-		content.add(panel, "Game");
-		content.add(menu, "Menu");
-		content.add(menu2, "Menu2");
-
-		this.setContentPane(content);
-
-		layout.show(content , "Menu");
+		content.setLayout(layout);					//
+		content.add(panel, "Game");					//
+		content.add(menu, "Menu");					//
+		this.setContentPane(content);				//
+		layout.show(content , "Menu");				//
 		
 		g = new GridLayout(rows, cols, 0, 0);
 		panel.setLayout(g);
@@ -68,7 +78,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		ImageIcon icon = new ImageIcon("images//brownRabbit.png");
 		buttons[0][0].setIcon(icon);
 
-		this.setTitle("JumpIn");
+		this.setTitle("JumpIn");					//
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(true);
 		this.setSize(500,500);		
@@ -98,8 +108,8 @@ public class JumpInView extends JFrame implements JumpInListener {
 		
 	}
 
+	// new override
 	public class actionListener implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JButton src = (JButton) e.getSource();
@@ -108,7 +118,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 				layout.show(content, "Game");
 			}
 		}
-		
 	}
 	
 }
