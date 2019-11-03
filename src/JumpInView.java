@@ -1,5 +1,6 @@
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -43,15 +44,18 @@ public class JumpInView extends JFrame implements JumpInListener {
 		actionListener al = new actionListener();	//
 		play.addActionListener(al);					//
 		try {
-			img=ImageIO.read(new File("resources/logo.png"));
+			img=ImageIO.read(new File("D:/school/year3/softwareproject/png/logo.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		JLabel logo = new JLabel(new ImageIcon(img));
-		menu.add(play);								//
-		menu.setBackground(Color.white);
+		Dimension logoSize = new Dimension(50,50);
+		logo.setSize(logoSize);
 		menu.add(logo);
+		menu.add(play);								//
+		menu.setBackground(Color.black);
+		
 		
 		buttons = new GameButton[rows][cols];
 		content.setLayout(layout);					//
