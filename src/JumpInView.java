@@ -6,10 +6,6 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class JumpInView extends JFrame implements JumpInListener {
@@ -17,8 +13,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 	
 	private GameButton[][] buttons;
 	private JumpIn model;
-	private BufferedImage img;
-	private ImageIcon icon;
 	
 	JPanel panel = new JPanel();
 	
@@ -44,11 +38,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 		
 		actionListener al = new actionListener();	
 		play.addActionListener(al);					
-		try {
-			img=ImageIO.read(new File("D:/school/year3/softwareproject/png/logo.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		JLabel logo = new JLabel(Resources.LOGO);
 		menu.setLayout(null);
 		play.setBounds(350, 250, 100, 50);
