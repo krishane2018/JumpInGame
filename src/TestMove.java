@@ -13,16 +13,16 @@ class TestMove {
 
 	@Test
 	void testMove3ArgConstructorIllegalArgument() {
-		 assertThrows(IllegalArgumentException.class, () -> {
-			    new Move(new Point(0,0), new Point(0, -1), new Rabbit(new Point(0, 0), "R1"));
-			  });	
+		assertThrows(IllegalArgumentException.class, () -> {
+			new Move(new Point(0, 0), new Point(0, -1), new Rabbit(new Point(0, 0), "R1"));
+		});
 	}
-	
+
 	void testMove5ArgConstructorIllegalArgument() {
-		 assertThrows(IllegalArgumentException.class, () -> {
-			    new Move(new Point(0,0), new Point(0, 1), new Point(0,-1), new Point(0, 0), 
-			    		new Fox(new Point(0,0), new Point(0, 1), "F1", "Vertical"));
-			  });	
+		assertThrows(IllegalArgumentException.class, () -> {
+			new Move(new Point(0, 0), new Point(0, 1), new Point(0, -1), new Point(0, 0),
+					new Fox(new Point(0, 0), new Point(0, 1), "F1", "Vertical"));
+		});
 	}
 
 }

@@ -147,7 +147,7 @@ public class Fox extends MovableAnimal {
 
 		helperDetermineOptions(options, startingPosition2, uniformCoordinate, Utility.getIncrement(),
 				Utility.getDecrement(), gameBoard, this.direction);
-				
+
 		return options;
 	}
 

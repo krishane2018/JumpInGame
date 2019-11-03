@@ -13,9 +13,9 @@ class TestGameObject {
 
 	@Test
 	void testGameObjectConstructorIllegalArgument() {
-		 assertThrows(IllegalArgumentException.class, () -> {
-			    new GameObject(new Point(-1,1), "F1");
-			  });	
+		assertThrows(IllegalArgumentException.class, () -> {
+			new GameObject(new Point(-1, 1), "F1");
+		});
 	}
 
 }
