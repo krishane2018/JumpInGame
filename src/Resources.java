@@ -35,8 +35,10 @@ public class Resources {
 	
 	public static ImageIcon resizeFoxV(ImageIcon icon) {
 		Image img = icon.getImage();
-		return new ImageIcon(img.getScaledInstance(125, 155, java.awt.Image.SCALE_SMOOTH));
+		return new ImageIcon(img.getScaledInstance(155, 155, java.awt.Image.SCALE_SMOOTH));
 	}
+	
+	//Add resize for horizontal fox and hole with brown + grey
 	
 	
 }

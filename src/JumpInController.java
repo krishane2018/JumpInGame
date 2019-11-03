@@ -23,7 +23,7 @@ public class JumpInController implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		System.out.print("clicked");
 		
 	}
 
