@@ -9,13 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class JumpInView extends JFrame implements JumpInListener {
 	private static final long serialVersionUID = 1L;
@@ -45,6 +40,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		this.model = model;
 		int rows = JumpIn.NUM_ROWS;
 		int cols = JumpIn.NUM_COLUMNS;
+
 		model.addListener(this);
 		
 		actionListener al = new actionListener();	//
@@ -70,36 +66,19 @@ public class JumpInView extends JFrame implements JumpInListener {
 		
 		g = new GridLayout(rows, cols, 0, 0);
 		panel.setLayout(g);
-		for(int i = 0; i < rows; i ++) {
-			for (int j = 0; j < cols; j ++) {
-//				buttons[i][j].setBackground(new Color(70,170,70));
-				//ImageIcon icon = new ImageIcon("images//greenCircle.png");
-				buttons[i][j] = new GameButton(new Point(i,j));
-				buttons[i][j].setIcon(icon);
-				panel.add(buttons[i][j]);
-				
-				//colour for circles
-//				buttons[i][j].setBackground(new Color(60,150,80));
+
+		for(int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				buttons[j][i] = new GameButton(new Point(j,i));
+				panel.add(buttons[j][i]);
 			}
 		}
-		
-		ImageIcon icon = new ImageIcon("images//brownRabbit.png");
-		buttons[0][0].setIcon(icon);
-
-		this.setTitle("JumpIn");					//
+		this.setTitle("JumpIn");					
+		Board.create(model.getLevel(), this, model);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(true);
-		this.setSize(500,500);		
+		this.setResizable(false);
+		this.setSize(800,800);
 		this.setVisible(true);	
-		
-		
-//		i = new ImageIcon("images//board.png");
-//		JLabel label = new JLabel(icon);
-//		this.add(label);
-//		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		this.pack();
-//		this.setResizable(true);
-//		this.setVisible(true);
 	}
 
 	public GameButton[][] getButtons() {

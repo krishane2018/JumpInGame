@@ -4,7 +4,6 @@
 **/
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -25,17 +24,18 @@ public class Parser {
 	 * @return A GameObject representing the animal the user has chosen.
 	 */
 
-	public GameObject getAnimal(ArrayList<JumpInListener> animalOptions) {
+	public MovableAnimal getAnimal(ArrayList<JumpInListener> animalOptions) {
 		System.out.println("Enter one of the following 2 character strings to choose which animal" + " to move:\n ");
 		for (JumpInListener animal : animalOptions) {
+
 			System.out.print(((GameObject) animal).getName() + " ");
 		}
 		System.out.println("");
 
-		String command =  input.nextLine();
+		String command = input.nextLine();
 
 		for (JumpInListener animal : animalOptions) {
-			GameObject tempAnimal = (GameObject) animal;
+			MovableAnimal tempAnimal = (MovableAnimal) animal;
 			if (tempAnimal.getName().equalsIgnoreCase(command)) {
 				return tempAnimal;
 			}
@@ -57,10 +57,10 @@ public class Parser {
 	 * @return A Move object containing the information of the user's selected move.
 	 */
 
-	public Move confirmOption(ArrayList<Point> options, Rabbit chosenRabbit, String displayOptions) {
+	public Move confirmOption(ArrayList<Object> options, Rabbit chosenRabbit, String displayOptions) {
 		HashMap<Integer, Point> userOptions = new HashMap<Integer, Point>();
 		for (int i = 1; i <= options.size(); i++) {
-			userOptions.put(i, options.get(i - 1));
+			userOptions.put(i, (Point) options.get(i - 1));
 		}
 		if (options.isEmpty()) {
 			System.out.println(displayOptions);
@@ -88,11 +88,11 @@ public class Parser {
 	 * @return A Move object containing the information of the user's selected move.
 	 */
 
-	public Move confirmOption(ArrayList<Point[]> options, Fox chosenFox, String displayOptions) {
+	public Move confirmOption(ArrayList<Object> options, Fox chosenFox, String displayOptions) {
 		HashMap<Integer, Point[]> userOptions = new HashMap<Integer, Point[]>();
 		for (int i = 1; i <= options.size(); i++) {
-			
-			userOptions.put(i, options.get(i - 1));
+
+			userOptions.put(i, (Point[]) options.get(i - 1));
 		}
 		if (options.isEmpty()) {
 			return new Move();
@@ -102,12 +102,6 @@ public class Parser {
 		int selectedOption = Integer.valueOf(input.nextLine());
 		if (userOptions.keySet().contains(selectedOption)) {
 			Point[] chosenDestination = userOptions.get(selectedOption);
-			System.out.println(Arrays.toString(chosenDestination));
-			System.out.println(chosenFox.getCoordinate());
-			System.out.println(chosenFox.getCoordinate2());
-			System.out.println(chosenDestination[0]);
-			System.out.println(chosenDestination[1]);
-			System.out.println(chosenFox);
 			return new Move(chosenFox.getCoordinate(), chosenFox.getCoordinate2(), chosenDestination[0],
 					chosenDestination[1], chosenFox);
 		} else {
@@ -120,7 +114,8 @@ public class Parser {
 	 * 
 	 * @author Aashna Narang
 	 *
-	 * Ask the user if they would like to play the next level or quit the game
+	 *         Ask the user if they would like to play the next level or quit the
+	 *         game
 	 * @return A string containing the command the user selected
 	 *
 	 */

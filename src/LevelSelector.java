@@ -1,4 +1,6 @@
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * 
@@ -11,6 +13,9 @@ public class LevelSelector {
 	// coordinates of the game board
 	private static final Point[] HOLES = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0),
 			new Point(4, 4) };
+	private ArrayList<Point> rabbitInitialPositions;
+	private ArrayList<Point> mushroomPositions;
+	private HashMap<ArrayList<Point>, String> foxInitialPositions;
 
 	/**
 	 * Initialize a game board
@@ -18,6 +23,9 @@ public class LevelSelector {
 	 * @param game the JumpIn game object
 	 */
 	public LevelSelector(int level, JumpIn game) {
+		rabbitInitialPositions = new ArrayList<Point>();
+		mushroomPositions = new ArrayList<Point>();
+		foxInitialPositions = new HashMap<ArrayList<Point>, String>();
 		if (1 > level | level > 3) {
 			throw new IllegalArgumentException("Levels must be between 1-3");
 		}
@@ -30,63 +38,111 @@ public class LevelSelector {
 
 		if (level == 1) {
 			// based on JumpIn' level 5 (C)
-			Rabbit r1 = new Rabbit(new Point(2, 0), "R1");
-			Rabbit r2 = new Rabbit(new Point(0, 4), "R2");
+			
+			// Rabbit positions
+			Point p1 = new Point(2,0);
+			Point p2 = new Point(0,4);
+			
+			rabbitInitialPositions.add(p1);
+			rabbitInitialPositions.add(p2);
+			
+			// Mushroom positions
+			Point p3 = new Point(0,2);
+			Point p4 = new Point(0,3);
+			Point p5 = new Point(1,1);
+			
+			mushroomPositions.add(p3);
+			mushroomPositions.add(p4);
+			mushroomPositions.add(p5);
 
-			GameObject m1 = new GameObject(new Point(0, 2), "M1");
-			GameObject m2 = new GameObject(new Point(0, 3), "M2");
-			GameObject m3 = new GameObject(new Point(1, 1), "M3");
+			gameObjectInit('R', rabbitInitialPositions, game);
+			gameObjectInit('M', mushroomPositions, game);
 
-			// adds all rabbits as Listeners (C)
-			game.addListener(r1);
-			game.addListener(r2);
-
-			board[0][2] = r1;
-			board[4][0] = r2;
-			board[2][0] = m1;
-			board[3][0] = m2;
-			board[1][1] = m3;
 
 		} else if (level == 2) {
 			// based on JumpIn' level 6
-			Rabbit whiteRabbit2 = new Rabbit(new Point(0, 0), "R1");
-			Rabbit redRabbit2 = new Rabbit(new Point(3, 2), "R2");
+			
+			// Rabbit positions
+			Point p1 = new Point(0,0);
+			Point p2 = new Point(3,2);
+			
+			rabbitInitialPositions.add(p1);
+			rabbitInitialPositions.add(p2);
+			
+			// Mushroom positions
+			Point p3 = new Point(1,0);
+			Point p4 = new Point(2,1);
+			Point p5 = new Point(1,3);
+			
+			mushroomPositions.add(p3);
+			mushroomPositions.add(p4);
+			mushroomPositions.add(p5);
+			
+			gameObjectInit('R', rabbitInitialPositions, game);
+			gameObjectInit('M', mushroomPositions, game);
 
-			GameObject mush21 = new GameObject(new Point(1, 0), "M1");
-			GameObject mush22 = new GameObject(new Point(2, 1), "M2");
-			GameObject mush23 = new GameObject(new Point(1, 3), "M3");
 
-			game.addListener(redRabbit2);
-			game.addListener(whiteRabbit2);
-
-			board[0][0] = whiteRabbit2;
-			board[2][3] = redRabbit2;
-			board[0][1] = mush21;
-			board[1][2] = mush22;
-			board[2][1] = mush23;
 		} else if (level == 3) {
 
-			// based on JumpIn' level 16 (C)
-			Rabbit whiteRabbit3 = new Rabbit(new Point(1, 0), "R1");
-
-			Fox fox31 = new Fox(new Point(1, 3), new Point(1, 4), "F1", "Vertical");
-
-			GameObject mush31 = new GameObject(new Point(0, 1), "M1");
-			GameObject mush32 = new GameObject(new Point(0, 2), "M2");
-			GameObject mush33 = new GameObject(new Point(2, 3), "M3");
-			// add the rabbit and the fox as listeners (C)
-			game.addListener(whiteRabbit3);
-			game.addListener(fox31);
-
-			board[0][1] = whiteRabbit3;
-			board[3][1] = fox31;
-			board[4][1] = fox31;
-			board[1][0] = mush31;
-			board[2][0] = mush32;
-			board[3][2] = mush33;
+			// based on JumpIn' level 16 
+			
+			// Rabbit positions
+			Point p1 = new Point(1,0);
+			
+			rabbitInitialPositions.add(p1);
+			
+			// Mushroom positions
+			Point p3 = new Point(0,1);
+			Point p4 = new Point(0,2);
+			Point p5 = new Point(2,3);
+			
+			mushroomPositions.add(p3);
+			mushroomPositions.add(p4);
+			mushroomPositions.add(p5);
+			
+			gameObjectInit('R', rabbitInitialPositions, game);
+			gameObjectInit('M', mushroomPositions, game);
+		
+			// Fox Positions
+			Point p6 = new Point(1,3);
+			Point p7 = new Point(1,4);
+			
+			ArrayList<Point> arr = new ArrayList<Point>();
+			arr.add(p6);
+			arr.add(p7);
+			foxInitialPositions.put(arr, "Vertical");
+			
+			foxObjectInit(game);
 		}
 	}
 
+	private void gameObjectInit(char type, ArrayList<Point> arr, JumpIn game) {
+		for(int i = 0; i < arr.size(); i++) {
+			Point p = arr.get(i);
+			if (type == 'R') {
+				Rabbit g = new Rabbit(p, "R" + (i + 1) );
+				game.addListener(g);
+				board[p.y][p.x] = g;
+			} else if (type == 'M') {
+				GameObject g = new GameObject(p, "M" + (i + 1));
+				board[p.y][p.x] = g;
+			} else {
+				throw new IllegalArgumentException("Can only initialize rabbits or mushrooms");
+			}
+		}
+	}
+	
+	private void foxObjectInit(JumpIn game) {
+		int i = 1;
+		for (ArrayList<Point> p : foxInitialPositions.keySet()) {
+			Point p0 = p.get(0);
+			Point p1 = p.get(1);
+			Fox f = new Fox(p0, p1, "F" + i, foxInitialPositions.get(p));
+			game.addListener(f);
+			board[p0.y][p0.x] = f;
+			board[p1.y][p1.x] = f;
+		}
+	}
 	/**
 	 * Get the coordinates of the rabbit holes
 	 * @return an array of Point objects 
@@ -103,7 +159,46 @@ public class LevelSelector {
 		return this.board;
 	}
 
-	
+	/**
+	 * @return the rabbitInitialPositions
+	 */
+	public ArrayList<Point> getRabbitInitialPositions() {
+		return rabbitInitialPositions;
+	}
 
+	/**
+	 * @param rabbitInitialPositions the rabbitInitialPositions to set
+	 */
+	public void setRabbitInitialPositions(ArrayList<Point> rabbitInitialPositions) {
+		this.rabbitInitialPositions = rabbitInitialPositions;
+	}
 
+	/**
+	 * @return the mushroomPositions
+	 */
+	public ArrayList<Point> getMushroomPositions() {
+		return mushroomPositions;
+	}
+
+	/**
+	 * @param mushroomPositions the mushroomPositions to set
+	 */
+	public void setMushroomPositions(ArrayList<Point> mushroomPositions) {
+		this.mushroomPositions = mushroomPositions;
+	}
+
+	/**
+	 * @return the foxInitialPositions
+	 */
+	public HashMap<ArrayList<Point>, String> getFoxInitialPositions() {
+		return foxInitialPositions;
+	}
+
+	/**
+	 * @param foxInitialPositions the foxInitialPositions to set
+	 */
+	public void setFoxInitialPositions(HashMap<ArrayList<Point>, String> foxInitialPositions) {
+		this.foxInitialPositions = foxInitialPositions;
+	}
 }
+	
