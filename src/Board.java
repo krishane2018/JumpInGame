@@ -18,7 +18,7 @@ public class Board {
 		view.setButtons(g);
 		
 		// Initialize Rabbit Images
-		ImageIcon rabbits[] = {Resources.BROWN_RABBIT, Resources.BROWN_RABBIT, Resources.WHITE_RABBIT};
+		ImageIcon rabbits[] = {Resources.BROWN_RABBIT, Resources.GREY_RABBIT, Resources.WHITE_RABBIT};
 		g = iterateThroughImages(rabbits, model.getInitialRabbitPositions(), g);
 		
 		//Initialize Mushroom Images
@@ -26,7 +26,6 @@ public class Board {
 		g = iterateThroughImages(mushroom, model.getInitialMushroomPositions(), g);
 		
 		// Initialize Fox Images
-		// @TODO Split images in half
 		g = iterateThroughImagesFox(model.getInitialFoxPositions(), g);
 	}
 	
@@ -34,26 +33,30 @@ public class Board {
 	private static GameButton[][] iterateThroughImages(ImageIcon gameObjects[], ArrayList<Point> positions, GameButton[][] g) {
 		int i = 0;
 		for (Point p : positions) {
-			g[p.y][p.x].setIcon(gameObjects[i]);
+			setIconHelper(gameObjects[i], g, p);
 			i++; 
 			i = i%(gameObjects.length);
 		}
 		return g;
 	}
 	
-	// FIX AND CHECK IF EVEN WORKS
+	// CHECK HORIZONTAL
 	private static GameButton[][] iterateThroughImagesFox(HashMap<ArrayList<Point>, String> hash, GameButton[][] g) {
 		for (ArrayList<Point> p : hash.keySet()) {
 			Point p0 = p.get(0);
 			Point p1 = p.get(1);
 			if (hash.get(p) == "Vertical") {
-				g[p0.y][p0.x].setIcon(Resources.FOX_VERTICAL1);
-				g[p1.y][p1.x].setIcon(Resources.FOX_VERTICAL2);
+				setIconHelper(Resources.FOX_VERTICAL2, g, p0);
+				setIconHelper(Resources.FOX_VERTICAL1, g, p1);
 			} else {
-				g[p0.y][p0.x].setIcon(Resources.FOX_HORIZONTAL1);
-				g[p1.y][p1.x].setIcon(Resources.FOX_HORIZONTAL2);
+				setIconHelper(Resources.FOX_HORIZONTAL1, g, p0);
+				setIconHelper(Resources.FOX_HORIZONTAL2, g, p1);
 			}
 		}
 		return g;
+	}
+	
+	private static void setIconHelper(ImageIcon icon, GameButton[][] g, Point p) {
+		g[p.x][p.y].setIcon(icon);
 	}
 }

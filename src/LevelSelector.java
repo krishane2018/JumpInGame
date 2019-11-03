@@ -140,7 +140,7 @@ public class LevelSelector {
 			Fox f = new Fox(p0, p1, "F" + i, foxInitialPositions.get(p));
 			game.addListener(f);
 			board[p0.y][p0.x] = f;
-			board[p1.y][p1.y] = f;
+			board[p1.y][p1.x] = f;
 		}
 	}
 	/**

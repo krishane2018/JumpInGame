@@ -25,6 +25,7 @@ public class GameButton extends JButton {
 		act = 0;
 		this.setBorder(new RoundedBorder(15));
 		this.setBackground(new Color(70,170,70));
+		this.setBorderPainted(false);
 	}
 
 	public Point getCoordinate() {

@@ -443,7 +443,9 @@ public class JumpIn {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(1);
+		JumpIn game = new JumpIn(3);
+//		game.printWelcome();
+//		game.play();
 		JumpInView view = new JumpInView(game);
 		// JumpInController controller = new JumpInController(game, view);
 
