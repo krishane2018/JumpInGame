@@ -22,15 +22,14 @@ public class JumpInView extends JFrame implements JumpInListener {
 	
 	JPanel panel = new JPanel();
 	
-	CardLayout layout = new CardLayout(); 	//new
-	JPanel menu = new JPanel();				//
-	JPanel content = new JPanel();			//
-	
-	JButton play;							//
+	CardLayout layout = new CardLayout(); 	
+	JPanel menu = new JPanel();				
+	JPanel content = new JPanel();			
+	JButton play;							
 	GridLayout g;
 	
 	public JumpInView(JumpIn model){
-		play = new JButton("PLAY!");			//
+		play = new JButton("PLAY!");			
 		play.setBackground(new Color(70,170,70));
 		play.setForeground(Color.white);
 		play.setFocusPainted(false);
@@ -43,26 +42,28 @@ public class JumpInView extends JFrame implements JumpInListener {
 
 		model.addListener(this);
 		
-		actionListener al = new actionListener();	//
-		play.addActionListener(al);					//
+		actionListener al = new actionListener();	
+		play.addActionListener(al);					
 		try {
 			img=ImageIO.read(new File("D:/school/year3/softwareproject/png/logo.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		JLabel logo = new JLabel(new ImageIcon(img));
+		JLabel logo = new JLabel(Resources.LOGO);
+		menu.setLayout(null);
+		play.setBounds(350, 250, 100, 50);
+		logo.setBounds(160, 0, 500, 300);
 		menu.add(logo);
-		menu.add(play);								//
-		menu.setBackground(Color.white);
+		menu.add(play);						
+		menu.setBackground(new Color(152,233,233));
 		
 		
 		buttons = new GameButton[rows][cols];
-		content.setLayout(layout);					//
-		content.add(panel, "Game");					//
-		content.add(menu, "Menu");					//
-		this.setContentPane(content);				//
-		layout.show(content , "Menu");				//
+		content.setLayout(layout);					
+		content.add(panel, "Game");					
+		content.add(menu, "Menu");					
+		this.setContentPane(content);				
+		layout.show(content , "Menu");				
 		
 		g = new GridLayout(rows, cols, 0, 0);
 		panel.setLayout(g);

@@ -17,6 +17,7 @@ public class Resources {
 	public final static ImageIcon HOLE_WITH_WHITE = resize(new ImageIcon("resources//holeWithWhite.png"));
 	public final static ImageIcon HOLE_WITH_BROWN = resize(new ImageIcon("resources//holeWithBrown.png"));
 	public final static ImageIcon HOLE_WITH_GREY = resize(new ImageIcon("resources//holeWithGrey.png"));
+	public final static ImageIcon LOGO = new ImageIcon("resources//logo.png");
 	
 	public static ImageIcon resize(ImageIcon icon) {
 		Image img = icon.getImage();
