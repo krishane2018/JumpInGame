@@ -115,12 +115,12 @@ public class Fox extends MovableAnimal {
 			super.setCoordinate(e.getCoordinate1());
 			setCoordinate2(e.getCoordinate2());
 			correctPointOrdering();
+			this.options.clear();
 		}
 	}
 
 	@Override
 	public ArrayList<Object> determineOptions(GameObject[][] gameBoard) {
-		ArrayList<Object> options = new ArrayList<Object>();
 		int startingPosition1, startingPosition2, uniformCoordinate;
 		startingPosition1 = startingPosition2 = uniformCoordinate = -1;
 
@@ -145,7 +145,7 @@ public class Fox extends MovableAnimal {
 
 		helperDetermineOptions(options, startingPosition2, uniformCoordinate, Utility.getIncrement(),
 				Utility.getDecrement(), gameBoard, this.direction);
-
+				
 		return options;
 	}
 
@@ -190,7 +190,10 @@ public class Fox extends MovableAnimal {
 	}
 
 	@Override
-	public String displayOptions(ArrayList<Object> options) {
+	public String displayOptions(GameObject[][] gameBoard) {
+		if (options.isEmpty()) {
+			this.determineOptions(gameBoard);
+		}
 		String output = "";
 		int counter = 1;
 

@@ -4,8 +4,12 @@ import java.util.function.Function;
 
 public abstract class MovableAnimal extends GameObject implements JumpInListener {
 
+	protected ArrayList <Object> options;
+
+	
 	public MovableAnimal(Point p, String name) {
 		super(p, name);
+		options = new ArrayList<Object>();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -31,6 +35,6 @@ public abstract class MovableAnimal extends GameObject implements JumpInListener
 	protected abstract void addOption(int changingCoordinate, int uniformCoordinate, ArrayList<Object> options,
 			Function<Integer, Integer> offset, String direction);
 
-	public abstract String displayOptions(ArrayList<Object> options);
+	public abstract String displayOptions(GameObject[][] options);
 
 }

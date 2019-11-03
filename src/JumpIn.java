@@ -87,11 +87,11 @@ public class JumpIn {
 			ArrayList<Object> options = chosenAnimal.determineOptions(gameBoard);
 
 			if (chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
-				move = parser.confirmOption(options, (Rabbit) chosenAnimal, chosenAnimal.displayOptions(options));
+				move = parser.confirmOption(options, (Rabbit) chosenAnimal, chosenAnimal.displayOptions(gameBoard));
 			}
 
 			else if (chosenAnimal.getClass().getSimpleName().equals("Fox")) {
-				move = parser.confirmOption(options, (Fox) chosenAnimal, chosenAnimal.displayOptions(options));
+				move = parser.confirmOption(options, (Fox) chosenAnimal, chosenAnimal.displayOptions(gameBoard));
 			}
 			// Moves the animal to the user's selected position on the game board.
 			finished = processCommand(move);
