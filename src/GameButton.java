@@ -43,6 +43,12 @@ public class GameButton extends JButton {
 		this(coordinate, new ImageIcon(picture));
 	}
 
+	public GameButton(Point coordinate) {
+		this.setBackground(new Color(70,170,70));
+		this.coordinate = coordinate;
+		this.setBorder(new RoundedBorder(15));
+	}
+	
 
 	public ImageIcon getIcon() {
 		return icon;
