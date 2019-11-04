@@ -38,7 +38,7 @@ public class JumpIn {
 	 * @return
 	 */
 
-	public String objectToString(int x, int y) {
+	private String objectToString(int x, int y) {
 		if (isHole(x, y) && gameBoard[y][x].getClass().getSimpleName().equals("Rabbit")) {
 			return gameBoard[y][x].getName() + "H";
 		} else if (isHole(x, y)) {
