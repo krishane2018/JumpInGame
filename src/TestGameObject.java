@@ -38,4 +38,32 @@ class TestGameObject {
 			    new GameObject(new Point(1,5), "F1");
 			  });	
 	}
+	
+	@Test
+	void test1ArgsGameObjectConstructorIllegalArgumentLowerX() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(-1,1));
+			  });	
+	}
+	
+	@Test
+	void test1ArgsGameObjectConstructorIllegalArgumentLowerY() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(1,-1));
+			  });	
+	}
+	
+	@Test
+	void test1ArgsGameObjectConstructorIllegalArgumentUpperX() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(5,1));
+			  });	
+	}
+	
+	@Test
+	void test1ArgsGameObjectConstructorIllegalArgumentUpperY() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(1,5));
+			  });	
+	}
 }
