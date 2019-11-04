@@ -52,7 +52,7 @@ public class Rabbit extends MovableAnimal {
 	public void handleEvent(JumpInEvent e) {
 		Rabbit r = (Rabbit) e.getChosenPiece();
 		if (r.equals(this)) {
-			super.setCoordinate(e.getCoordinate1());
+			super.setCoordinate(e.getFinalLocation1());
 			for (Point p : e.getHoles()) {
 				if (p.equals(super.getCoordinate())) {
 					this.status = true;

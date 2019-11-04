@@ -47,15 +47,22 @@ public class JumpInView extends JFrame implements JumpInListener {
 
 	@Override
 	public void handleEvent(JumpInEvent e) {
-		Point initialLocation = e.getChosenPiece().getCoordinate();
+		Point initialLocation = e.getInitialLocation1();
 		if(e.getChosenPiece().getClass().getSimpleName().contentEquals("Rabbit")) {
-			buttons[e.getCoordinate1().x][e.getCoordinate1().y].setIcon(buttons[initialLocation.x][initialLocation.y].getIcon());
-			if (model.isHole(initialLocation.y, initialLocation.x)) {
+			buttons[e.getFinalLocation1().x][e.getFinalLocation1().y].setIcon(buttons[initialLocation.x][initialLocation.y].getIcon());
+			if (model.isHole(initialLocation.x, initialLocation.y)) {
 				buttons[initialLocation.x][initialLocation.y].setIcon(Resources.HOLE);
 			} else {
 				buttons[initialLocation.x][initialLocation.y].setIcon(Resources.GREEN_CIRCLE);
 			}	
 		} else if (e.getChosenPiece().getClass().getSimpleName().contentEquals("Fox")) {
+			Point initialLocation2 = e.getInitialLocation2();
+			Icon fox1 = buttons[initialLocation.x][initialLocation.y].getIcon();
+			Icon fox2 = buttons[initialLocation2.x][initialLocation2.y].getIcon();
+			buttons[initialLocation.x][initialLocation.y].setIcon(Resources.GREEN_CIRCLE);
+			buttons[initialLocation2.x][initialLocation2.y].setIcon(Resources.GREEN_CIRCLE);
+			buttons[e.getFinalLocation1().x][e.getFinalLocation1().y].setIcon(fox1);
+			buttons[e.getFinalLocation2().x][e.getFinalLocation2().y].setIcon(fox2);
 			
 		}
 	}
