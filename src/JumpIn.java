@@ -274,18 +274,7 @@ public class JumpIn {
 	public HashMap<ArrayList<Point>, String> getInitialFoxPositions() {
 		return levelSelector.getFoxInitialPositions();
 	}
-
-	/**
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		JumpIn game = new JumpIn(2);
-		JumpInView view = new JumpInView(game);
-		JumpInController controller = new JumpInController(view, game);
-
-	}
-
+	
 	/**
 	 * Checks if object at given location is a rabbit
 	 * @param p coordinate user would like to check
@@ -294,4 +283,17 @@ public class JumpIn {
 	public boolean isRabbit(Point p) {
 		return gameBoard[p.y][p.x].getClass().getSimpleName().contentEquals("Rabbit");
 	}
+
+	/**
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		JumpIn game = new JumpIn(3);
+		JumpInView view = new JumpInView(game);
+		JumpInController controller = new JumpInController(view, game);
+
+	}
+
+
 }
