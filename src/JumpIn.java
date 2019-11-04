@@ -281,7 +281,7 @@ public class JumpIn {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(2);
+		JumpIn game = new JumpIn(3);
 //		game.printWelcome();
 //		game.play();
 		JumpInView view = new JumpInView(game);
