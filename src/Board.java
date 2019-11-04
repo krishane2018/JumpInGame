@@ -33,7 +33,6 @@ public class Board {
 		g = iterateThroughImagesFox(model.getInitialFoxPositions(), g);
 	}
 	
-	//INCLUDE LOGIC FOR IF RABBIT IN A HOLE
 	private static GameButton[][] iterateThroughImages(ImageIcon[] gameObjects, ImageIcon[] gameObjects2,
 			ArrayList<Point> positions, GameButton[][] g) {
 		int i = 0;
