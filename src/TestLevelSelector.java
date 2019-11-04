@@ -1,6 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,14 +12,14 @@ class TestLevelSelector {
 	@Test
 	void testLevelSelectorConstructorIllegalArgumentSubZero() {
 		assertThrows(IllegalArgumentException.class, () -> {
-		    new LevelSelector(-1, new JumpIn(-1));
-		  });
+			new LevelSelector(-1, new JumpIn(-1));
+		});
 	}
 
 	@Test
 	void testLevelSelectorConstructorIllegalArgumentAboveThree() {
 		assertThrows(IllegalArgumentException.class, () -> {
-		    new LevelSelector(4, new JumpIn(4));
-		  });
+			new LevelSelector(4, new JumpIn(4));
+		});
 	}
 }

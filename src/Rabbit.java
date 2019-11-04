@@ -89,7 +89,7 @@ public class Rabbit extends MovableAnimal {
 		if (options.isEmpty()) {
 			this.determineOptions(gameBoard);
 		}
-		
+
 		String output = "";
 		int counter = 1;
 		if (options.isEmpty()) {

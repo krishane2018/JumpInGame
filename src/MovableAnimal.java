@@ -4,9 +4,8 @@ import java.util.function.Function;
 
 public abstract class MovableAnimal extends GameObject implements JumpInListener {
 
-	protected ArrayList <Object> options;
+	protected ArrayList<Object> options;
 
-	
 	public MovableAnimal(Point p, String name) {
 		super(p, name);
 		options = new ArrayList<Object>();

@@ -19,7 +19,7 @@ class TestJumpInEvent {
 					new Point(4, 4) });
 			  });	
 	}
-	
+
 	@Test
 	void testJumpInEventConstructorIllegalArgumentLowerX() {
 		 assertThrows(IllegalArgumentException.class, () -> {

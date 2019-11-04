@@ -17,7 +17,7 @@ public class Move {
 		this.initialLocation = initialLocation;
 		this.finalLocation = finalLocation;
 		this.chosenAnimal = chosenAnimal;
-		this.initialLocation2 = new Point(); 
+		this.initialLocation2 = new Point();
 		this.finalLocation2 = new Point();
 		noMove = false;
 	}
