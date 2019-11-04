@@ -72,7 +72,7 @@ public class LevelSelector {
 			// Mushroom positions
 			Point p3 = new Point(1,0);
 			Point p4 = new Point(2,1);
-			Point p5 = new Point(1,3);
+			Point p5 = new Point(1,2);
 			
 			mushroomPositions.add(p3);
 			mushroomPositions.add(p4);
@@ -87,7 +87,7 @@ public class LevelSelector {
 			// based on JumpIn' level 16 
 			
 			// Rabbit positions
-			Point p1 = new Point(1,0);
+			Point p1 = new Point(0,0);
 			
 			rabbitInitialPositions.add(p1);
 			

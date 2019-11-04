@@ -1,36 +1,86 @@
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
-
-//THIS IS THE LISTENER 
 
 public class JumpInController implements MouseListener {
 	private JumpInView view;
 	private JumpIn model;
+	private boolean inMovingState;
+	private boolean inSelectingState;
+	private Point initialLocation;
+	private Point finalLocation;
 	
 	public JumpInController(JumpInView view, JumpIn model) {
 		this.view = view; 
 		this.model = model;
-		GameButton[][] g = view.getButtons();
-		for (int i = 0; i < g.length; i ++)  {
-			for (int j = 0; j < g.length; j ++) {
-				g[i][j].addMouseListener(this);
+		this.inMovingState = false;
+		this.inSelectingState = false;
+		GameButton[][] b = view.getButtons();
+		for(int i = 0; i < JumpIn.NUM_ROWS; i ++) {
+			for(int j = 0; j < JumpIn.NUM_COLUMNS; j++) {
+				b[i][j].addMouseListener(this);
 			}
 		}
-		view.setButtons(g);
-		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.print("clicked");
-		
+		GameButton b = (GameButton)e.getSource();
+		inSelectingState = (inMovingState ? false : true);
+		if(inSelectingState) { 
+			initialLocation = b.getCoordinate();
+			if(view.highlightOptions(initialLocation)) {
+				inSelectingState = false;
+				inMovingState = true;
+			}
+		} else if (inMovingState) {
+			finalLocation = b.getCoordinate();
+			boolean moved = model.moveAnimal(initialLocation, finalLocation);
+			if(moved) {
+				inMovingState = false;
+				inSelectingState = true;
+				view.highlight(model.selectedAnimalType(finalLocation), false);
+			}
+		}
+	}
+	
+	
+	
+	/**
+	 * @return the inMovingState
+	 */
+	public boolean isInMovingState() {
+		return inMovingState;
+	}
+
+	/**
+	 * @param inMovingState the inMovingState to set
+	 */
+	public void setInMovingState(boolean inMovingState) {
+		this.inMovingState = inMovingState;
+	}
+
+	/**
+	 * @return the inSelectingState
+	 */
+	public boolean isInSelectingState() {
+		return inSelectingState;
+	}
+
+	/**
+	 * @param inSelectingState the inSelectingState to set
+	 */
+	public void setInSelectingState(boolean inSelectingState) {
+		this.inSelectingState = inSelectingState;
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void mousePressed(MouseEvent e) {	
 	}
 
 	@Override
@@ -41,7 +91,7 @@ public class JumpInController implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		System.out.println("Mouse");
+//		System.out.println("Mouse");
 		
 	}
 
@@ -50,5 +100,5 @@ public class JumpInController implements MouseListener {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 }

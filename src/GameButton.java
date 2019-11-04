@@ -12,9 +12,7 @@ import javax.swing.JButton;
 public class GameButton extends JButton {
 	private static final long serialVersionUID = 1L;
 	private Point coordinate;
-	// Either the action is 0 = nothing, 1 = selected, 2 = move animal to here
-	private int act;
-	// add way to check which type of button if needed
+	private Color background;
 
 	public GameButton(Point coordinate) {
 		this(Resources.GREEN_CIRCLE, coordinate);
@@ -23,12 +21,12 @@ public class GameButton extends JButton {
 	public GameButton(ImageIcon icon, Point coordinate) {
 		super(icon);
 		this.coordinate = coordinate;
-		act = 0;
-		this.setBorder(new RoundedBorder(15));
-		this.setBackground(new Color(70,170,70));
+		background = new Color(70,170,70);
+		this.setBackground(background);
 		this.setBorderPainted(false);
+//		this.setBorder(new RoundedBorder(15));
 	}
-	
+
 	public Point getCoordinate() {
 		return coordinate;
 	}
@@ -36,12 +34,12 @@ public class GameButton extends JButton {
 	public void setCoordinate(Point coordinate) {
 		this.coordinate = coordinate;
 	}
-
-	public void setAction(int act) {
-		this.act = act;
+	
+	public void highlightButton() {
+		this.setBackground(new Color(70,200,70));
 	}
 	
-	public int getAct(int act) {
-		return this.act;
+	public void removeHighlight() {
+		this.setBackground(background);
 	}
 }

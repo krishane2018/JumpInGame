@@ -69,7 +69,7 @@ public class JumpIn {
 	 * @param y
 	 * @return
 	 */
-	private boolean isHole(int x, int y) {
+	public boolean isHole(int x, int y) {
 		for (int i = 0; i < holes.length; i++) {
 			if (holes[i].getX() == x && holes[i].getY() == y) {
 				return true;
@@ -114,7 +114,7 @@ public class JumpIn {
 		String status = parser.playAgain();
 		if (status == "continue") {
 			if (level >= 3) {
-				System.out.println("You completed all of the level!");
+				System.out.println("You completed all of the levels!");
 			} else {
 				JumpIn game = new JumpIn(level + 1);
 				game.play();
@@ -124,7 +124,7 @@ public class JumpIn {
 			return;
 		}
 	}
-
+	
 	public boolean addListener(JumpInListener j) {
 		return listeners.add(j);
 	}
@@ -135,12 +135,16 @@ public class JumpIn {
 	 */
 	private boolean checkWin() {
 		for (int i = 0; i < listeners.size(); i++) {
-			GameObject g = (GameObject) listeners.get(i);
-			if (g.getClass().getSimpleName().equals("Rabbit")) {
-				Rabbit r = (Rabbit) g;
-				if (r.getStatus() == false) {
-					return false;
+			if(listeners.get(i) instanceof GameObject) {
+				GameObject g = (GameObject) listeners.get(i);
+				if (g.getClass().getSimpleName().equals("Rabbit")) {
+					Rabbit r = (Rabbit) g;
+					if (r.getStatus() == false) {
+						return false;
+					}
 				}
+			} else {
+				
 			}
 		}
 		WinEvent event = new WinEvent(this);
@@ -168,23 +172,74 @@ public class JumpIn {
 					holes);
 			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(
 					new Point(move.getInitialLocation().x, move.getInitialLocation().y));
-			;
 			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = new GameObject(
 					new Point(move.getInitialLocation2().x, move.getInitialLocation2().y));
-			;
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 			gameBoard[move.getFinalLocation2().y][move.getFinalLocation2().x] = move.getChosenAnimal();
 		}
 
+		// Need to update the view first 
 		for (int i = 0; i < listeners.size(); i++) {
-			if ((GameObject) listeners.get(i) == move.getChosenAnimal()) {
-				listeners.get(i).handleEvent(event);
+			JumpInListener l = listeners.get(i);
+			if(l instanceof JumpInView) {
+				l.handleEvent(event);
+			} 
+		}
+		for (int i = 0; i < listeners.size(); i++) {
+			JumpInListener l = listeners.get(i);
+			if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
+				l.handleEvent(event);
 			}
 		}
 
 		return checkWin();
 	}
 
+	public String selectedAnimalType(Point p) {
+		GameObject g = gameBoard[p.y][p.x];
+		return g.getClass().getSimpleName();
+	}
+	
+	public ArrayList<Object> getAnimalOptions(Point p) {
+		GameObject g = gameBoard[p.y][p.x];
+		if(g instanceof MovableAnimal) {
+			MovableAnimal m = (MovableAnimal)g;
+			return m.determineOptions(gameBoard);
+		} else {
+			return new ArrayList<Object>();
+		}
+	}
+	
+	public boolean moveAnimal(Point initial, Point finalLocation) {
+		GameObject g = gameBoard[initial.y][initial.x];
+		ArrayList<Object> options = getAnimalOptions(initial);
+		
+		if(selectedAnimalType(initial).contentEquals("Rabbit") && options.contains(finalLocation)) {
+			processCommand(new Move(initial, finalLocation, g));
+			System.out.print("moved rabbit");
+			return true;
+		} else if (selectedAnimalType(initial).contentEquals("Fox")) {
+			boolean selectedInOptions = false;
+			Point foxLocation[] = (Point[])options.get(0);
+			for(Object o : options) {
+				foxLocation = (Point[])o;
+				for(Point pt : foxLocation) {
+					if (pt.equals(finalLocation)) selectedInOptions = true;
+				}
+			}
+			System.out.println(selectedInOptions);
+			if (selectedInOptions) {
+				System.out.print(g instanceof GameObject);
+				System.out.println("moved fox");
+				Fox f = (Fox)g;
+				processCommand(new Move(f.getCoordinate(), f.getCoordinate2(), foxLocation[0], foxLocation[1], g));
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	/**
 	 * 
 	 */
@@ -226,11 +281,11 @@ public class JumpIn {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(3);
+		JumpIn game = new JumpIn(1);
 //		game.printWelcome();
 //		game.play();
 		JumpInView view = new JumpInView(game);
-		// JumpInController controller = new JumpInController(game, view);
+		JumpInController controller = new JumpInController(view, game);
 
 	}
 
