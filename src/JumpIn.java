@@ -284,8 +284,8 @@ public class JumpIn {
 		JumpIn game = new JumpIn(1);
 //		game.printWelcome();
 //		game.play();
-		JumpInView view = new JumpInView(game);
-		JumpInController controller = new JumpInController(view, game);
+		MainMenu menu = new MainMenu();
+		JumpInController controller = new JumpInController(menu.getView(), game);
 
 	}
 
