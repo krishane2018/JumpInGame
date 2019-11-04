@@ -8,7 +8,6 @@ import javax.swing.border.LineBorder;
 public class JumpInView extends JFrame implements JumpInListener {
 	private GameButton[][] buttons;
 	private JumpIn model;
-	
 	public JumpInView(JumpIn model){
 		this.model = model;
 		int rows = JumpIn.NUM_ROWS;
@@ -44,9 +43,9 @@ public class JumpInView extends JFrame implements JumpInListener {
 	@Override
 	public void handleEvent(JumpInEvent e) {
 		//update view (move piece, update coordinates)
-		
 	}
-
 	
-	
+	public void highlightOption(Point p) {
+		buttons[p.x][p.y].highlightButton();
+	}
 }
