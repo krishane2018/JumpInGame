@@ -49,9 +49,13 @@ public class JumpInView extends JFrame implements JumpInListener {
 	public void handleEvent(JumpInEvent e) {
 		Point initialLocation = e.getInitialLocation1();
 		if(e.getChosenPiece().getClass().getSimpleName().contentEquals("Rabbit")) {
-			buttons[e.getFinalLocation1().x][e.getFinalLocation1().y].setIcon(buttons[initialLocation.x][initialLocation.y].getIcon());
+			buttons[e.getFinalLocation1().x][e.getFinalLocation1().y].setIcon((ImageIcon)buttons[initialLocation.x][initialLocation.y].getIcon());
 			if (model.isHole(initialLocation.x, initialLocation.y)) {
+				buttons[e.getFinalLocation1().x][e.getFinalLocation1().y].setIcon(flipRabbit((ImageIcon)buttons[initialLocation.x][initialLocation.y].getIcon()));
 				buttons[initialLocation.x][initialLocation.y].setIcon(Resources.HOLE);
+			} else if (model.isHole(e.getFinalLocation1().x, e.getFinalLocation1().y)) {
+				buttons[e.getFinalLocation1().x][e.getFinalLocation1().y].setIcon(flipRabbit((ImageIcon)buttons[initialLocation.x][initialLocation.y].getIcon()));
+				buttons[initialLocation.x][initialLocation.y].setIcon(Resources.GREEN_CIRCLE);
 			} else {
 				buttons[initialLocation.x][initialLocation.y].setIcon(Resources.GREEN_CIRCLE);
 			}	
@@ -65,6 +69,16 @@ public class JumpInView extends JFrame implements JumpInListener {
 			buttons[e.getFinalLocation2().x][e.getFinalLocation2().y].setIcon(fox2);
 			
 		}
+	}
+	
+	private Icon flipRabbit(Icon icon) {
+		if (icon.equals(Resources.BROWN_RABBIT)) return Resources.HOLE_WITH_BROWN; 
+		else if (icon.equals(Resources.WHITE_RABBIT)) return Resources.HOLE_WITH_WHITE;
+		else if (icon.equals(Resources.GREY_RABBIT)) return Resources.HOLE_WITH_GREY;
+		else if (icon.equals(Resources.HOLE_WITH_BROWN)) return Resources.BROWN_RABBIT;
+		else if (icon.equals(Resources.HOLE_WITH_WHITE)) return Resources.WHITE_RABBIT;
+		else if (icon.equals(Resources.HOLE_WITH_GREY)) return Resources.GREY_RABBIT;
+		else return Resources.GREEN_CIRCLE;
 	}
 	
 	public boolean highlightOption(Point p) {
