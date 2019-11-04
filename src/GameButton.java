@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,7 +28,7 @@ public class GameButton extends JButton {
 		this.setBackground(new Color(70,170,70));
 		this.setBorderPainted(false);
 	}
-
+	
 	public Point getCoordinate() {
 		return coordinate;
 	}

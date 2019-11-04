@@ -1,7 +1,5 @@
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -17,40 +15,52 @@ public class JumpInView extends JFrame implements JumpInListener {
 	JPanel panel = new JPanel();
 	
 	CardLayout layout = new CardLayout(); 	
-	JPanel menu = new JPanel();				
+	JPanel menu = new JPanel();	
+	JPanel difficulty = new JPanel();
 	JPanel content = new JPanel();			
-	JButton play;							
+	MainMenuButton play,easy,hard;
 	GridLayout g;
 	
 	public JumpInView(JumpIn model){
-		play = new JButton("PLAY!");			
-		play.setBackground(new Color(70,170,70));
-		play.setForeground(Color.white);
-		play.setFocusPainted(false);
-		play.setPreferredSize(new Dimension(100,50));
-		play.setFont(new Font("Arial", Font.BOLD,20));
+		actionListener al = new actionListener();
+		
+		play = new MainMenuButton("PLAY!");			
+		play.addActionListener(al);	
+		easy = new MainMenuButton("EASY");			
+		easy.addActionListener(al);
+		hard = new MainMenuButton("HARD");			
+		hard.addActionListener(al);
 		
 		this.model = model;
 		int rows = JumpIn.NUM_ROWS;
 		int cols = JumpIn.NUM_COLUMNS;
 
 		model.addListener(this);
-		
-		actionListener al = new actionListener();	
-		play.addActionListener(al);					
-		JLabel logo = new JLabel(Resources.LOGO);
+				
+		JLabel logo1 = new JLabel(Resources.LOGO);
 		menu.setLayout(null);
 		play.setBounds(350, 250, 100, 50);
-		logo.setBounds(160, 0, 500, 300);
-		menu.add(logo);
+		logo1.setBounds(160, 0, 500, 300);
+		menu.add(logo1);
 		menu.add(play);						
 		menu.setBackground(new Color(152,233,233));
 		
+		JLabel logo2 = new JLabel(Resources.LOGO);
+		difficulty.setLayout(null);
+		easy.setBounds(350, 250, 100, 50);
+		hard.setBounds(350, 350, 100, 50);
+		logo2.setBounds(160, 0, 500, 300);
+		difficulty.add(logo2);
+		difficulty.add(easy);
+		difficulty.add(hard);
+		difficulty.setBackground(new Color(152,233,233));
 		
 		buttons = new GameButton[rows][cols];
+		
 		content.setLayout(layout);					
 		content.add(panel, "Game");					
-		content.add(menu, "Menu");					
+		content.add(menu, "Menu");
+		content.add(difficulty,"Difficulty");
 		this.setContentPane(content);				
 		layout.show(content , "Menu");				
 		
@@ -92,6 +102,10 @@ public class JumpInView extends JFrame implements JumpInListener {
 			JButton src = (JButton) e.getSource();
 			
 			if(src.equals(play)) {
+				layout.show(content, "Difficulty");
+			}else if(src.equals(easy)) {
+				layout.show(content, "Game");
+			}else if(src.equals(hard)) {
 				layout.show(content, "Game");
 			}
 		}
