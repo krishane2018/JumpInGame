@@ -1,4 +1,5 @@
 import java.awt.Image;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -18,6 +19,7 @@ public class Resources {
 	public final static ImageIcon HOLE_WITH_WHITE = resize(new ImageIcon("resources//whiteRabbitInHole.png"));
 	public final static ImageIcon HOLE_WITH_BROWN = resize(new ImageIcon("resources//brownRabbitInHole.png"));
 	public final static ImageIcon HOLE_WITH_GREY = resize(new ImageIcon("resources//greyRabbitInHole.png"));
+	public final static HashMap<ImageIcon, ImageIcon> FLIPPED_RABBIT = createHashmap();
 	
 	public static ImageIcon resize(ImageIcon icon) {
 		Image img = icon.getImage();
@@ -44,6 +46,16 @@ public class Resources {
 		return new ImageIcon(img.getScaledInstance(155, 155, java.awt.Image.SCALE_SMOOTH));
 	}
 	
+	private static HashMap<ImageIcon, ImageIcon> createHashmap() {
+		HashMap<ImageIcon, ImageIcon> d = new HashMap<ImageIcon, ImageIcon>();
+		d.put(Resources.BROWN_RABBIT, Resources.HOLE_WITH_BROWN);
+		d.put(Resources.WHITE_RABBIT, Resources.HOLE_WITH_WHITE);
+		d.put(Resources.GREY_RABBIT, Resources.HOLE_WITH_GREY);
+		d.put(Resources.HOLE_WITH_BROWN, Resources.BROWN_RABBIT);
+		d.put(Resources.HOLE_WITH_WHITE, Resources.WHITE_RABBIT);
+		d.put(Resources.HOLE_WITH_GREY, Resources.GREY_RABBIT);
+		return d;
+	}
 	//Add resize for horizontal fox and hole with brown + grey
 	
 	
