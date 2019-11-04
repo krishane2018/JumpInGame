@@ -12,10 +12,30 @@ class TestGameObject {
 	}
 
 	@Test
-	void testGameObjectConstructorIllegalArgument() {
+	void testGameObjectConstructorIllegalArgumentLowerX() {
 		 assertThrows(IllegalArgumentException.class, () -> {
 			    new GameObject(new Point(-1,1), "F1");
 			  });	
 	}
+	
+	@Test
+	void testGameObjectConstructorIllegalArgumentLowerY() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(1,-1), "F1");
+			  });	
+	}
 
+	@Test
+	void testGameObjectConstructorIllegalArgumentUpperX() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(5,1), "F1");
+			  });	
+	}
+	
+	@Test
+	void testGameObjectConstructorIllegalArgumentUpperY() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(1,5), "F1");
+			  });	
+	}
 }
