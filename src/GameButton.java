@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,6 +10,7 @@ import javax.swing.JButton;
  *
  */
 public class GameButton extends JButton {
+	private static final long serialVersionUID = 1L;
 	private Point coordinate;
 	// Either the action is 0 = nothing, 1 = selected, 2 = move animal to here
 	private int act;

@@ -6,6 +6,7 @@ import java.util.EventObject;
  * JumpInEvents are created when a user makes a move
  */
 public class JumpInEvent extends EventObject {
+	private static final long serialVersionUID = 1L;
 	private GameObject chosenPiece; 
 	private Point coordinate1;
 	private Point coordinate2;
@@ -40,12 +41,6 @@ public class JumpInEvent extends EventObject {
 		this.coordinate1 = p1;
 		this.coordinate2 = p2;
 		this.holes = holes;
-	}
-
-	public JumpInEvent(Object source) {
-		super(source);
-		//this.doesnt work:(
-		//TODO: Add event for next level
 	}
 	
 	/**

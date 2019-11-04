@@ -1,7 +1,5 @@
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 
 public class Resources {
 	public final static ImageIcon HOLE = resize(new ImageIcon("resources//brownCircle.png"));	

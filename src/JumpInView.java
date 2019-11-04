@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class JumpInView extends JFrame implements JumpInListener {
+public class JumpInView extends JFrame implements JumpInListener, WinListener {
 	private static final long serialVersionUID = 1L;
 	
 	private GameButton[][] buttons;
@@ -62,11 +62,19 @@ public class JumpInView extends JFrame implements JumpInListener {
 		difficulty.add(hard);
 		difficulty.setBackground(new Color(152,233,233));
 		
+		win.setLayout(null);
+		next.setBounds(350, 250, 100, 50);
+		exit.setBounds(350, 350, 100, 50);
+		win.add(next);
+		win.add(exit);
+		win.setBackground(new Color(152,233,233));
+		
 		buttons = new GameButton[rows][cols];
 		
 		content.setLayout(layout);					
 		content.add(panel, "Game");					
 		content.add(menu, "Menu");
+		content.add(win, "Win");
 		content.add(difficulty,"Difficulty");
 		this.setContentPane(content);				
 		layout.show(content , "Menu");				
@@ -97,12 +105,17 @@ public class JumpInView extends JFrame implements JumpInListener {
 	}
 
 	@Override
+	public void handleEvent(WinEvent e) {
+		//update view (move piece, update coordinates)
+		layout.show(content, "Win");
+		Board.create(model.getLevel()+1, this, model);
+	}
+	
+	@Override
 	public void handleEvent(JumpInEvent e) {
 		//update view (move piece, update coordinates)
-		
 	}
 
-	// new override
 	public class actionListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -116,6 +129,8 @@ public class JumpInView extends JFrame implements JumpInListener {
 				layout.show(content, "Game");
 			}else if(src.equals(next)) {
 				layout.show(content, "Game");
+			}else if(src.equals(exit)) {
+				SwingUtilities.getWindowAncestor((JPanel)src.getParent()).dispose();
 			}
 		}
 	}

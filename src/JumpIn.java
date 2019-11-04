@@ -1,7 +1,6 @@
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.Function;
 
 /**
  * 
@@ -144,6 +143,7 @@ public class JumpIn {
 				}
 			}
 		}
+		WinEvent event = new WinEvent(this);
 		return true;
 	}
 
