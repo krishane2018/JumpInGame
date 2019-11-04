@@ -1,7 +1,9 @@
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.border.LineBorder;
@@ -19,21 +21,30 @@ public class Board {
 		
 		// Initialize Rabbit Images
 		ImageIcon rabbits[] = {Resources.BROWN_RABBIT, Resources.GREY_RABBIT, Resources.WHITE_RABBIT};
-		g = iterateThroughImages(rabbits, model.getInitialRabbitPositions(), g);
+		ImageIcon rabbitsInHole[] = {Resources.HOLE_WITH_BROWN, Resources.HOLE_WITH_GREY, Resources.HOLE_WITH_WHITE};
+		g = iterateThroughImages(rabbits, rabbitsInHole, model.getInitialRabbitPositions(), g);
 		
 		//Initialize Mushroom Images
 		ImageIcon mushroom[] = {Resources.MUSHROOM};
-		g = iterateThroughImages(mushroom, model.getInitialMushroomPositions(), g);
+		ImageIcon[] mushroomInHole = {Resources.HOLE_WITH_MUSHROOM};
+		g = iterateThroughImages(mushroom, mushroomInHole, model.getInitialMushroomPositions(), g);
 		
 		// Initialize Fox Images
 		g = iterateThroughImagesFox(model.getInitialFoxPositions(), g);
 	}
 	
 	//INCLUDE LOGIC FOR IF RABBIT IN A HOLE
-	private static GameButton[][] iterateThroughImages(ImageIcon gameObjects[], ArrayList<Point> positions, GameButton[][] g) {
+	private static GameButton[][] iterateThroughImages(ImageIcon[] gameObjects, ImageIcon[] gameObjects2,
+			ArrayList<Point> positions, GameButton[][] g) {
 		int i = 0;
+		List<Point> list = Arrays.asList(LevelSelector.getHoles());
 		for (Point p : positions) {
-			setIconHelper(gameObjects[i], g, p);
+			if (list.contains(p)) {
+				setIconHelper(gameObjects2[i], g, p);
+			}
+			else {
+				setIconHelper(gameObjects[i], g, p);
+			}
 			i++; 
 			i = i%(gameObjects.length);
 		}
