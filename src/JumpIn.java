@@ -55,7 +55,7 @@ public class JumpIn {
 	 * @param y
 	 * @return
 	 */
-	private boolean isHole(int x, int y) {
+	public boolean isHole(int x, int y) {
 		for (int i = 0; i < HOLES.length; i++) {
 			if (HOLES[i].getX() == x && HOLES[i].getY() == y) {
 				return true;

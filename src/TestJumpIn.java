@@ -5,7 +5,14 @@ import org.junit.jupiter.api.Test;
 class TestJumpIn {
 
 	@Test
-	void testLevel1() {
+	void testIsHole() {
+		JumpIn jumpIn = new JumpIn(1);
+		assertEquals(true, jumpIn.isHole(0, 0)&&jumpIn.isHole(0, 4)
+				&&jumpIn.isHole(2, 2)&&jumpIn.isHole(4, 0)&&jumpIn.isHole(4, 4));
+	}
+	
+	@Test
+	void testToStringLevel1() {
 		JumpIn jumpIn = new JumpIn(1);
 		String level1 = "--------------------------\n"
 				+ "|   H|    |  R1|    |   H|\n"
@@ -23,7 +30,7 @@ class TestJumpIn {
 	}
 	
 	@Test
-	void testLevel2() {
+	void testToStringLevel2() {
 		JumpIn jumpIn = new JumpIn(2);
 		String level2 = "--------------------------\n"
 				+ "| R1H|  M1|    |    |   H|\n"
@@ -41,7 +48,7 @@ class TestJumpIn {
 	}
 	
 	@Test
-	void testLevel3() {
+	void testToStringLevel3() {
 		JumpIn jumpIn = new JumpIn(3);
 		String level3 = "--------------------------\n"
 				+ "|   H|  R1|    |    |   H|\n"
