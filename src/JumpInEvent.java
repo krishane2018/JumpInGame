@@ -42,6 +42,12 @@ public class JumpInEvent extends EventObject {
 		this.holes = holes;
 	}
 
+	public JumpInEvent(Object source) {
+		super(source);
+		//this.doesnt work:(
+		//TODO: Add event for next level
+	}
+	
 	/**
 	 * Get the coordinates of the rabbit holes 
 	 * @return an array of the coordinates of the rabbit holes

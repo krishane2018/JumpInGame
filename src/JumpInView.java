@@ -17,8 +17,9 @@ public class JumpInView extends JFrame implements JumpInListener {
 	CardLayout layout = new CardLayout(); 	
 	JPanel menu = new JPanel();	
 	JPanel difficulty = new JPanel();
-	JPanel content = new JPanel();			
-	MainMenuButton play,easy,hard;
+	JPanel content = new JPanel();	
+	JPanel win = new JPanel();
+	MainMenuButton play,easy,hard,next,exit;
 	GridLayout g;
 	
 	public JumpInView(JumpIn model){
@@ -30,6 +31,10 @@ public class JumpInView extends JFrame implements JumpInListener {
 		easy.addActionListener(al);
 		hard = new MainMenuButton("HARD");			
 		hard.addActionListener(al);
+		next = new MainMenuButton("NEXT");			
+		next.addActionListener(al);
+		exit = new MainMenuButton("EXIT");			
+		exit.addActionListener(al);
 		
 		this.model = model;
 		int rows = JumpIn.NUM_ROWS;
@@ -40,9 +45,11 @@ public class JumpInView extends JFrame implements JumpInListener {
 		JLabel logo1 = new JLabel(Resources.LOGO);
 		menu.setLayout(null);
 		play.setBounds(350, 250, 100, 50);
+		exit.setBounds(350, 350, 100, 50);
 		logo1.setBounds(160, 0, 500, 300);
 		menu.add(logo1);
-		menu.add(play);						
+		menu.add(play);
+		menu.add(exit);
 		menu.setBackground(new Color(152,233,233));
 		
 		JLabel logo2 = new JLabel(Resources.LOGO);
@@ -106,6 +113,8 @@ public class JumpInView extends JFrame implements JumpInListener {
 			}else if(src.equals(easy)) {
 				layout.show(content, "Game");
 			}else if(src.equals(hard)) {
+				layout.show(content, "Game");
+			}else if(src.equals(next)) {
 				layout.show(content, "Game");
 			}
 		}

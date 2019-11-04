@@ -8,5 +8,6 @@ import java.awt.event.ActionEvent;
  */
 public interface JumpInListener {
 	public void handleEvent(JumpInEvent e);
+	
 
 }
