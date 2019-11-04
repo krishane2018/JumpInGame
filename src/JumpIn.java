@@ -215,11 +215,10 @@ public class JumpIn {
 		GameObject g = gameBoard[initial.y][initial.x];
 		ArrayList<Object> options = getAnimalOptions(initial);
 		
-		if(selectedAnimalType(initial).contentEquals("Rabbit") && options.contains(finalLocation)) {
+		if(selectedAnimalType(initial).equals("Rabbit") && options.contains(finalLocation)) {
 			processCommand(new Move(initial, finalLocation, g));
-			System.out.print("moved rabbit");
 			return true;
-		} else if (selectedAnimalType(initial).contentEquals("Fox")) {
+		} else if (selectedAnimalType(initial).equals("Fox")) {
 			boolean selectedInOptions = false;
 			Point foxLocation[] = (Point[])options.get(0);
 			for(Object o : options) {
@@ -231,8 +230,6 @@ public class JumpIn {
 			}
 			System.out.println(selectedInOptions);
 			if (selectedInOptions) {
-				System.out.print(g instanceof GameObject);
-				System.out.println("moved fox");
 				Fox f = (Fox)g;
 				processCommand(new Move(f.getCoordinate(), f.getCoordinate2(), foxLocation[0], foxLocation[1], g));
 				return true;
@@ -283,12 +280,18 @@ public class JumpIn {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(3);
-//		game.printWelcome();
-//		game.play();
+		JumpIn game = new JumpIn(2);
 		JumpInView view = new JumpInView(game);
 		JumpInController controller = new JumpInController(view, game);
 
 	}
 
+	/**
+	 * Checks if object at given location is a rabbit
+	 * @param p coordinate user would like to check
+	 * @return true if it is a rabbit
+	 */
+	public boolean isRabbit(Point p) {
+		return gameBoard[p.y][p.x].getClass().getSimpleName().contentEquals("Rabbit");
+	}
 }

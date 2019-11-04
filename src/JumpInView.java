@@ -100,29 +100,26 @@ public class JumpInView extends JFrame implements JumpInListener {
 	
 	/**
 	 * Private helper function that moves the correct fox piece for the GUI
+	 * NOTE: Cannot get rid of duplicate code because updates need to happen in this order
 	 * @param initialLocation - one coordinate for the initial fox location
 	 * @param initialLocation2 - second coordinate for the initial fox location
 	 * @param finalLocation - one coordinate for the final fox location
 	 * @param finalLocation2 - second coordinate for the final fox location
 	 */
 	private void handleFox(Point initialLocation, Point initialLocation2, Point finalLocation, Point finalLocation2) {
-		Point p1[] = {initialLocation, finalLocation};
-		Point p2[] = {initialLocation2, finalLocation2};
-		ArrayList<Point[]> movements = new ArrayList<Point[]>();
-		movements.add(p1);
-		movements.add(p2);
-		for(Point[] p : movements) {
-			Icon fox = getButtonIcon(p[0]);
-			setButtonIcon(p[0], Resources.GREEN_CIRCLE);
-			setButtonIcon(p[1], (ImageIcon)fox);
-		}
+		Icon fox1 = getButtonIcon(initialLocation);
+		Icon fox2 = getButtonIcon(initialLocation2);
+		setButtonIcon(initialLocation, Resources.GREEN_CIRCLE);
+		setButtonIcon(initialLocation2, Resources.GREEN_CIRCLE);
+		setButtonIcon(finalLocation, (ImageIcon)fox1);
+		setButtonIcon(finalLocation2, (ImageIcon)fox2);
 	}
 	
 	/**
 	 * Helper function for handleRabbit for when a rabbit leaves a hole or enters hole. It uses another helper 
 	 * function to retrieve the corresponding icon. For ex. If the white rabbit is leaving a hole, it will set the
 	 * icon of the final location to just the white rabbit. If a brown rabbit is entering a hole, it will set the final
-	 * lcoation to have an icon with the brown rabbit in the hole.
+	 * location to have an icon with the brown rabbit in the hole.
 	 * @param finalLocation - location the rabbit is going to 
 	 * @param initialLocation - the location the rabbit is coming from 
 	 */
@@ -222,6 +219,16 @@ public class JumpInView extends JFrame implements JumpInListener {
 					else unhighlight(pt);
 				}
 			}
+		}
+	}
+	
+	public boolean didNotMove(Point initialLocation, Point finalLocation, String initialType, String finalType) {
+		if(model.isRabbit(finalLocation) && (initialType.equals("Rabbit"))) {
+			highlight(initialType, false);
+			return false;
+		} else {
+			JOptionPane.showMessageDialog(null, "Invalid move");
+			return true;
 		}
 	}
 }
