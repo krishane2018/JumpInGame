@@ -87,7 +87,7 @@ public class LevelSelector {
 			// based on JumpIn' level 16 
 			
 			// Rabbit positions
-			Point p1 = new Point(0,0);
+			Point p1 = new Point(1,0);
 			
 			rabbitInitialPositions.add(p1);
 			

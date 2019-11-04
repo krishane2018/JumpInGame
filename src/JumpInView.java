@@ -51,17 +51,38 @@ public class JumpInView extends JFrame implements JumpInListener{
 	
 	@Override
 	public void handleEvent(JumpInEvent e) {
-		Point initialLocation = e.getChosenPiece().getCoordinate();
+		Point initialLocation = e.getInitialLocation1();
 		if(e.getChosenPiece().getClass().getSimpleName().contentEquals("Rabbit")) {
-			buttons[e.getCoordinate1().x][e.getCoordinate1().y].setIcon(buttons[initialLocation.x][initialLocation.y].getIcon());
-			if (model.isHole(initialLocation.y, initialLocation.x)) {
+			buttons[e.getFinalLocation1().x][e.getFinalLocation1().y].setIcon((ImageIcon)buttons[initialLocation.x][initialLocation.y].getIcon());
+			if (model.isHole(initialLocation.x, initialLocation.y)) {
+				buttons[e.getFinalLocation1().x][e.getFinalLocation1().y].setIcon(flipRabbit((ImageIcon)buttons[initialLocation.x][initialLocation.y].getIcon()));
 				buttons[initialLocation.x][initialLocation.y].setIcon(Resources.HOLE);
+			} else if (model.isHole(e.getFinalLocation1().x, e.getFinalLocation1().y)) {
+				buttons[e.getFinalLocation1().x][e.getFinalLocation1().y].setIcon(flipRabbit((ImageIcon)buttons[initialLocation.x][initialLocation.y].getIcon()));
+				buttons[initialLocation.x][initialLocation.y].setIcon(Resources.GREEN_CIRCLE);
 			} else {
 				buttons[initialLocation.x][initialLocation.y].setIcon(Resources.GREEN_CIRCLE);
 			}	
 		} else if (e.getChosenPiece().getClass().getSimpleName().contentEquals("Fox")) {
+			Point initialLocation2 = e.getInitialLocation2();
+			Icon fox1 = buttons[initialLocation.x][initialLocation.y].getIcon();
+			Icon fox2 = buttons[initialLocation2.x][initialLocation2.y].getIcon();
+			buttons[initialLocation.x][initialLocation.y].setIcon(Resources.GREEN_CIRCLE);
+			buttons[initialLocation2.x][initialLocation2.y].setIcon(Resources.GREEN_CIRCLE);
+			buttons[e.getFinalLocation1().x][e.getFinalLocation1().y].setIcon(fox1);
+			buttons[e.getFinalLocation2().x][e.getFinalLocation2().y].setIcon(fox2);
 			
 		}
+	}
+	
+	private Icon flipRabbit(Icon icon) {
+		if (icon.equals(Resources.BROWN_RABBIT)) return Resources.HOLE_WITH_BROWN; 
+		else if (icon.equals(Resources.WHITE_RABBIT)) return Resources.HOLE_WITH_WHITE;
+		else if (icon.equals(Resources.GREY_RABBIT)) return Resources.HOLE_WITH_GREY;
+		else if (icon.equals(Resources.HOLE_WITH_BROWN)) return Resources.BROWN_RABBIT;
+		else if (icon.equals(Resources.HOLE_WITH_WHITE)) return Resources.WHITE_RABBIT;
+		else if (icon.equals(Resources.HOLE_WITH_GREY)) return Resources.GREY_RABBIT;
+		else return Resources.GREEN_CIRCLE;
 	}
 	
 	public boolean highlightOption(Point p) {

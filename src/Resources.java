@@ -8,9 +8,9 @@ public class Resources {
 	public final static ImageIcon BROWN_RABBIT = resizeRabbit(new ImageIcon("resources//brownRabbit.png"));
 	public final static ImageIcon GREY_RABBIT = resizeRabbit(new ImageIcon("resources//greyRabbit.png"));
 	public final static ImageIcon FOX_VERTICAL1 = resizeFoxV(new ImageIcon("resources//foxVertical1.png"));
-	public final static ImageIcon FOX_HORIZONTAL1 = resize(new ImageIcon("resources//foxHorizontal1.png"));
+	public final static ImageIcon FOX_HORIZONTAL1 = resizeFoxH(new ImageIcon("resources//foxHorizontal1.png"));
 	public final static ImageIcon FOX_VERTICAL2 = resizeFoxV(new ImageIcon("resources//foxVertical2.png"));
-	public final static ImageIcon FOX_HORIZONTAL2 = resize(new ImageIcon("resources//foxHorizontal2.png"));
+	public final static ImageIcon FOX_HORIZONTAL2 = resizeFoxH(new ImageIcon("resources//foxHorizontal2.png"));
 	public final static ImageIcon MUSHROOM = resizeMushroom(new ImageIcon("resources//mushroom.png"));
 	public final static ImageIcon LOGO = new ImageIcon("resources//logo.png");
 	public final static ImageIcon HOLE_WITH_MUSHROOM = resizeMushroom(new ImageIcon("resources//mushroomInHole.png"));
@@ -36,6 +36,11 @@ public class Resources {
 	public static ImageIcon resizeFoxV(ImageIcon icon) {
 		Image img = icon.getImage();
 		return new ImageIcon(img.getScaledInstance(155, 155, java.awt.Image.SCALE_SMOOTH));
+	}
+	
+	public static ImageIcon resizeFoxH(ImageIcon icon) {
+		Image img = icon.getImage();
+		return new ImageIcon(img.getScaledInstance(164, 164, java.awt.Image.SCALE_SMOOTH));
 	}
 	
 	//Add resize for horizontal fox and hole with brown + grey

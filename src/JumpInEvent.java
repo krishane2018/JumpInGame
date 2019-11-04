@@ -8,8 +8,10 @@ import java.util.EventObject;
 public class JumpInEvent extends EventObject {
 	private static final long serialVersionUID = 1L;
 	private GameObject chosenPiece; 
-	private Point coordinate1;
-	private Point coordinate2;
+	private Point initialLocation1;
+	private Point initialLocation2;
+	private Point finalLocation1;
+	private Point finalLocation2;
 	private Point[] holes;
 	
 	/**
@@ -19,11 +21,13 @@ public class JumpInEvent extends EventObject {
 	 * @param p 			The new coordinate of the GameObject
 	 * @param holes 		The coordinates of all of the holes on the board
 	 */
-	public JumpInEvent(Object source, GameObject chosenPiece, Point p, Point[] holes) {
+	public JumpInEvent(Object source, GameObject chosenPiece, Point initialLocation, Point finalLocation, Point[] holes) {
 		super(source);
 		this.chosenPiece = chosenPiece;
-		this.coordinate1 = p;
-		this.coordinate2 = new Point();
+		this.initialLocation1 = initialLocation;
+		this.finalLocation1 = finalLocation;
+		this.initialLocation2 = new Point();
+		this.finalLocation2 = new Point();
 		this.holes = holes;
 	}
 	
@@ -35,11 +39,14 @@ public class JumpInEvent extends EventObject {
 	 * @param p2			The second new coordinate of the GameObject
 	 * @param holes 		The coordinates of all of the holes on the board
 	 */
-	public JumpInEvent(Object source, GameObject chosenPiece, Point p1, Point p2, Point holes[]) {
+	public JumpInEvent(Object source, GameObject chosenPiece, Point initialLocation1, Point intialLocation2,
+			Point finalLocation1, Point finalLocation2, Point holes[]) {
 		super(source);
 		this.chosenPiece = chosenPiece;
-		this.coordinate1 = p1;
-		this.coordinate2 = p2;
+		this.initialLocation1 = initialLocation1;
+		this.initialLocation2 = intialLocation2;
+		this.finalLocation1 = finalLocation1;
+		this.finalLocation2 = finalLocation2;
 		this.holes = holes;
 	}
 	
@@ -67,36 +74,38 @@ public class JumpInEvent extends EventObject {
 		this.chosenPiece = chosenPiece;
 	}
 
-	/**
-	 * Get the first coordinate of the game piece
-	 * @return A Point object of the coordinate
-	 */
-	public Point getCoordinate1() {
-		return coordinate1;
+	public Point getInitialLocation1() {
+		return initialLocation1;
 	}
 
-	/**
-	 * Set the first coordinate of the game piece
-	 * @param coordinate1 A Point object of the coordinate
-	 */
-	public void setCoordinate1(Point coordinate1) {
-		this.coordinate1 = coordinate1;
+	public void setInitialLocation1(Point initialLocation1) {
+		this.initialLocation1 = initialLocation1;
 	}
 
-	/**
-	 * Get the second coordinate
-	 * @return A point object of the second coordinate
-	 */
-	public Point getCoordinate2() {
-		return coordinate2;
+	public Point getInitialLocation2() {
+		return initialLocation2;
 	}
 
-	/**
-	 * Set the second coordinate 
-	 * @param coordinate2 A point object of the second x,y coordinate
-	 */
-	public void setCoordinate2(Point coordinate2) {
-		this.coordinate2 = coordinate2;
+	public void setInitialLocation2(Point initialLocation2) {
+		this.initialLocation2 = initialLocation2;
 	}
+
+	public Point getFinalLocation1() {
+		return finalLocation1;
+	}
+
+	public void setFinalLocation1(Point finalLocation1) {
+		this.finalLocation1 = finalLocation1;
+	}
+
+	public Point getFinalLocation2() {
+		return finalLocation2;
+	}
+
+	public void setFinalLocation2(Point finalLocation2) {
+		this.finalLocation2 = finalLocation2;
+	}
+
+	
 
 }
