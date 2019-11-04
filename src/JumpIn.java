@@ -162,14 +162,15 @@ public class JumpIn {
 			return false;
 		}
 		if (move.getChosenAnimal().getClass().getSimpleName() == "Rabbit") {
-			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), holes);
+			event = new JumpInEvent(this, move.getChosenAnimal(), move.getChosenAnimal().getCoordinate(), move.getFinalLocation(), holes);
 			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(
 					new Point(move.getInitialLocation().x, move.getInitialLocation().y));
 			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
 
 		} else {
-			event = new JumpInEvent(this, move.getChosenAnimal(), move.getFinalLocation(), move.getFinalLocation2(),
-					holes);
+			Fox tempFox  = (Fox)move.getChosenAnimal();
+			event = new JumpInEvent(this, move.getChosenAnimal(), tempFox.getCoordinate(), tempFox.getCoordinate2(),
+					move.getFinalLocation(), move.getFinalLocation2(), holes);
 			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(
 					new Point(move.getInitialLocation().x, move.getInitialLocation().y));
 			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = new GameObject(
@@ -178,18 +179,18 @@ public class JumpIn {
 			gameBoard[move.getFinalLocation2().y][move.getFinalLocation2().x] = move.getChosenAnimal();
 		}
 
-		// Need to update the view first 
-		for (int i = 0; i < listeners.size(); i++) {
-			JumpInListener l = listeners.get(i);
-			if(l instanceof JumpInView) {
-				l.handleEvent(event);
-			} 
-		}
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
 				l.handleEvent(event);
 			}
+		}
+		
+		for (int i = 0; i < listeners.size(); i++) {
+			JumpInListener l = listeners.get(i);
+			if(l instanceof JumpInView) {
+				l.handleEvent(event);
+			} 
 		}
 
 		return checkWin();
@@ -226,6 +227,7 @@ public class JumpIn {
 				for(Point pt : foxLocation) {
 					if (pt.equals(finalLocation)) selectedInOptions = true;
 				}
+				if (selectedInOptions) break;
 			}
 			System.out.println(selectedInOptions);
 			if (selectedInOptions) {
