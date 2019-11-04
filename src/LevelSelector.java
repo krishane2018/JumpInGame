@@ -72,7 +72,7 @@ public class LevelSelector {
 			// Mushroom positions
 			Point p3 = new Point(1,0);
 			Point p4 = new Point(2,1);
-			Point p5 = new Point(1,3);
+			Point p5 = new Point(1,2);
 			
 			mushroomPositions.add(p3);
 			mushroomPositions.add(p4);

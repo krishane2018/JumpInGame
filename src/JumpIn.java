@@ -70,7 +70,7 @@ public class JumpIn {
 	 * @param y
 	 * @return
 	 */
-	private boolean isHole(int x, int y) {
+	public boolean isHole(int x, int y) {
 		for (int i = 0; i < holes.length; i++) {
 			if (holes[i].getX() == x && holes[i].getY() == y) {
 				return true;
@@ -136,12 +136,16 @@ public class JumpIn {
 	 */
 	private boolean checkWin() {
 		for (int i = 0; i < listeners.size(); i++) {
-			GameObject g = (GameObject) listeners.get(i);
-			if (g.getClass().getSimpleName().equals("Rabbit")) {
-				Rabbit r = (Rabbit) g;
-				if (r.getStatus() == false) {
-					return false;
+			if(listeners.get(i) instanceof GameObject) {
+				GameObject g = (GameObject) listeners.get(i);
+				if (g.getClass().getSimpleName().equals("Rabbit")) {
+					Rabbit r = (Rabbit) g;
+					if (r.getStatus() == false) {
+						return false;
+					}
 				}
+			} else {
+				
 			}
 		}
 		return true;
@@ -174,11 +178,16 @@ public class JumpIn {
 			gameBoard[move.getFinalLocation2().y][move.getFinalLocation2().x] = move.getChosenAnimal();
 		}
 
+		// Need to update the view first 
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
 				l.handleEvent(event);
-			} else if ((GameObject) l == move.getChosenAnimal()) {
+			} 
+		}
+		for (int i = 0; i < listeners.size(); i++) {
+			JumpInListener l = listeners.get(i);
+			if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
 				l.handleEvent(event);
 			}
 		}
@@ -272,7 +281,7 @@ public class JumpIn {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(3);
+		JumpIn game = new JumpIn(1);
 //		game.printWelcome();
 //		game.play();
 		JumpInView view = new JumpInView(game);
