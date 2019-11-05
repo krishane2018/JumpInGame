@@ -27,7 +27,7 @@ public class MainMenu extends JFrame implements WinListener {
 	/**
 	 * Creates all the panels and adds it to the card layout.
 	 * 
-	 * @param view
+	 * @param view - sets game panel
 	 */
 	public MainMenu(JumpInView view) {
 		this.view = view;
@@ -82,7 +82,7 @@ public class MainMenu extends JFrame implements WinListener {
 	}
 
 	/**
-	 * 
+	 * getter for view
 	 * @return
 	 */
 	public JumpInView getView() {
