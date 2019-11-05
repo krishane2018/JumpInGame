@@ -12,10 +12,58 @@ class TestGameObject {
 	}
 
 	@Test
-	void testGameObjectConstructorIllegalArgument() {
-		assertThrows(IllegalArgumentException.class, () -> {
-			new GameObject(new Point(-1, 1), "F1");
-		});
+	void testGameObjectConstructorIllegalArgumentLowerX() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(-1,1), "F1");
+			  });	
+	}
+	
+	@Test
+	void testGameObjectConstructorIllegalArgumentLowerY() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(1,-1), "F1");
+			  });	
 	}
 
+	@Test
+	void testGameObjectConstructorIllegalArgumentUpperX() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(5,1), "F1");
+			  });	
+	}
+	
+	@Test
+	void testGameObjectConstructorIllegalArgumentUpperY() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(1,5), "F1");
+			  });	
+	}
+	
+	@Test
+	void test1ArgsGameObjectConstructorIllegalArgumentLowerX() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(-1,1));
+			  });	
+	}
+	
+	@Test
+	void test1ArgsGameObjectConstructorIllegalArgumentLowerY() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(1,-1));
+			  });	
+	}
+	
+	@Test
+	void test1ArgsGameObjectConstructorIllegalArgumentUpperX() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(5,1));
+			  });	
+	}
+	
+	@Test
+	void test1ArgsGameObjectConstructorIllegalArgumentUpperY() {
+		 assertThrows(IllegalArgumentException.class, () -> {
+			    new GameObject(new Point(1,5));
+			  });	
+	}
 }

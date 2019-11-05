@@ -38,7 +38,7 @@ public class JumpIn {
 	 * @return
 	 */
 
-	public String objectToString(int x, int y) {
+	private String objectToString(int x, int y) {
 		if (isHole(x, y) && gameBoard[y][x].getClass().getSimpleName().equals("Rabbit")) {
 			return gameBoard[y][x].getName() + "H";
 		} else if (isHole(x, y)) {
@@ -55,7 +55,7 @@ public class JumpIn {
 	 * @param y
 	 * @return
 	 */
-	private boolean isHole(int x, int y) {
+	public boolean isHole(int x, int y) {
 		for (int i = 0; i < HOLES.length; i++) {
 			if (HOLES[i].getX() == x && HOLES[i].getY() == y) {
 				return true;
