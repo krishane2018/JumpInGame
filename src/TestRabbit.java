@@ -1,4 +1,4 @@
-package test;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,10 +9,6 @@ import java.util.HashSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import source.GameObject;
-import source.JumpIn;
-import source.JumpInEvent;
-import source.Rabbit;
 
 class TestRabbit {
 

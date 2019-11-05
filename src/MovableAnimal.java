@@ -1,4 +1,4 @@
-package source;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.function.Function;

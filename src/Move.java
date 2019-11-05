@@ -1,12 +1,10 @@
-package source;
+
 
 /**
 *@author Krishan Easparan
 **/
 
 import java.awt.Point;
-
-import test.Utility;
 
 public class Move {
 	private Point initialLocation;

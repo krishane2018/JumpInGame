@@ -1,4 +1,4 @@
-package test;
+
 import java.awt.Point;
 import java.util.function.Function;
 

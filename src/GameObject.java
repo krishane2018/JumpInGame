@@ -1,7 +1,5 @@
-package source;
-import java.awt.Point;
 
-import test.Utility;
+import java.awt.Point;
 
 /**
  * 
