@@ -22,11 +22,7 @@ public class JumpInEvent extends EventObject {
 	 * @param holes       The coordinates of all of the holes on the board
 	 */
 	public JumpInEvent(Object source, GameObject chosenPiece, Point p, Point[] holes) {
-		super(source);
-		this.chosenPiece = chosenPiece;
-		this.coordinate1 = p;
-		this.coordinate2 = new Point();
-		this.holes = holes;
+		this(source, chosenPiece, p, new Point(), holes);
 	}
 
 	/**
@@ -42,8 +38,13 @@ public class JumpInEvent extends EventObject {
 	public JumpInEvent(Object source, GameObject chosenPiece, Point p1, Point p2, Point holes[]) {
 		super(source);
 		this.chosenPiece = chosenPiece;
-		this.coordinate1 = p1;
-		this.coordinate2 = p2;
+		if (Utility.checkValidPoint(p1)&&Utility.checkValidPoint(p2)) {
+			this.coordinate1 = p1;
+			this.coordinate2 = p2;
+		}
+		else {
+			throw new IllegalArgumentException("Points must be between (0,0) and (4,4)");
+		}
 		this.holes = holes;
 	}
 
