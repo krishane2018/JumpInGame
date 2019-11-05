@@ -31,8 +31,6 @@ public class MainMenu extends JFrame implements WinListener {
 
 		play = new MainMenuButton("PLAY!");
 		play.addActionListener(al);
-//		next = new MainMenuButton("NEXT");			
-//		next.addActionListener(al);
 		exit = new MainMenuButton("EXIT");
 		exit.addActionListener(al);
 
@@ -47,9 +45,7 @@ public class MainMenu extends JFrame implements WinListener {
 		menu.setBackground(new Color(152, 233, 233));
 
 		win.setLayout(null);
-		// next.setBounds(350, 250, 100, 50);
 		exit.setBounds(350, 350, 100, 50);
-		// win.add(next);
 		win.add(exit);
 		win.setBackground(new Color(152, 233, 233));
 
