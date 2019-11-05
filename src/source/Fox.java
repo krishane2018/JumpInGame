@@ -28,7 +28,7 @@ public class Fox extends MovableAnimal {
 	public Fox(Point p1, Point p2, String name, String direction) {
 		super(p1, name);
 		if (Utility.checkValidPoint(p2)) {
-			this.coordinate2 = p2;
+			this.coordinate2 = p2; 
 		}
 		else {
 			throw new IllegalArgumentException("Points must be between (0,0) and (4,4)");
