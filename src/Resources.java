@@ -20,6 +20,7 @@ public class Resources {
 	public final static ImageIcon FOX_VERTICAL2 = resizeFoxV(new ImageIcon("resources//foxVertical2.png"));
 	public final static ImageIcon FOX_HORIZONTAL2 = resizeFoxH(new ImageIcon("resources//foxHorizontal2.png"));
 	public final static ImageIcon MUSHROOM = resizeMushroom(new ImageIcon("resources//mushroom.png"));
+	public final static ImageIcon LOGO = new ImageIcon("resources//logo.png");
 	public final static ImageIcon HOLE_WITH_MUSHROOM = resizeMushroom(new ImageIcon("resources//mushroomInHole.png"));
 	public final static ImageIcon HOLE_WITH_WHITE = resize(new ImageIcon("resources//whiteRabbitInHole.png"));
 	public final static ImageIcon HOLE_WITH_BROWN = resize(new ImageIcon("resources//brownRabbitInHole.png"));

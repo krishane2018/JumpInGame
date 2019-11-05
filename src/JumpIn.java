@@ -18,6 +18,7 @@ public class JumpIn {
 
 	private GameObject[][] gameBoard;
 	private ArrayList<JumpInListener> listeners;
+	private WinListener winListener;
 	private Parser parser;
 	private int level;
 	private LevelSelector levelSelector;
@@ -27,7 +28,7 @@ public class JumpIn {
 
 	/**
 	 * 
-	 * @param i
+	 * @param level
 	 */
 	public JumpIn(int level) {
 		this.level = level;
@@ -38,10 +39,18 @@ public class JumpIn {
 		parser = new Parser();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public GameObject[][] getGameBoard() {
 		return gameBoard;
 	}
 
+	/**
+	 * 
+	 * @param gameBoard
+	 */
 	public void setGameBoard(GameObject[][] gameBoard) {
 		this.gameBoard = gameBoard;
 	}
@@ -53,7 +62,7 @@ public class JumpIn {
 	 * @return
 	 */
 
-	private String objectToString(int x, int y) {
+	public String objectToString(int x, int y) {
 		if (isHole(x, y) && gameBoard[y][x].getClass().getSimpleName().equals("Rabbit")) {
 			return gameBoard[y][x].getName() + "H";
 		} else if (isHole(x, y)) {
@@ -64,6 +73,10 @@ public class JumpIn {
 		return "  ";
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getLevel() {
 		return level;
 	}
@@ -343,7 +356,8 @@ public class JumpIn {
 	public static void main(String[] args) {
 		JumpIn game = new JumpIn(3);
 		JumpInView view = new JumpInView(game);
-		JumpInController controller = new JumpInController(view, game);
+		MainMenu menu = new MainMenu(view);
+		JumpInController controller = new JumpInController(menu.getView(), game);
 
 	}
 
