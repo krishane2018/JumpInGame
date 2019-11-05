@@ -39,7 +39,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 			}
 		}
 		
-		Board.create(model.getLevel(), this, model);
+		Board.create(this, model);
 		this.add(panel);	
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
