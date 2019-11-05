@@ -31,8 +31,8 @@ public class JumpInEvent extends EventObject {
 		this.chosenPiece = chosenPiece;
 		this.initialLocation1 = initialLocation;
 		this.finalLocation1 = finalLocation;
-		this.initialLocation2 = new Point();
-		this.finalLocation2 = new Point();
+		this.initialLocation2 = new Point(0,0);
+		this.finalLocation2 = new Point(0,0);
 		this.holes = holes;
 	}
 
@@ -51,16 +51,11 @@ public class JumpInEvent extends EventObject {
 		super(source);
 		this.chosenPiece = chosenPiece;
 
-		if (Utility.checkValidPoint(initialLocation1)&&Utility.checkValidPoint(initialLocation2)
-				&&Utility.checkValidPoint(finalLocation1)&&Utility.checkValidPoint(finalLocation2)) {
-			this.initialLocation1 = initialLocation1;
-			this.initialLocation2 = intialLocation2;
-			this.finalLocation1 = finalLocation1;
-			this.finalLocation2 = finalLocation2;
-		}
-		else {
-			throw new IllegalArgumentException("Points must be between (0,0) and (4,4)");
-		}
+		this.initialLocation1 = initialLocation1;
+		this.initialLocation2 = intialLocation2;
+		this.finalLocation1 = finalLocation1;
+		this.finalLocation2 = finalLocation2;
+		
 	
 		this.holes = holes;
 	}

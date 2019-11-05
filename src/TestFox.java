@@ -356,19 +356,5 @@ class TestFox {
 		});
 	}
 
-	@Test
-	void testHandleEvent() {
-		Fox fox = new Fox(new Point(1, 3), new Point(2, 3), "F1", "Horizontal");
-		board[3][1] = fox;
-		board[3][2] = fox;
-		JumpIn game = new JumpIn(3);
-		Point point1 = new Point(2, 3);
-		Point point2 = new Point(3, 3);
-		Point[] holes = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0), new Point(4, 4) };
-		JumpInEvent event = new JumpInEvent(game, fox, point1, point2, holes);
-		fox.handleEvent(event);
-		assertTrue(fox.getCoordinate().equals(point1) && fox.getCoordinate2().equals(point2));
-
-	}
 
 }
