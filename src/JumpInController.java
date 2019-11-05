@@ -57,7 +57,7 @@ public class JumpInController implements MouseListener {
 		GameButton b = (GameButton)e.getSource();
 		// If a button was clicked, user is in selecting state as long as not in moving state
 		inSelectingState = (inMovingState ? false : true);
-		if(inSelectingState) { 
+		if (inSelectingState) { 
 			initialLocation = b.getCoordinate();
 			if(view.highlightOptions(initialLocation)) {
 				inSelectingState = false;
