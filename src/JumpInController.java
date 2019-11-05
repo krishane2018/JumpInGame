@@ -59,7 +59,7 @@ public class JumpInController implements MouseListener {
 		inSelectingState = (inMovingState ? false : true);
 		if (inSelectingState) { 
 			initialLocation = b.getCoordinate();
-			if(view.highlightOptions(initialLocation)) {
+			if(model.showOptions(initialLocation, true)) {
 				inSelectingState = false;
 				inMovingState = true;
 			}
@@ -69,10 +69,9 @@ public class JumpInController implements MouseListener {
 			if(moved) {
 				inMovingState = false;
 				inSelectingState = true;
-				view.highlight(model.selectedAnimalType(finalLocation), false);
+				model.showOptions(finalLocation, false);
 			} else {
-				boolean startNewMove = view.didNotMove(initialLocation,finalLocation, model.selectedAnimalType(initialLocation), model.selectedAnimalType(finalLocation) );
-				inMovingState = startNewMove ? false : true;
+
 			}
 		}
 	}

@@ -204,7 +204,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param selectedAnimalType - the type of movable animal that was selected, either a rabbit or fox
 	 * @param highlight - whether the user would like to highlight the options or remove highlight
 	 */
-	public void highlight(String selectedAnimalType, boolean highlight) {
+	public boolean highlight(String selectedAnimalType, boolean highlight) {
 		if (selectedAnimalType.equals("Rabbit")){
 			for (Object o : options) {
 				Point pt = (Point)o;
@@ -220,6 +220,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 				}
 			}
 		}
+		return true;
 	}
 	
 	public boolean didNotMove(Point initialLocation, Point finalLocation, String initialType, String finalType) {
