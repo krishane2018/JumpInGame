@@ -1,5 +1,8 @@
+
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -22,7 +25,12 @@ public class Fox extends MovableAnimal {
 	 */
 	public Fox(Point p1, Point p2, String name, String direction) {
 		super(p1, name);
-		this.coordinate2 = p2;
+		if (Utility.checkValidPoint(p2)) {
+			this.coordinate2 = p2; 
+		}
+		else {
+			throw new IllegalArgumentException("Points must be between (0,0) and (4,4)");
+		}
 		this.direction = direction;
 		correctPointOrdering();
 
@@ -115,12 +123,12 @@ public class Fox extends MovableAnimal {
 			super.setCoordinate(e.getFinalLocation1());
 			setCoordinate2(e.getFinalLocation2());
 			correctPointOrdering();
+			this.options.clear();
 		}
 	}
 
 	@Override
 	public ArrayList<Object> determineOptions(GameObject[][] gameBoard) {
-		ArrayList<Object> options = new ArrayList<Object>();
 		int startingPosition1, startingPosition2, uniformCoordinate;
 		startingPosition1 = startingPosition2 = uniformCoordinate = -1;
 
@@ -170,7 +178,8 @@ public class Fox extends MovableAnimal {
 	}
 
 	protected boolean moveLogicHelper(GameObject space) {
-		return space.getName().equals("");
+		List<Point> list = Arrays.asList(LevelSelector.getHoles());
+		return space.getName().equals("") && !list.contains(space.getCoordinate());
 	}
 
 	protected void addOption(int changingCoordinate, int uniformCoordinate, ArrayList<Object> options,
@@ -190,7 +199,10 @@ public class Fox extends MovableAnimal {
 	}
 
 	@Override
-	public String displayOptions(ArrayList<Object> options) {
+	public String displayOptions(GameObject[][] gameBoard) {
+		if (options.isEmpty()) {
+			this.determineOptions(gameBoard);
+		}
 		String output = "";
 		int counter = 1;
 

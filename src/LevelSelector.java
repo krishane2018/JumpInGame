@@ -1,3 +1,4 @@
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +7,7 @@ import java.util.HashMap;
  * 
  * @author Nick Anderson and Aashna Narang
  *
- * Initialize a game board
+ *         Initialize a game board
  */
 public class LevelSelector {
 	private GameObject[][] board;
@@ -18,9 +19,14 @@ public class LevelSelector {
 	private HashMap<ArrayList<Point>, String> foxInitialPositions;
 
 	/**
+<<<<<<< HEAD
+	 * Initialize a game board
+	 * 
+=======
 	 * Initialize a game board depending on the level
+>>>>>>> refs/heads/AashnaViewController
 	 * @param level which level the user would like to play
-	 * @param game the JumpIn game object
+	 * @param game  the JumpIn game object
 	 */
 	public LevelSelector(int level, JumpIn game) {
 		rabbitInitialPositions = new ArrayList<Point>();
@@ -29,10 +35,10 @@ public class LevelSelector {
 		if (1 > level | level > 3) {
 			throw new IllegalArgumentException("Levels must be between 1-3");
 		}
-		board = new GameObject[5][5]; 
+		board = new GameObject[5][5];
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
-				board[j][i] = new GameObject(new Point(i, j)); 
+				board[j][i] = new GameObject(new Point(i, j));
 			}
 		}
 
@@ -156,17 +162,19 @@ public class LevelSelector {
 	
 	/**
 	 * Get the coordinates of the rabbit holes
-	 * @return an array of Point objects 
+	 * 
+	 * @return an array of Point objects
 	 */
 	public static Point[] getHoles() {
 		return HOLES;
 	}
-	
+
 	/**
-	 * Return the game board 
+	 * Return the game board
+	 * 
 	 * @return a 2d array of the GameObjects
 	 */
-	public GameObject[][] getBoard(){
+	public GameObject[][] getBoard() {
 		return this.board;
 	}
 
@@ -211,5 +219,6 @@ public class LevelSelector {
 	public void setFoxInitialPositions(HashMap<ArrayList<Point>, String> foxInitialPositions) {
 		this.foxInitialPositions = foxInitialPositions;
 	}
+
 }
 	
