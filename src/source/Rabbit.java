@@ -1,6 +1,9 @@
+package source;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.function.Function;
+
+import test.Utility;
 
 /**
  * 
@@ -80,12 +83,16 @@ public class Rabbit extends MovableAnimal {
 			return true;
 
 		Rabbit r = (Rabbit) o;
-		return (super.getCoordinate() == r.getCoordinate() & this.status == r.getStatus()
-				& super.getName() == r.getName());
+		return (super.getCoordinate().equals(r.getCoordinate()) && this.status == r.getStatus()
+				&& super.getName().equals(r.getName()));
 	}
 
 	@Override
-	public String displayOptions(ArrayList<Object> options) {
+	public String displayOptions(GameObject[][] gameBoard) {
+		if (options.isEmpty()) {
+			this.determineOptions(gameBoard);
+		}
+
 		String output = "";
 		int counter = 1;
 		if (options.isEmpty()) {
@@ -103,7 +110,6 @@ public class Rabbit extends MovableAnimal {
 	@Override
 	public ArrayList<Object> determineOptions(GameObject[][] gameBoard) {
 
-		ArrayList<Object> options = new ArrayList<Object>();
 		int x = this.getX1();
 		int y = this.getY1();
 
