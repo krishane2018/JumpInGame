@@ -45,6 +45,14 @@ public class JumpInController implements MouseListener {
 				inMovingState = false;
 				inSelectingState = true;
 				view.highlight(model.selectedAnimalType(finalLocation), false);
+			} 
+			else if (model.selectedAnimalType(finalLocation).equals("GameObject")) {
+				view.displayInvalidOption();
+			}
+			else {
+				inMovingState = false;
+				inSelectingState = true;
+				view.highlight(model.selectedAnimalType(initialLocation), false);
 			}
 		}
 	}

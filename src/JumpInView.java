@@ -123,4 +123,8 @@ public class JumpInView extends JFrame implements JumpInListener {
 			}
 		}
 	}
+	
+	public void displayInvalidOption() {
+		JOptionPane.showMessageDialog(null, "Invalid Option. Please pick one of the highlighted options.");
+	}
 }
