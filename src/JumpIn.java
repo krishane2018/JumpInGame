@@ -4,11 +4,13 @@ import java.util.HashMap;
 
 /**
  * 
- * @author Kush Gopeechund
+ * @author Kush Gopeechund and Aashna Narang
  * 
  * 
  *
  */
+// TODO add an easy and hard mode - easy is with highlight, hard without
+
 public class JumpIn {
 
 	private GameObject[][] gameBoard;
@@ -87,7 +89,7 @@ public class JumpIn {
 	}
 
 	/**
-	 * 
+	 * Use this function if you'd like to play the text based game
 	 */
 	public void play() {
 
@@ -158,25 +160,31 @@ public class JumpIn {
 	 */
 	private boolean processCommand(Move move) {
 		JumpInEvent event;
+		int initialX = move.getInitialLocation().x;
+		int initialY = move.getInitialLocation().y;
+		int finalX = move.getFinalLocation().x;
+		int finalY = move.getFinalLocation().y;
+		
 		if (move.isNoMove()) {
 			return false;
 		}
 		if (move.getChosenAnimal().getClass().getSimpleName() == "Rabbit") {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getChosenAnimal().getCoordinate(), move.getFinalLocation(), holes);
-			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(
-					new Point(move.getInitialLocation().x, move.getInitialLocation().y));
-			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
+			gameBoard[initialY][initialX] = new GameObject(new Point(initialX, initialY));
+			gameBoard[finalY][finalX] = move.getChosenAnimal();
 
 		} else {
+			int initial2X = move.getInitialLocation2().x;
+			int initial2Y = move.getInitialLocation2().y;
+			int final2X = move.getFinalLocation2().x;
+			int final2Y = move.getFinalLocation2().y;
 			Fox tempFox  = (Fox)move.getChosenAnimal();
 			event = new JumpInEvent(this, move.getChosenAnimal(), tempFox.getCoordinate(), tempFox.getCoordinate2(),
 					move.getFinalLocation(), move.getFinalLocation2(), holes);
-			gameBoard[move.getInitialLocation().y][move.getInitialLocation().x] = new GameObject(
-					new Point(move.getInitialLocation().x, move.getInitialLocation().y));
-			gameBoard[move.getInitialLocation2().y][move.getInitialLocation2().x] = new GameObject(
-					new Point(move.getInitialLocation2().x, move.getInitialLocation2().y));
-			gameBoard[move.getFinalLocation().y][move.getFinalLocation().x] = move.getChosenAnimal();
-			gameBoard[move.getFinalLocation2().y][move.getFinalLocation2().x] = move.getChosenAnimal();
+			gameBoard[initialY][initialX] = new GameObject(new Point(initialX, initialY));
+			gameBoard[initial2Y][initial2X] = new GameObject(new Point(initial2X, initial2X));
+			gameBoard[finalY][finalX] = move.getChosenAnimal();
+			gameBoard[final2Y][final2X] = move.getChosenAnimal();
 		}
 
 		for (int i = 0; i < listeners.size(); i++) {
@@ -196,11 +204,21 @@ public class JumpIn {
 		return checkWin();
 	}
 
+	/**
+	 * Get the type of Animal on the board at a given point
+	 * @param p Coordinate on the board the user would like to check
+	 * @return a string with the name of the class - Rabbit object returns "Rabbit" for example
+	 */
 	public String selectedAnimalType(Point p) {
 		GameObject g = gameBoard[p.y][p.x];
 		return g.getClass().getSimpleName();
 	}
 	
+	/**
+	 * Get the list of legal options to move an object at a given point
+	 * @param p Coordinate where user would like to check where the legal options are
+	 * @return the list of either point arrays (fox since they take up 2 spaces) or list of points (for rabbits)
+	 */
 	public ArrayList<Object> getAnimalOptions(Point p) {
 		GameObject g = gameBoard[p.y][p.x];
 		if(g instanceof MovableAnimal) {
@@ -211,15 +229,21 @@ public class JumpIn {
 		}
 	}
 	
+	/**
+	 * This function is called from the controller whenever the user gives input. This function 
+	 * updates the game board if necessary 
+	 * @param initial - the initial location of the animal / location of the animal user would like to move
+	 * @param finalLocation - location of where the user would like to move the animal
+	 * @return true if animal can be moved there, otherwise false
+	 */
 	public boolean moveAnimal(Point initial, Point finalLocation) {
 		GameObject g = gameBoard[initial.y][initial.x];
 		ArrayList<Object> options = getAnimalOptions(initial);
 		
-		if(selectedAnimalType(initial).contentEquals("Rabbit") && options.contains(finalLocation)) {
+		if(selectedAnimalType(initial).equals("Rabbit") && options.contains(finalLocation)) {
 			processCommand(new Move(initial, finalLocation, g));
-			System.out.print("moved rabbit");
 			return true;
-		} else if (selectedAnimalType(initial).contentEquals("Fox")) {
+		} else if (selectedAnimalType(initial).equals("Fox")) {
 			boolean selectedInOptions = false;
 			Point foxLocation[] = (Point[])options.get(0);
 			for(Object o : options) {
@@ -231,8 +255,6 @@ public class JumpIn {
 			}
 			System.out.println(selectedInOptions);
 			if (selectedInOptions) {
-				System.out.print(g instanceof GameObject);
-				System.out.println("moved fox");
 				Fox f = (Fox)g;
 				processCommand(new Move(f.getCoordinate(), f.getCoordinate2(), foxLocation[0], foxLocation[1], g));
 				return true;
@@ -266,29 +288,50 @@ public class JumpIn {
 		return JumpIn.NUM_COLUMNS;
 	}
 	
+	/**
+	 * Get the initial positions of the mushroom for the current level
+	 * @return an array list of all the coordinates of the mushrooms
+	 */
 	public ArrayList<Point> getInitialMushroomPositions() {
 		return levelSelector.getMushroomPositions();
 	}
 	
+	/**
+	 * Get the initial positions of the rabbits for the current level
+	 * @return an array list of all the coordinates of the mushrooms
+	 */
 	public ArrayList<Point> getInitialRabbitPositions() {
 		return levelSelector.getRabbitInitialPositions();
 	}
 	
+	/**
+	 * Get the initial positions of the foxes for the current level
+	 * @return hash map of all array list of the coordinate of the fox (key) and 
+	 * their orientation (vertical or horizontal) (value)
+	 */
 	public HashMap<ArrayList<Point>, String> getInitialFoxPositions() {
 		return levelSelector.getFoxInitialPositions();
 	}
+	
+	/**
+	 * Checks if object at given location is a rabbit
+	 * @param p coordinate user would like to check
+	 * @return true if it is a rabbit
+	 */
+	public boolean isRabbit(Point p) {
+		return gameBoard[p.y][p.x].getClass().getSimpleName().contentEquals("Rabbit");
+	}
 
 	/**
-	 * 
-	 * @param args
+	 * Creates a game, the GUI, and the controller which handles user input
+	 * @param args 
 	 */
 	public static void main(String[] args) {
 		JumpIn game = new JumpIn(3);
-//		game.printWelcome();
-//		game.play();
-		MainMenu menu = new MainMenu();
-		JumpInController controller = new JumpInController(menu.getView(), game);
+		JumpInView view = new JumpInView(game);
+		JumpInController controller = new JumpInController(view, game);
 
 	}
+
 
 }
