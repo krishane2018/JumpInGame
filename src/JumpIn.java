@@ -322,7 +322,7 @@ public class JumpIn {
 	}
 
 	/**
-	 * 
+	 * Creates a game, the GUI, and the controller which handles user input
 	 * @param args
 	 */
 	public static void main(String[] args) {
