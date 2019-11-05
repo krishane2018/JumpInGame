@@ -1,9 +1,14 @@
+package test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import source.JumpIn;
+import source.JumpInEvent;
+import source.Rabbit;
 
 class TestJumpInEvent {
 
