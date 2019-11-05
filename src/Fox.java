@@ -120,8 +120,8 @@ public class Fox extends MovableAnimal {
 	public void handleEvent(JumpInEvent e) {
 		Fox f = (Fox) e.getChosenPiece();
 		if (f.equals(this)) {
-			super.setCoordinate(e.getCoordinate1());
-			setCoordinate2(e.getCoordinate2());
+			super.setCoordinate(e.getFinalLocation1());
+			setCoordinate2(e.getFinalLocation2());
 			correctPointOrdering();
 			this.options.clear();
 		}

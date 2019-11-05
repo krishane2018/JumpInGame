@@ -8,9 +8,12 @@ import java.util.EventObject;
  *         JumpInEvents are created when a user makes a move
  */
 public class JumpInEvent extends EventObject {
-	private GameObject chosenPiece;
-	private Point coordinate1;
-	private Point coordinate2;
+
+	private GameObject chosenPiece; 
+	private Point initialLocation1;
+	private Point initialLocation2;
+	private Point finalLocation1;
+	private Point finalLocation2;
 	private Point[] holes;
 
 	/**
@@ -22,8 +25,15 @@ public class JumpInEvent extends EventObject {
 	 * @param p           The new coordinate of the GameObject
 	 * @param holes       The coordinates of all of the holes on the board
 	 */
-	public JumpInEvent(Object source, GameObject chosenPiece, Point p, Point[] holes) {
-		this(source, chosenPiece, p, new Point(), holes);
+
+	public JumpInEvent(Object source, GameObject chosenPiece, Point initialLocation, Point finalLocation, Point[] holes) {
+		super(source);
+		this.chosenPiece = chosenPiece;
+		this.initialLocation1 = initialLocation;
+		this.finalLocation1 = finalLocation;
+		this.initialLocation2 = new Point();
+		this.finalLocation2 = new Point();
+		this.holes = holes;
 	}
 
 	/**
@@ -36,16 +46,22 @@ public class JumpInEvent extends EventObject {
 	 * @param p2          The second new coordinate of the GameObject
 	 * @param holes       The coordinates of all of the holes on the board
 	 */
-	public JumpInEvent(Object source, GameObject chosenPiece, Point p1, Point p2, Point holes[]) {
+	public JumpInEvent(Object source, GameObject chosenPiece, Point initialLocation1, Point intialLocation2,
+			Point finalLocation1, Point finalLocation2, Point holes[]) {
 		super(source);
 		this.chosenPiece = chosenPiece;
-		if (Utility.checkValidPoint(p1)&&Utility.checkValidPoint(p2)) {
-			this.coordinate1 = p1;
-			this.coordinate2 = p2;
+
+		if (Utility.checkValidPoint(initialLocation1)&&Utility.checkValidPoint(initialLocation2)
+				&&Utility.checkValidPoint(finalLocation1)&&Utility.checkValidPoint(finalLocation2)) {
+			this.initialLocation1 = initialLocation1;
+			this.initialLocation2 = intialLocation2;
+			this.finalLocation1 = finalLocation1;
+			this.finalLocation2 = finalLocation2;
 		}
 		else {
 			throw new IllegalArgumentException("Points must be between (0,0) and (4,4)");
 		}
+	
 		this.holes = holes;
 	}
 
@@ -77,39 +93,94 @@ public class JumpInEvent extends EventObject {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Get the first coordinate of the game piece
 	 * 
 	 * @return A Point object of the coordinate
+=======
+	 * Get the location of the first coordinate of the initial location of the animal
+	 * @return x,y coordinate of initial location
+>>>>>>> refs/heads/AashnaViewController
 	 */
-	public Point getCoordinate1() {
-		return coordinate1;
+	public Point getInitialLocation1() {
+		return initialLocation1;
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Set the first coordinate of the game piece
 	 * 
 	 * @param coordinate1 A Point object of the coordinate
+=======
+	 * Set the location of the first coordinate of the initial location of the animal
+	 * @param initialLocation1 - x,y coordinate of initial location
+>>>>>>> refs/heads/AashnaViewController
 	 */
-	public void setCoordinate1(Point coordinate1) {
-		this.coordinate1 = coordinate1;
+	public void setInitialLocation1(Point initialLocation1) {
+		this.initialLocation1 = initialLocation1;
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Get the second coordinate
 	 * 
 	 * @return A point object of the second coordinate
+=======
+	 * Get the location of the second coordinate of the initial location of the animal if it exists otherwise
+	 * it is an empty point object
+	 * @return x,y coordinate of initial location
+>>>>>>> refs/heads/AashnaViewController
 	 */
-	public Point getCoordinate2() {
-		return coordinate2;
+	public Point getInitialLocation2() {
+		return initialLocation2;
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Set the second coordinate
 	 * 
 	 * @param coordinate2 A point object of the second x,y coordinate
+=======
+	 * Set the location of the second coordinate of the initial location of the animal
+	 * @param initialLocation2 - x,y coordinate of initial location
+>>>>>>> refs/heads/AashnaViewController
 	 */
-	public void setCoordinate2(Point coordinate2) {
-		this.coordinate2 = coordinate2;
+	public void setInitialLocation2(Point initialLocation2) {
+		this.initialLocation2 = initialLocation2;
 	}
+
+	/**
+	 * Get the first coordinate of final location 
+	 * @return coordinate of final location
+	 */
+	public Point getFinalLocation1() {
+		return finalLocation1;
+	}
+
+	/**
+	 * set the first coordinate of final location
+	 * @param finalLocation1 coordinate of final location
+	 */
+	public void setFinalLocation1(Point finalLocation1) {
+		this.finalLocation1 = finalLocation1;
+	}
+
+	/**
+	 * get the second coordinate of final location if it exists
+	 * @return the coordinate of final location 
+	 */
+	public Point getFinalLocation2() {
+		return finalLocation2;
+	}
+
+	/**
+	 * set the second coordinate of final location if it exists
+	 * @param finalLocation2 - the coordinate of final location
+	 */
+	public void setFinalLocation2(Point finalLocation2) {
+		this.finalLocation2 = finalLocation2;
+	}
+
+	
 
 }

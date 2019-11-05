@@ -340,7 +340,7 @@ class TestRabbit {
 		Point point1 = new Point(2, 3);
 		Point[] holes = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0), new Point(4, 4) };
 
-		JumpInEvent event = new JumpInEvent(game, rabbit, point1, holes);
+		JumpInEvent event = new JumpInEvent(game, rabbit, point1, point1, holes);
 		rabbit.handleEvent(event);
 		assertTrue(rabbit.getCoordinate().equals(point1));
 	}
