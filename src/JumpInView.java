@@ -33,7 +33,7 @@ public class JumpInView extends JFrame implements JumpInListener{
 				panel.add(buttons[j][i]);
 			}
 		}
-		this.setTitle("JumpIn");					
+		//this.setTitle("JumpIn");					
 		Board.create(model.getLevel(), this, model);
 	}
 

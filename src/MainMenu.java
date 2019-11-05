@@ -12,16 +12,56 @@ public class MainMenu extends JFrame implements WinListener {
 	private static final long serialVersionUID = 1L;
 
 	CardLayout layout;
-	JPanel menu, content, win;
+	JPanel menu, content, win, game;
 	MainMenuButton play, easy, hard, next, exit;
 	JumpIn jumpIn;
 	JumpInView view;
 
 	public MainMenu() {
 
+		jumpIn= new JumpIn(3);
+		view= new JumpInView(jumpIn);
+		
+		this.setTitle("JumpIn");
+		this.setVisible(true);
+		this.setSize(800,800);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
+		
+		layout = new CardLayout();
+		content = new JPanel();
+		content.setLayout(layout);
+		
+		actionListener al = new actionListener();
+		play = new MainMenuButton("PLAY!");
+		play.addActionListener(al);
+		exit = new MainMenuButton("EXIT");
+		exit.addActionListener(al);
+		JLabel logo = new JLabel(Resources.LOGO);
+		menu = new JPanel();
+		menu.setLayout(null);
+		play.setBounds(350, 250, 100, 50);
+		exit.setBounds(350, 350, 100, 50);
+		logo.setBounds(160, 0, 500, 300);
+		menu.add(logo);
+		menu.add(play);
+		menu.add(exit);
+		menu.setBackground(new Color(152, 233, 233));
+		
+		win = new JPanel();
+		win.setLayout(null);
+		exit.setBounds(350, 350, 100, 50);
+		win.add(exit);
+		win.setBackground(new Color(152, 233, 233));
+		
+		content.add(menu,"Menu");
+		content.add(view.getGame(), "Game");
+		content.add(win, "Win");
+		
+		layout.show(content, "Menu");
+		this.add(content);
+		/*
 		JPanel panel = new JPanel();
-		jumpIn = new JumpIn(3);
-		view = new JumpInView(jumpIn);
 		layout = new CardLayout();
 		menu = new JPanel();
 		content = new JPanel();
@@ -62,7 +102,7 @@ public class MainMenu extends JFrame implements WinListener {
 		this.setResizable(false);
 		this.setSize(800, 800);
 		this.setVisible(true);
-
+	*/
 	}
 
 	public void handleEvent(WinEvent e) {
