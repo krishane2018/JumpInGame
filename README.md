@@ -28,7 +28,8 @@ Data Structure-
 Changes:
 We added a GUI component to the game, to replace the text-based version. This required us
 to create several new clasess including, Board, GameButton, JumpInController, JumpInEvent, 
-JumpInView, MainMenu, MainMenuButton, Resources, Utility, WinEvent and WinListener.
+JumpInView, MainMenu, MainMenuButton, Resources, Utility, WinEvent and WinListener. We also
+added all the test cases.
 
 Issues:
 We didn't figure out how to implement the win listener, so the user never gets notified when
