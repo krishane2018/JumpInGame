@@ -18,7 +18,7 @@ public class LevelSelector {
 	private HashMap<ArrayList<Point>, String> foxInitialPositions;
 
 	/**
-	 * Initialize a game board
+	 * Initialize a game board depending on the level
 	 * @param level which level the user would like to play
 	 * @param game the JumpIn game object
 	 */
@@ -116,6 +116,12 @@ public class LevelSelector {
 		}
 	}
 
+	/**
+	 * Initialize all of the given positions to a game object with a certain name to it
+	 * @param type - type of animal user would like to initialize. R = rabbit, M = Mushroom
+	 * @param arr - Array of coordinates of where to initialize objects to 
+	 * @param game - the jump in game the objects may listen to for events and updates
+	 */
 	private void gameObjectInit(char type, ArrayList<Point> arr, JumpIn game) {
 		for(int i = 0; i < arr.size(); i++) {
 			Point p = arr.get(i);
@@ -132,6 +138,10 @@ public class LevelSelector {
 		}
 	}
 	
+	/**
+	 * Initialize all fox objects at the initial positions 
+	 * @param game - the game that the fox objects listen to for events and updates
+	 */
 	private void foxObjectInit(JumpIn game) {
 		int i = 1;
 		for (ArrayList<Point> p : foxInitialPositions.keySet()) {
@@ -143,6 +153,7 @@ public class LevelSelector {
 			board[p1.y][p1.x] = f;
 		}
 	}
+	
 	/**
 	 * Get the coordinates of the rabbit holes
 	 * @return an array of Point objects 

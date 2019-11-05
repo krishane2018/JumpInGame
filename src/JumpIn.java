@@ -2,6 +2,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.text.View;
+
 /**
  * 
  * @author Kush Gopeechund and Aashna Narang
@@ -269,6 +271,17 @@ public class JumpIn {
 				Fox f = (Fox)g;
 				processCommand(new Move(f.getCoordinate(), f.getCoordinate2(), foxLocation[0], foxLocation[1], g));
 				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean showOptions(Point initialLocation, boolean show) {
+		for (int i = 0; i < listeners.size(); i++) {
+			JumpInListener l = listeners.get(i);
+			if(l instanceof JumpInView) {
+				if(show) return ((JumpInView) l).highlightOptions(initialLocation);
+				else return ((JumpInView) l).highlight(selectedAnimalType(initialLocation), false);
 			}
 		}
 		return false;
