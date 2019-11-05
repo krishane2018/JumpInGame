@@ -118,10 +118,5 @@ class TestJumpInEvent {
 					new Point(4, 4) });
 			  });	
 	}
-	
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
 
 }

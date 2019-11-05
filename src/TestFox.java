@@ -350,7 +350,7 @@ class TestFox {
 	@Test
 	void testFoxConstructorIllegalArgument() {
 		assertThrows(IllegalArgumentException.class, () -> {
-			new Fox(new Point(-1, 1), new Point(0, -1), "F1", "north");
+			new Fox(new Point(0, 1), new Point(0, -1), "F1", "north");
 		});
 	}
 

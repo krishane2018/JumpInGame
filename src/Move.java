@@ -14,20 +14,21 @@ public class Move {
 	private boolean noMove;
 
 	public Move(Point initialLocation, Point finalLocation, GameObject chosenAnimal) {
-		this.initialLocation = initialLocation;
-		this.finalLocation = finalLocation;
-		this.chosenAnimal = chosenAnimal;
-		this.initialLocation2 = new Point();
-		this.finalLocation2 = new Point();
-		noMove = false;
+		this(initialLocation, new Point(), finalLocation, new Point(), chosenAnimal);
 	}
 
 	public Move(Point initialLocation, Point initialLocation2, Point finalLocation, Point finalLocation2,
 			GameObject chosenAnimal) {
-		this.initialLocation = initialLocation;
-		this.finalLocation = finalLocation;
-		this.initialLocation2 = initialLocation2;
-		this.finalLocation2 = finalLocation2;
+		if (Utility.checkValidPoint(initialLocation)&&Utility.checkValidPoint(initialLocation2)
+				&&Utility.checkValidPoint(finalLocation)&&Utility.checkValidPoint(finalLocation2)) {
+			this.initialLocation = initialLocation;
+			this.finalLocation = finalLocation;
+			this.initialLocation2 = initialLocation2;
+			this.finalLocation2 = finalLocation2;
+		}
+		else {
+			throw new IllegalArgumentException("Points must be between (0,0) and (4,4)");
+		}
 		this.chosenAnimal = chosenAnimal;
 		noMove = false;
 	}

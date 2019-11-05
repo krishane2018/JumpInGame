@@ -26,7 +26,12 @@ public class GameObject {
 	 * @param name The name of the piece
 	 */
 	public GameObject(Point p, String name) {
-		this.coordinate = p;
+		if (Utility.checkValidPoint(p)) {
+			this.coordinate = p;
+		}
+		else {
+			throw new IllegalArgumentException("Points must be between (0,0) and (4,4)");
+		}
 		this.name = name;
 	}
 
