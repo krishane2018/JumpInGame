@@ -3,6 +3,12 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 
+/**
+ * Main menu button acts a a default button for the main menu.
+ * 
+ * @author Kush Gopeechund
+ *
+ */
 public class MainMenuButton extends JButton{
 	private static final long serialVersionUID = 1L;
 

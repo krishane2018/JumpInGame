@@ -8,17 +8,30 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+/**
+ * 
+ * The main menu class is a JFrame that holds all the panels in a card layout. This allows
+ * the user to view the main menu, game, and a win panel.
+ * 
+ * @author Kush Gopeechund
+ *
+ */
 public class MainMenu extends JFrame implements WinListener {
 	private static final long serialVersionUID = 1L;
 
 	CardLayout layout;
-	JPanel menu, content, win, game;
+	JPanel menu, content, win;
 	MainMenuButton play, easy, hard, next, exit;
-	JumpIn jumpIn= new JumpIn(3);
-	JumpInView view= new JumpInView(jumpIn);;
+	JumpInView view;
 
-	public MainMenu() {
-
+	/**
+	 * Creates all the panels and adds it to the card layout.
+	 * 
+	 * @param view
+	 */
+	public MainMenu(JumpInView view) {
+		this.view = view;
+		
 		JPanel panel = new JPanel();
 		layout = new CardLayout();
 		menu = new JPanel();
@@ -35,7 +48,6 @@ public class MainMenu extends JFrame implements WinListener {
 		JLabel logo = new JLabel(Resources.LOGO);
 		menu.setLayout(null);
 		play.setBounds(350, 250, 100, 50);
-		exit.setBounds(350, 350, 100, 50);
 		logo.setBounds(160, 0, 500, 300);
 		menu.add(logo);
 		menu.add(play);
@@ -62,14 +74,28 @@ public class MainMenu extends JFrame implements WinListener {
 		this.setVisible(true);
 	}
 
+	/**
+	 * @param e
+	 */
 	public void handleEvent(WinEvent e) {
 		layout.show(content, "Win");
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public JumpInView getView() {
 		return view;
 	}
 
+	/**
+	 * A new action listener class was created to change what
+	 * happens when the buttons are clicked.
+	 * 
+	 * @author Kush Gopeechund
+	 *
+	 */
 	public class actionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
