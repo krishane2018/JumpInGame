@@ -192,7 +192,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @return true if options were highlighted, false otherwise
 	 */
 	public boolean highlightOptions(Point initialLocation) {
-		options = model.getAnimalOptions(initialLocation);
+		this.options = model.getAnimalOptions(initialLocation);
 		String selectedAnimalType = model.selectedAnimalType(initialLocation);
 		if(options.isEmpty() && (selectedAnimalType.equals("Rabbit") || selectedAnimalType.equals("Fox"))){
 			JOptionPane.showMessageDialog(null, "Selected box has no available moves");
@@ -201,7 +201,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 			JOptionPane.showMessageDialog(null, "Please select an animal to move");
 			return false;
 		}
-		highlight(selectedAnimalType, true);
+		highlight(selectedAnimalType, true, initialLocation);
 		return true;
 	}
 	
@@ -211,7 +211,8 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param selectedAnimalType - the type of movable animal that was selected, either a rabbit or fox
 	 * @param highlight - whether the user would like to highlight the options or remove highlight
 	 */
-	public boolean highlight(String selectedAnimalType, boolean highlight) {
+	public boolean highlight(String selectedAnimalType, boolean highlight, Point location) {
+		if(!highlight) options = model.getAnimalOptions(location);
 		if (selectedAnimalType.equals("Rabbit")){
 			for (Object o : options) {
 				Point pt = (Point)o;
@@ -222,23 +223,12 @@ public class JumpInView extends JFrame implements JumpInListener {
 			for(Object o : options) {
 				Point point[] = (Point[])o;
 				for (Point pt : point) {
-					System.out.println(pt);
 					if(highlight) highlightOption(pt);
 					else unhighlight(pt);
 				}
 			}
 		}
 		return true;
-	}
-	
-	public boolean didNotMove(Point initialLocation, Point finalLocation, String initialType, String finalType) {
-		if(model.isRabbit(finalLocation) && (initialType.equals("Rabbit"))) {
-			highlight(initialType, false);
-			return false;
-		} else {
-			JOptionPane.showMessageDialog(null, "Invalid move");
-			return true;
-		}
 	}
 	
 	public void displayInvalidOption() {

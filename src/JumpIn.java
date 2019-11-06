@@ -202,19 +202,14 @@ public class JumpIn {
 			gameBoard[finalY][finalX] = move.getChosenAnimal();
 			gameBoard[final2Y][final2X] = move.getChosenAnimal();
 		}
-
-		for (int i = 0; i < listeners.size(); i++) {
-			JumpInListener l = listeners.get(i);
-			if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
-				l.handleEvent(event);
-			}
-		}
 		
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
 				l.handleEvent(event);
-			} 
+			} else if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
+				l.handleEvent(event);
+			}
 		}
 
 		return checkWin();
@@ -269,7 +264,6 @@ public class JumpIn {
 				}
 				if (selectedInOptions) break;
 			}
-			System.out.println(selectedInOptions);
 			if (selectedInOptions) {
 				Fox f = (Fox)g;
 				processCommand(new Move(f.getCoordinate(), f.getCoordinate2(), foxLocation[0], foxLocation[1], g));
@@ -279,12 +273,12 @@ public class JumpIn {
 		return false;
 	}
 	
-	public boolean showOptions(Point initialLocation, boolean show) {
+	public boolean showOptions(Point location, boolean show) {
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
-				if(show) return ((JumpInView) l).highlightOptions(initialLocation);
-				else return ((JumpInView) l).highlight(selectedAnimalType(initialLocation), false);
+				if(show) return ((JumpInView) l).highlightOptions(location);
+				else return ((JumpInView) l).highlight(selectedAnimalType(location), false, location);
 			}
 		}
 		return false;
@@ -354,7 +348,7 @@ public class JumpIn {
 	 * @param args 
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(3);
+		JumpIn game = new JumpIn(1);
 		JumpInView view = new JumpInView(game);
 		MainMenu menu = new MainMenu(view);
 		JumpInController controller = new JumpInController(menu.getView(), game);
