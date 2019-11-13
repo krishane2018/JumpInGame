@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
  * @author Kush Gopeechund
  *
  */
-public class MainMenu extends JFrame implements WinListener {
+public class MainMenu extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	CardLayout layout;
@@ -60,7 +60,7 @@ public class MainMenu extends JFrame implements WinListener {
 		win.setBackground(new Color(152, 233, 233));
 
 		content.setLayout(layout);
-		content.add(view.getGame(), "Game");
+		content.add(view.getPanel(), "Game");
 		content.add(menu, "Menu");
 		content.add(win, "Win");
 		this.setContentPane(content);
@@ -77,7 +77,7 @@ public class MainMenu extends JFrame implements WinListener {
 	/**
 	 * @param e
 	 */
-	public void handleEvent(WinEvent e) {
+	public void handleWin() {
 		layout.show(content, "Win");
 	}
 
@@ -100,7 +100,6 @@ public class MainMenu extends JFrame implements WinListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JButton src = (JButton) e.getSource();
-
 			if (src.equals(play)) {
 				layout.show(content, "Game");
 			} else if (src.equals(next)) {

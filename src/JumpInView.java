@@ -1,9 +1,5 @@
-import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -15,8 +11,9 @@ import javax.swing.*;
 public class JumpInView extends JFrame implements JumpInListener {
 	private GameButton[][] buttons;
 	private JumpIn model;
-	JPanel panel = new JPanel();
-	GridLayout g;
+	private JPanel panel;
+	private GridLayout g;
+	private MainMenu mainMenu;
 
 	/**
 	 * JumpInView (JFrame) constructor that creates a grid of Game Buttons and adds them all to 
@@ -30,10 +27,11 @@ public class JumpInView extends JFrame implements JumpInListener {
 		this.model = model;
 		int rows = JumpIn.NUM_ROWS;
 		int cols = JumpIn.NUM_COLUMNS;
-
+		
 		model.addListener(this);
 		buttons = new GameButton[rows][cols];
 		g = new GridLayout(rows, cols, 0, 0);
+		this.panel = new JPanel();
 		panel.setLayout(g);
 
 		for(int i = 0; i < rows; i++) {
@@ -43,6 +41,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 			}
 		}
 		Board.create(this, model);
+		this.mainMenu = new MainMenu(this);
 	}
 
 	/**
@@ -62,10 +61,11 @@ public class JumpInView extends JFrame implements JumpInListener {
 	}
 
 	
-	public JPanel getGame() {
+	public JPanel getPanel() {
 		return panel;
 	}
 
+	
 
 	@Override
 	/**
@@ -83,6 +83,10 @@ public class JumpInView extends JFrame implements JumpInListener {
 		} else if (e.getChosenPiece().getClass().getSimpleName().contentEquals("Fox")) {
 			handleFox(initialLocation, e.getInitialLocation2(), finalLocation1, e.getFinalLocation2());
 		}
+	}
+	
+	public void handleWin() {
+		mainMenu.handleWin();
 	}
 	
 	/**

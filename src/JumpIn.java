@@ -18,7 +18,6 @@ public class JumpIn {
 
 	private GameObject[][] gameBoard;
 	private ArrayList<JumpInListener> listeners;
-	private WinListener winListener;
 	private Parser parser;
 	private int level;
 	private LevelSelector levelSelector;
@@ -233,16 +232,28 @@ public class JumpIn {
 		}
 		
 		
+
+		for (int i = 0; i < listeners.size(); i++) {
+			JumpInListener l = listeners.get(i);
+			if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
+				l.handleEvent(event);
+			}
+		}
+		
+		boolean win = checkWin();
+			
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
 				l.handleEvent(event);
-			} else if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
-				l.handleEvent(event);
+				if(win) {
+					JumpInView v =(JumpInView)l;
+					v.handleWin();
+				}
 			}
 		}
 
-		return checkWin();
+		return win;
 	}
 
 	/**
@@ -379,11 +390,9 @@ public class JumpIn {
 	 */
 
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(3);
+		JumpIn game = new JumpIn(2);
 		JumpInView view = new JumpInView(game);
 		JumpInController controller = new JumpInController(view, game);
-		MainMenu menu = new MainMenu(view);
-
 	}
 
 
