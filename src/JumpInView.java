@@ -215,7 +215,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 			for(Object o : options) {
 				Point point[] = (Point[])o;
 				for (Point pt : point) {
-					System.out.println(pt);
 					if(highlight) highlightOption(pt);
 					else unhighlight(pt);
 				}

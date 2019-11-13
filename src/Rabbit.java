@@ -111,6 +111,8 @@ public class Rabbit extends MovableAnimal {
 		int x = this.getX1();
 		int y = this.getY1();
 
+		options.clear();
+		
 		helperDetermineOptions(options, x - 1, y, Utility.getDecrement(), Utility.getIncrement(), gameBoard,
 				"Horizontal");
 
