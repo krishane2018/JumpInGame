@@ -74,7 +74,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param e - A JumpInEvent object created by the model. It includes all the necessary information needed to move 
 	 * a piece on the board (initial location(s), final location(s), chosen piece)
 	 */
-
 	public void handleEvent(JumpInEvent e) {
 		Point initialLocation = e.getInitialLocation1();
 		Point finalLocation1 = e.getFinalLocation1();

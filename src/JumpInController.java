@@ -25,6 +25,7 @@ public class JumpInController implements MouseListener {
 	private boolean inSelectingState;
 	private Point initialLocation;
 	private Point finalLocation;
+	private UndoRedo undoRedo;
 	
 	/**
 	 * Initialize all instance variables and add the controller as a listener to events created by
@@ -33,6 +34,7 @@ public class JumpInController implements MouseListener {
 	 * @param model - The object that handles all the updates of the actual game 
 	 */
 	public JumpInController(JumpInView view, JumpIn model) {
+		undoRedo = new UndoRedo();
 		this.view = view; 
 		this.model = model;
 		this.inMovingState = false;
@@ -70,6 +72,7 @@ public class JumpInController implements MouseListener {
 		} else if (inMovingState) {
 			finalLocation = b.getCoordinate();
 			boolean moved = model.moveAnimal(initialLocation, finalLocation);
+			undoRedo.addMove(initialLocation, finalLocation);
 			if(moved) {
 				inMovingState = false;
 				inSelectingState = true;

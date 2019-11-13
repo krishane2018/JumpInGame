@@ -1,26 +1,28 @@
+import java.awt.Point;
 import java.util.Stack;
 
 public class UndoRedo {
 
-	private Stack<Move> undo;
-	private Stack<Move> redo;
+	private Stack<Point[]> undo;
+	private Stack<Point[]> redo;
 	
 	public UndoRedo() {
-		undo = new Stack<Move>();
-		redo = new Stack<Move>();
+		undo = new Stack<Point[]>();
+		redo = new Stack<Point[]>();
 	}
 	
-	public Move undoMove() {
+	public Point[] undoMove() {
 		redo.add(undo.pop());
 		return undo.peek();
 	}
 	
-	public void addMove(Move move) {
+	public void addMove(Point initial, Point fin) {
 		redo.clear();
+		Point[] move = {initial,fin};
 		undo.add(move);
 	}
 	
-	public Move redoMove() {
+	public Point[] redoMove() {
 		undo.add(redo.pop());
 		return undo.peek();
 	}
