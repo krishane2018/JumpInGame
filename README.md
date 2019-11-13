@@ -27,8 +27,4 @@ This required us to create several new clasess including, Board, GameButton, Jum
 JumpInEvent, JumpInView, MainMenu, MainMenuButton, Resources, Utility, WinEvent and WinListener. 
 We also added all the test cases for all the logical components of the game(not the GUI).
 
-Issues:
-We didn't figure out how to implement the win listener, so the user never gets notified when
-the game is done and is able to continue the game. Highlight stopped working after we merged,
-we couldn't get it to work again in time, but we will work on it in the future.
 
