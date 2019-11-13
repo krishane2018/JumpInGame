@@ -39,10 +39,10 @@ public class JumpIn {
 		parser = new Parser();
 	}
 
-	public void solver(GameObject[][] currentGameBoard, MovableAnimal previousAnimal, Point previousPoint) {
+	public void solver(MovableAnimal previousAnimal, Point previousPoint) {
 		for (JumpInListener l : listeners) {
 			MovableAnimal animal = (MovableAnimal)l;
-			ArrayList<Object>options = animal.determineOptions(currentGameBoard);
+			ArrayList<Object>options = animal.determineOptions(gameBoard);
 			for(Object option : options) {
 				if (animal instanceof Rabbit) {
 					Point rabbitOption = (Point)option;
@@ -50,7 +50,7 @@ public class JumpIn {
 						continue;
 					}
 					else {
-						processCommand(new Move(animal.getCoordinate(), rabbitOption, animal), currentGameBoard);
+						processCommand(new Move(animal.getCoordinate(), rabbitOption, animal));
 					}
 				}
 				else if (animal instanceof Fox) {
@@ -59,10 +59,10 @@ public class JumpIn {
 						continue;
 					}
 					else {
-						processCommand(new Move(((Fox) animal).getCoordinates(), foxOption, animal), currentGameBoard);
+						processCommand(new Move(((Fox) animal).getCoordinates(), foxOption, animal));
 					}
 				}
-				solver(currentGameBoard, animal, animal.getCoordinate());
+				solver(animal, animal.getCoordinate());
 			}
 		}
 	}
@@ -156,7 +156,7 @@ public class JumpIn {
 				move = parser.confirmOption(options, (Fox) chosenAnimal, chosenAnimal.displayOptions(gameBoard));
 			}
 			// Moves the animal to the user's selected position on the game board.
-			finished = processCommand(move, gameBoard);
+			finished = processCommand(move);
 			System.out.println(toString());
 		}
 		String status = parser.playAgain();
@@ -203,7 +203,7 @@ public class JumpIn {
 	 * @param move
 	 * @return
 	 */
-	private boolean processCommand(Move move, GameObject[][] gameBoard) {
+	private boolean processCommand(Move move) {
 		JumpInEvent event;
 		int initialX = move.getInitialLocation().x;
 		int initialY = move.getInitialLocation().y;
@@ -282,7 +282,7 @@ public class JumpIn {
 		ArrayList<Object> options = getAnimalOptions(initial);
 		
 		if(selectedAnimalType(initial).equals("Rabbit") && options.contains(finalLocation)) {
-			processCommand(new Move(initial, finalLocation, g), gameBoard);
+			processCommand(new Move(initial, finalLocation, g));
 			return true;
 		} else if (selectedAnimalType(initial).equals("Fox")) {
 			boolean selectedInOptions = false;
@@ -296,7 +296,7 @@ public class JumpIn {
 			}
 			if (selectedInOptions) {
 				Fox f = (Fox)g;
-				processCommand(new Move(f.getCoordinates(), foxLocation, g), gameBoard);
+				processCommand(new Move(f.getCoordinates(), foxLocation, g));
 				return true;
 			}
 		}
@@ -379,7 +379,7 @@ public class JumpIn {
 	 */
 
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(1);
+		JumpIn game = new JumpIn(3);
 	
 		JumpInView view = new JumpInView(game);
 
