@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 public class JumpInController implements MouseListener {
 	private JumpInView view;
 	private JumpIn model;
+	private ArrayList<Object> options;
 	/*
 	 * State is saved through inMovingState and inSelectingState
 	 * inSelectingState - the user is selecting which animal they would like to move
@@ -36,6 +37,8 @@ public class JumpInController implements MouseListener {
 		this.model = model;
 		this.inMovingState = false;
 		this.inSelectingState = false;
+		this.initialLocation = new Point();
+		this.finalLocation = new Point();
 		// listen to the events created by each button
 		GameButton[][] b = view.getButtons();
 		for(int i = 0; i < JumpIn.NUM_ROWS; i ++) {
@@ -59,7 +62,8 @@ public class JumpInController implements MouseListener {
 		inSelectingState = (inMovingState ? false : true);
 		if (inSelectingState) { 
 			initialLocation = b.getCoordinate();
-			if(model.showOptions(initialLocation, true)) {
+			options = model.getAnimalOptions(initialLocation);
+			if(model.showOptions(initialLocation, finalLocation, true, options)) {
 				inSelectingState = false;
 				inMovingState = true;
 			}
@@ -69,7 +73,7 @@ public class JumpInController implements MouseListener {
 			if(moved) {
 				inMovingState = false;
 				inSelectingState = true;
-				model.showOptions(finalLocation, false);
+				model.showOptions(finalLocation,finalLocation, false, options);
 			} 
 			else if (model.selectedAnimalType(finalLocation).equals("GameObject")) {
 				view.displayInvalidOption();
@@ -77,7 +81,7 @@ public class JumpInController implements MouseListener {
 			else {
 				inMovingState = false;
 				inSelectingState = true;
-				model.showOptions(initialLocation, false);	
+				model.showOptions(initialLocation,finalLocation, false, options);	
 			} 
 		}
 	}

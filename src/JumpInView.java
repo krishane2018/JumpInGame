@@ -15,7 +15,6 @@ import javax.swing.*;
 public class JumpInView extends JFrame implements JumpInListener {
 	private GameButton[][] buttons;
 	private JumpIn model;
-	private ArrayList<Object> options;
 	JPanel panel = new JPanel();
 	GridLayout g;
 
@@ -29,7 +28,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 
 	public JumpInView(JumpIn model){
 		this.model = model;
-		this.options = new ArrayList<Object>();
 		int rows = JumpIn.NUM_ROWS;
 		int cols = JumpIn.NUM_COLUMNS;
 
@@ -191,8 +189,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param initialLocation - the coordinate of the button the user selected
 	 * @return true if options were highlighted, false otherwise
 	 */
-	public boolean highlightOptions(Point initialLocation) {
-		this.options = model.getAnimalOptions(initialLocation);
+	public boolean highlightOptions(Point initialLocation, ArrayList<Object> options) {
 		String selectedAnimalType = model.selectedAnimalType(initialLocation);
 		if(options.isEmpty() && (selectedAnimalType.equals("Rabbit") || selectedAnimalType.equals("Fox"))){
 			JOptionPane.showMessageDialog(null, "Selected box has no available moves");
@@ -201,7 +198,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 			JOptionPane.showMessageDialog(null, "Please select an animal to move");
 			return false;
 		}
-		highlight(selectedAnimalType, true, initialLocation);
+		highlight(selectedAnimalType, true, options, initialLocation);
 		return true;
 	}
 	
@@ -209,10 +206,11 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * Go through all of the coordinates for possible moves of either a rabbit or fox and highlight them
 	 * or remove the  highlight depending on what is asked from the user. 
 	 * @param selectedAnimalType - the type of movable animal that was selected, either a rabbit or fox
-	 * @param highlight - whether the user would like to highlight the options or remove highlight
+	 * @param highlight - true if the user would like to highlight the options or false if remove highlight
+	 * @param options - the animal's options from the selecting state
+	 * @param location - initial location of the animal from the selecting state
 	 */
-	public boolean highlight(String selectedAnimalType, boolean highlight, Point location) {
-		if(!highlight) options = model.getAnimalOptions(location);
+	public boolean highlight(String selectedAnimalType, boolean highlight, ArrayList<Object> options, Point location) {
 		if (selectedAnimalType.equals("Rabbit")){
 			for (Object o : options) {
 				Point pt = (Point)o;
@@ -220,6 +218,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 				else unhighlight(pt);
 			}
 		} else if (selectedAnimalType.equals("Fox")) {
+			options = model.getAnimalOptions(location);
 			for(Object o : options) {
 				Point point[] = (Point[])o;
 				for (Point pt : point) {
@@ -231,6 +230,9 @@ public class JumpInView extends JFrame implements JumpInListener {
 		return true;
 	}
 	
+	/**
+	 * Displays an error message when an invalid option was clicked
+	 */
 	public void displayInvalidOption() {
 		JOptionPane.showMessageDialog(null, "Invalid Option. Please pick one of the highlighted options.");
 	}

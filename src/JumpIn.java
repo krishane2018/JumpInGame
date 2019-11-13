@@ -303,12 +303,12 @@ public class JumpIn {
 		return false;
 	}
 	
-	public boolean showOptions(Point location, boolean show) {
+	public boolean showOptions(Point initialLocation, Point finalLocation, boolean show, ArrayList<Object> options) {
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
-				if(show) return ((JumpInView) l).highlightOptions(location);
-				else return ((JumpInView) l).highlight(selectedAnimalType(location), false, location);
+				if(show) return ((JumpInView) l).highlightOptions(initialLocation, options);
+				else return ((JumpInView) l).highlight(selectedAnimalType(finalLocation), false, options, initialLocation);
 			}
 		}
 		return false;
@@ -379,12 +379,9 @@ public class JumpIn {
 	 */
 
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(1);
-	
+		JumpIn game = new JumpIn(3);
 		JumpInView view = new JumpInView(game);
-
 		JumpInController controller = new JumpInController(view, game);
-
 		MainMenu menu = new MainMenu(view);
 
 	}
