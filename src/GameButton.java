@@ -10,6 +10,7 @@ import javax.swing.JButton;
  *
  */
 public class GameButton extends JButton {
+	private static final long serialVersionUID = 1L;
 	private Point coordinate;
 	private Color background;
 

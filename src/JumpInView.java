@@ -1,5 +1,9 @@
+import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -8,12 +12,13 @@ import javax.swing.*;
  * @author Aashna Narang
  *
  */
-
 public class JumpInView extends JFrame implements JumpInListener {
 	private GameButton[][] buttons;
 	private JumpIn model;
 	private ArrayList<Object> options;
-	
+	JPanel panel = new JPanel();
+	GridLayout g;
+
 	/**
 	 * JumpInView (JFrame) constructor that creates a grid of Game Buttons and adds them all to 
 	 * a panel using a grid layout. The constructor also changes the default JFrame settings.
@@ -21,6 +26,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param Model - The JumpInGame that keeps track of the moves being made and if there is a win. The view listens 
 	 * to the model and changes the GUI respectively. 
 	 */
+
 	public JumpInView(JumpIn model){
 		this.model = model;
 		this.options = new ArrayList<Object>();
@@ -29,22 +35,16 @@ public class JumpInView extends JFrame implements JumpInListener {
 
 		model.addListener(this);
 		buttons = new GameButton[rows][cols];
-		JPanel panel = new JPanel();
-		GridLayout g = new GridLayout(rows, cols, 0, 0);
+		g = new GridLayout(rows, cols, 0, 0);
 		panel.setLayout(g);
+
 		for(int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				buttons[j][i] = new GameButton(new Point(j,i));
 				panel.add(buttons[j][i]);
 			}
 		}
-		
 		Board.create(this, model);
-		this.add(panel);	
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
-		this.setSize(800,800);
-		this.setVisible(true);	
 	}
 
 	/**
@@ -63,6 +63,12 @@ public class JumpInView extends JFrame implements JumpInListener {
 		this.buttons = buttons;
 	}
 
+	
+	public JPanel getGame() {
+		return panel;
+	}
+
+
 	@Override
 	/**
 	 * This function changes the view any time a change has occurred in the game depending on 
@@ -70,6 +76,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param e - A JumpInEvent object created by the model. It includes all the necessary information needed to move 
 	 * a piece on the board (initial location(s), final location(s), chosen piece)
 	 */
+
 	public void handleEvent(JumpInEvent e) {
 		Point initialLocation = e.getInitialLocation1();
 		Point finalLocation1 = e.getFinalLocation1();
@@ -185,7 +192,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @return true if options were highlighted, false otherwise
 	 */
 	public boolean highlightOptions(Point initialLocation) {
-		options = model.getAnimalOptions(initialLocation);
+		this.options = model.getAnimalOptions(initialLocation);
 		String selectedAnimalType = model.selectedAnimalType(initialLocation);
 		if(options.isEmpty() && (selectedAnimalType.equals("Rabbit") || selectedAnimalType.equals("Fox"))){
 			JOptionPane.showMessageDialog(null, "Selected box has no available moves");
@@ -194,7 +201,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 			JOptionPane.showMessageDialog(null, "Please select an animal to move");
 			return false;
 		}
-		highlight(selectedAnimalType, true);
+		highlight(selectedAnimalType, true, initialLocation);
 		return true;
 	}
 	
@@ -204,7 +211,8 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param selectedAnimalType - the type of movable animal that was selected, either a rabbit or fox
 	 * @param highlight - whether the user would like to highlight the options or remove highlight
 	 */
-	public boolean highlight(String selectedAnimalType, boolean highlight) {
+	public boolean highlight(String selectedAnimalType, boolean highlight, Point location) {
+		if(!highlight) options = model.getAnimalOptions(location);
 		if (selectedAnimalType.equals("Rabbit")){
 			for (Object o : options) {
 				Point pt = (Point)o;
@@ -221,16 +229,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 			}
 		}
 		return true;
-	}
-	
-	public boolean didNotMove(Point initialLocation, Point finalLocation, String initialType, String finalType) {
-		if(model.isRabbit(finalLocation) && (initialType.equals("Rabbit"))) {
-			highlight(initialType, false);
-			return false;
-		} else {
-			JOptionPane.showMessageDialog(null, "Invalid move");
-			return true;
-		}
 	}
 	
 	public void displayInvalidOption() {

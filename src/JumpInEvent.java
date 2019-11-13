@@ -8,7 +8,7 @@ import java.util.EventObject;
  *         JumpInEvents are created when a user makes a move
  */
 public class JumpInEvent extends EventObject {
-
+	private static final long serialVersionUID = 1L;
 	private GameObject chosenPiece; 
 	private Point initialLocation1;
 	private Point initialLocation2;
@@ -59,7 +59,7 @@ public class JumpInEvent extends EventObject {
 	
 		this.holes = holes;
 	}
-
+	
 	/**
 	 * Get the coordinates of the rabbit holes
 	 * 

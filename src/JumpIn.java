@@ -18,6 +18,7 @@ public class JumpIn {
 
 	private GameObject[][] gameBoard;
 	private ArrayList<JumpInListener> listeners;
+	private WinListener winListener;
 	private Parser parser;
 	private int level;
 	private LevelSelector levelSelector;
@@ -27,7 +28,7 @@ public class JumpIn {
 
 	/**
 	 * 
-	 * @param i
+	 * @param level
 	 */
 	public JumpIn(int level) {
 		this.level = level;
@@ -66,10 +67,19 @@ public class JumpIn {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+
 	public GameObject[][] getGameBoard() {
 		return gameBoard;
 	}
 
+	/**
+	 * 
+	 * @param gameBoard
+	 */
 	public void setGameBoard(GameObject[][] gameBoard) {
 		this.gameBoard = gameBoard;
 	}
@@ -81,7 +91,7 @@ public class JumpIn {
 	 * @return
 	 */
 
-	private String objectToString(int x, int y) {
+	public String objectToString(int x, int y) {
 		if (isHole(x, y) && gameBoard[y][x].getClass().getSimpleName().equals("Rabbit")) {
 			return gameBoard[y][x].getName() + "H";
 		} else if (isHole(x, y)) {
@@ -92,6 +102,10 @@ public class JumpIn {
 		return "  ";
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getLevel() {
 		return level;
 	}
@@ -217,20 +231,15 @@ public class JumpIn {
 			gameBoard[finalY][finalX] = move.getChosenAnimal();
 			gameBoard[final2Y][final2X] = move.getChosenAnimal();
 		}
-
-		for (int i = 0; i < listeners.size(); i++) {
-			JumpInListener l = listeners.get(i);
-			if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
-				l.handleEvent(event);
-			}
-		}
 		
 		
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
 				l.handleEvent(event);
-			} 
+			} else if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
+				l.handleEvent(event);
+			}
 		}
 
 		return checkWin();
@@ -285,7 +294,6 @@ public class JumpIn {
 				}
 				if (selectedInOptions) break;
 			}
-			System.out.println(selectedInOptions);
 			if (selectedInOptions) {
 				Fox f = (Fox)g;
 				processCommand(new Move(f.getCoordinates(), foxLocation, g), gameBoard);
@@ -295,12 +303,12 @@ public class JumpIn {
 		return false;
 	}
 	
-	public boolean showOptions(Point initialLocation, boolean show) {
+	public boolean showOptions(Point location, boolean show) {
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
-				if(show) return ((JumpInView) l).highlightOptions(initialLocation);
-				else return ((JumpInView) l).highlight(selectedAnimalType(initialLocation), false);
+				if(show) return ((JumpInView) l).highlightOptions(location);
+				else return ((JumpInView) l).highlight(selectedAnimalType(location), false, location);
 			}
 		}
 		return false;
@@ -369,12 +377,15 @@ public class JumpIn {
 	 * Creates a game, the GUI, and the controller which handles user input
 	 * @param args 
 	 */
+
 	public static void main(String[] args) {
 		JumpIn game = new JumpIn(1);
 	
 		JumpInView view = new JumpInView(game);
-		
+
 		JumpInController controller = new JumpInController(view, game);
+
+		MainMenu menu = new MainMenu(view);
 
 	}
 
