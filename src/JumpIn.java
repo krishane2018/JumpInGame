@@ -379,12 +379,7 @@ public class JumpIn {
 	 */
 
 	public static void main(String[] args) {
-<<<<<<< HEAD
 		JumpIn game = new JumpIn(3);
-=======
-		JumpIn game = new JumpIn(3);
-	
->>>>>>> branch 'master' of https://github.com/krishane2018/JumpInGame.git
 		JumpInView view = new JumpInView(game);
 		JumpInController controller = new JumpInController(view, game);
 		MainMenu menu = new MainMenu(view);
