@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.border.LineBorder;
 
 public class Board {
 	

@@ -3,7 +3,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.text.View;
 
 /**
  * 
