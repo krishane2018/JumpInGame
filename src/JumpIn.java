@@ -18,7 +18,7 @@ public class JumpIn {
 	private GameObject[][] gameBoard;
 	private ArrayList<JumpInListener> listeners;
 	private Parser parser;
-	private int level;
+	private int level = 1;
 	private LevelSelector levelSelector;
 	public final static int NUM_ROWS = 5;
 	public final static int NUM_COLUMNS = 5;
@@ -165,7 +165,6 @@ public class JumpIn {
 				JumpIn game = new JumpIn(level + 1);
 				game.play();
 			}
-
 		} else if (status == "exit") {
 			return;
 		}
@@ -254,7 +253,7 @@ public class JumpIn {
 
 		return win;
 	}
-
+	
 	/**
 	 * Get the type of Animal on the board at a given point
 	 * @param p Coordinate on the board the user would like to check
@@ -389,7 +388,7 @@ public class JumpIn {
 	 */
 
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(2);
+		JumpIn game = new JumpIn(1);
 		JumpInView view = new JumpInView(game);
 		JumpInController controller = new JumpInController(view, game);
 	}
