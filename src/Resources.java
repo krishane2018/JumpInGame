@@ -21,6 +21,7 @@ public class Resources {
 	public final static ImageIcon FOX_HORIZONTAL2 = resizeFoxH(new ImageIcon("resources//foxHorizontal2.png"));
 	public final static ImageIcon MUSHROOM = resizeMushroom(new ImageIcon("resources//mushroom.png"));
 	public final static ImageIcon LOGO = new ImageIcon("resources//logo.png");
+	public final static ImageIcon WIN = resizeTrophy(new ImageIcon("resources//win.png"));
 	public final static ImageIcon HOLE_WITH_MUSHROOM = resizeMushroom(new ImageIcon("resources//mushroomInHole.png"));
 	public final static ImageIcon HOLE_WITH_WHITE = resize(new ImageIcon("resources//whiteRabbitInHole.png"));
 	public final static ImageIcon HOLE_WITH_BROWN = resize(new ImageIcon("resources//brownRabbitInHole.png"));
@@ -37,6 +38,11 @@ public class Resources {
 		return new ImageIcon(img.getScaledInstance(220, 150, java.awt.Image.SCALE_SMOOTH));
 	}
 	
+	private static ImageIcon resizeTrophy(ImageIcon icon) {
+		Image img = icon.getImage();
+		return new ImageIcon(img.getScaledInstance(250, 250, java.awt.Image.SCALE_SMOOTH));
+	}
+
 	/**
 	 * Resize an rabbit image to fit in the button properly
 	 * @param icon The icon the user would like to resize

@@ -35,6 +35,18 @@ public class Board {
 		g = iterateThroughImagesFox(model.getInitialFoxPositions(), g);
 	}
 	
+	public static void reset(JumpInView view) {
+		GameButton[][] g = view.getButtons();
+		for(GameButton[] b2: g) {
+			for(GameButton b1:b2) {
+				b1.setIcon(Resources.GREEN_CIRCLE);
+			}
+		}
+		for(Point p : LevelSelector.getHoles()) {
+			g[p.y][p.x].setIcon(Resources.HOLE);
+		}
+	}
+	
 	/**
 	 * Private helper function used to go through each mushroom and rabbit image and initialize board piece with 
 	 * each icon in the given list. If a the list has more than one image, it will iterate through each image 

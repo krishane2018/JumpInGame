@@ -167,7 +167,6 @@ public class JumpIn {
 				JumpIn game = new JumpIn(level + 1);
 				game.play();
 			}
-
 		} else if (status == "exit") {
 			return;
 		}
@@ -257,7 +256,7 @@ public class JumpIn {
 
 		return win;
 	}
-
+	
 	/**
 	 * @return the undoRedo object
 	 */

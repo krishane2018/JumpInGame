@@ -52,6 +52,8 @@ public class MainMenu extends JFrame {
 		exit1.addActionListener(al);
 		exit2 = new MainMenuButton("EXIT");
 		exit2.addActionListener(al);
+		next = new MainMenuButton("NEXT");
+		next.addActionListener(al);
 
 		JLabel logo = new JLabel(Resources.LOGO);
 		menu.setLayout(null);
@@ -63,8 +65,13 @@ public class MainMenu extends JFrame {
 		menu.add(exit1);
 		menu.setBackground(new Color(152, 233, 233));
 		
+		JLabel trophy = new JLabel(Resources.WIN);
 		win.setLayout(null);
-		exit2.setBounds(350, 350, 100, 50);
+		trophy.setBounds(155, 0, 500, 300);
+		win.add(trophy);
+		next.setBounds(350, 300, 100, 50);
+		exit2.setBounds(350, 400, 100, 50);
+		win.add(next);
 		win.add(exit2);
 		win.setBackground(new Color(152, 233, 233));
 
@@ -156,6 +163,7 @@ public class MainMenu extends JFrame {
 				layout.show(content, "Game");
 				menuBar.setVisible(true);
 			} else if (src.equals(next)) {
+				view.createNextBoard();
 				layout.show(content, "Game");
 			} else if (src.equals(exit1)||src.equals(exit2)) {
 				SwingUtilities.getWindowAncestor((JPanel) src.getParent()).dispose();
