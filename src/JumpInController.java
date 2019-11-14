@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  *
  */
 
-public class JumpInController implements MouseListener {
+public class JumpInController implements MouseListener, ActionListener {
 	private JumpInView view;
 	private JumpIn model;
 	private ArrayList<Object> options;
@@ -46,6 +46,8 @@ public class JumpInController implements MouseListener {
 				b[i][j].addMouseListener(this);
 			}
 		}
+		view.getUndo().addActionListener(this);
+		view.getRedo().addActionListener(this);
 	}
 
 	@Override
@@ -70,7 +72,6 @@ public class JumpInController implements MouseListener {
 		} else if (inMovingState) {
 			finalLocation = b.getCoordinate();
 			boolean moved = model.moveAnimal(initialLocation, finalLocation);
-			undoRedo.addMove(initialLocation, finalLocation);
 			if(moved) {
 				inMovingState = false;
 				inSelectingState = true;
@@ -131,5 +132,19 @@ public class JumpInController implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals("undo")) {
+			model.undoMove();
+		} else if (e.getActionCommand().equals("redo")) {
+//			model.redoMove();
+		} else if (e.getActionCommand().equals("solve")) {
+//			model.solve();
+		} else {
+			
+		}
+		
+	}
 
 }

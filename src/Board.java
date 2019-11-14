@@ -18,8 +18,6 @@ public class Board {
 		GameButton[][] g = view.getButtons();
 		for(Point p : LevelSelector.getHoles()) {
 			g[p.y][p.x].setIcon(Resources.HOLE);
-			// TODO add white border around holes
-//			g[p.y][p.x].setBorder(new LineBorder(Color.WHITE, 3, true));
 		}
 		view.setButtons(g);
 		

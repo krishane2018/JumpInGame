@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -21,10 +22,13 @@ import javax.swing.SwingUtilities;
 public class MainMenu extends JFrame {
 	private static final long serialVersionUID = 1L;
 
+	private JMenu options;
+	private JMenuBar menuBar;
 	private CardLayout layout;
 	private JPanel menu, content, win;
 	private MainMenuButton play, easy, hard, next, exit1, exit2;
 	private JumpInView view;
+	private JMenuItem undo, redo, solve, exit;
 	
 	/**
 	 * Creates all the panels and adds it to the card layout.
@@ -64,6 +68,20 @@ public class MainMenu extends JFrame {
 		win.add(exit2);
 		win.setBackground(new Color(152, 233, 233));
 
+		options = new JMenu("options");
+		undo = new JMenuItem("undo");
+		redo = new JMenuItem("redo");
+		solve = new JMenuItem("solve");
+		exit = new JMenuItem("exit");
+		options.add(undo);
+		options.add(redo);
+		options.add(solve);
+		options.add(exit);
+		menuBar = new JMenuBar();
+		menuBar.add(options);
+		menuBar.setVisible(false);
+		this.setJMenuBar(menuBar);
+		
 		content.setLayout(layout);
 		content.add(view.getPanel(), "Game");
 		content.add(menu, "Menu");
@@ -93,6 +111,35 @@ public class MainMenu extends JFrame {
 	public JumpInView getView() {
 		return view;
 	}
+	
+
+	/**
+	 * @return the undo JMenuItem
+	 */
+	public JMenuItem getUndo() {
+		return undo;
+	}
+
+	/**
+	 * @return the redo JMenuItem
+	 */
+	public JMenuItem getRedo() {
+		return redo;
+	}
+
+	/**
+	 * @return the solve JMenuItem
+	 */
+	public JMenuItem getSolve() {
+		return solve;
+	}
+	
+	/**
+	 * @return the exit JMenuItem
+	 */
+	public JMenuItem getExit() {
+		return exit;
+	}
 
 	/**
 	 * A new action listener class was created to change what
@@ -107,6 +154,7 @@ public class MainMenu extends JFrame {
 			JButton src = (JButton) e.getSource();
 			if (src.equals(play)) {
 				layout.show(content, "Game");
+				menuBar.setVisible(true);
 			} else if (src.equals(next)) {
 				layout.show(content, "Game");
 			} else if (src.equals(exit1)||src.equals(exit2)) {
@@ -114,4 +162,5 @@ public class MainMenu extends JFrame {
 			}
 		}
 	}
+	
 }

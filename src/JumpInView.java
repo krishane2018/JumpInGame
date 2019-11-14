@@ -33,7 +33,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		g = new GridLayout(rows, cols, 0, 0);
 		this.panel = new JPanel();
 		panel.setLayout(g);
-
+		
 		for(int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				buttons[j][i] = new GameButton(new Point(j,i));
@@ -238,5 +238,13 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 */
 	public void displayInvalidOption() {
 		JOptionPane.showMessageDialog(null, "Invalid Option. Please pick one of the highlighted options.");
+	}
+	
+	public JMenuItem getUndo() {
+		return mainMenu.getUndo();
+	}
+	
+	public JMenuItem getRedo() {
+		return mainMenu.getRedo();
 	}
 }

@@ -11,8 +11,9 @@ public class UndoRedo {
 	}
 	
 	public JumpInEvent undoMove() {
-		redo.add(undo.pop());
-		return undo.peek();
+		JumpInEvent e = undo.pop();
+		redo.add(e);
+		return e;
 	}
 	
 	public void addMove(JumpInEvent e) {

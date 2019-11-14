@@ -259,6 +259,13 @@ public class JumpIn {
 	}
 
 	/**
+	 * @return the undoRedo object
+	 */
+	public UndoRedo getUndoRedo() {
+		return undoRedo;
+	}
+
+	/**
 	 * Get the type of Animal on the board at a given point
 	 * @param p Coordinate on the board the user would like to check
 	 * @return a string with the name of the class - Rabbit object returns "Rabbit" for example
@@ -386,13 +393,23 @@ public class JumpIn {
 		return gameBoard[p.y][p.x].getClass().getSimpleName().contentEquals("Rabbit");
 	}
 
+	public void undoMove() {
+		JumpInEvent e = undoRedo.undoMove();
+		if(e.getChosenPiece().getClass().getSimpleName().equals("Rabbit")) {
+			processCommand(new Move(e.getFinalLocation1(), e.getInitialLocation1(), e.getChosenPiece()));
+		} else {
+			Point[] initialLocation = {e.getFinalLocation1(), e.getFinalLocation2()};
+			Point[] finalLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
+			processCommand(new Move (initialLocation, finalLocation, e.getChosenPiece()));
+		}
+	}
+	
 	/**
 	 * Creates a game, the GUI, and the controller which handles user input
 	 * @param args 
 	 */
-
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(2);
+		JumpIn game = new JumpIn(3);
 		JumpInView view = new JumpInView(game);
 		JumpInController controller = new JumpInController(view, game);
 	}

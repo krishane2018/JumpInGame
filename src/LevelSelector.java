@@ -19,12 +19,7 @@ public class LevelSelector {
 	private HashMap<ArrayList<Point>, String> foxInitialPositions;
 
 	/**
-<<<<<<< HEAD
-	 * Initialize a game board
-	 * 
-=======
 	 * Initialize a game board depending on the level
->>>>>>> refs/heads/AashnaViewController
 	 * @param level which level the user would like to play
 	 * @param game  the JumpIn game object
 	 */
