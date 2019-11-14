@@ -33,19 +33,9 @@ public class Fox extends MovableAnimal {
 			throw new IllegalArgumentException("Points must be between (0,0) and (4,4)");
 		}
 		this.direction = direction;
-		correctPointOrdering();
-		
-//		super(p1, name);
-//		if (Utility.checkValidPoint(p2)) {
-//			this.coordinate2 = p2; 
-//		}
-//		else {
-//			throw new IllegalArgumentException("Points must be between (0,0) and (4,4)");
-//		}
-//		this.direction = direction;
-//		Point[] points = correctPointOrdering(new Point[] {p1, p2});
-//		p1.setLocation(points[0]);
-//		p2.setLocation(points[1]);
+		Point[] points = correctPointOrdering(new Point[] {p1, p2});
+		p1.setLocation(points[0]);
+		p2.setLocation(points[1]);
 
 	}
 
@@ -107,46 +97,27 @@ public class Fox extends MovableAnimal {
 		this.direction = direction;
 	}
 
-	private void correctPointOrdering() {
+	private Point[] correctPointOrdering(Point[] points) {
 		
-		Point p1 = this.getCoordinate();
-		Point p2 = this.getCoordinate2();
+		Point p1 = points[0];
+		Point p2 = points[1];
 
 		if (direction.equals("Vertical")) {
 			double y1 = p1.getY();
 			double y2 = p2.getY();
 			if (y2 < y1) {
-				p1.setLocation(p1.getX(), y2);
-				p2.setLocation(p2.getX(), y1);
+				points[0] = p2;
+				points[1] = p1;
 			}
 		} else if (direction.equals("Horizontal")) {
 			double x1 = p1.getX();
 			double x2 = p2.getX();
 			if (x2 < x1) {
-				p1.setLocation(x2, p1.getY());
-				p2.setLocation(x1, p2.getY());
+				points[0] = p2;
+				points[1] = p1;
 			}
 		}
-		
-//		Point p1 = points[0];
-//		Point p2 = points[1];
-//
-//		if (direction.equals("Vertical")) {
-//			double y1 = p1.getY();
-//			double y2 = p2.getY();
-//			if (y2 < y1) {
-//				points[0] = p2;
-//				points[1] = p1;
-//			}
-//		} else if (direction.equals("Horizontal")) {
-//			double x1 = p1.getX();
-//			double x2 = p2.getX();
-//			if (x2 < x1) {
-//				points[0] = p2;
-//				points[1] = p1;
-//			}
-//		}
-//		return points;
+		return points;
 	}
 
 	@Override
@@ -158,16 +129,10 @@ public class Fox extends MovableAnimal {
 	public void handleEvent(JumpInEvent e) {
 		Fox f = (Fox) e.getChosenPiece();
 		if (f.equals(this)) {
-//			Point[] points = correctPointOrdering(new Point[] {e.getFinalLocation1(), e.getFinalLocation2()});
-//			System.out.println(Arrays.toString(points));
-//			super.setCoordinate(points[0]);
-//			setCoordinate2(points[1]);
-			
-			super.setCoordinate(e.getFinalLocation1());
-			setCoordinate2(e.getFinalLocation2());
-			correctPointOrdering();
-			this.options.clear();
-			this.options.clear();
+			Point[] points = correctPointOrdering(new Point[] {e.getFinalLocation1(), e.getFinalLocation2()});
+			System.out.println(Arrays.toString(points));
+			super.setCoordinate(points[0]);
+			setCoordinate2(points[1]);
 		}
 	}
 
@@ -241,7 +206,7 @@ public class Fox extends MovableAnimal {
 					new Point(offset.apply(changingCoordinate), uniformCoordinate) };
 		}
 
-		options.add(tempArray);
+		options.add(correctPointOrdering(tempArray));
 	}
 
 	@Override

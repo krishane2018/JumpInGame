@@ -39,7 +39,9 @@ public class JumpIn {
 		parser = new Parser();
 	}
 
-	public void solver(MovableAnimal previousAnimal, Point previousPoint) {
+	public boolean solver(MovableAnimal previousAnimal, Point previousPoint) {
+		boolean isWin = false;
+		
 		for (JumpInListener l : listeners) {
 			MovableAnimal animal = (MovableAnimal)l;
 			ArrayList<Object>options = animal.determineOptions(gameBoard);
@@ -50,7 +52,7 @@ public class JumpIn {
 						continue;
 					}
 					else {
-						processCommand(new Move(animal.getCoordinate(), rabbitOption, animal));
+						isWin = processCommand(new Move(animal.getCoordinate(), rabbitOption, animal));
 					}
 				}
 				else if (animal instanceof Fox) {
@@ -59,12 +61,19 @@ public class JumpIn {
 						continue;
 					}
 					else {
-						processCommand(new Move(((Fox) animal).getCoordinates(), foxOption, animal));
+						isWin = processCommand(new Move(((Fox) animal).getCoordinates(), foxOption, animal));
 					}
 				}
-				solver(animal, animal.getCoordinate());
+				if (isWin) {
+					return true;
+				}
+				else {
+					solver(animal, animal.getCoordinate());
+					//undo()....
+				}
 			}
 		}
+		return false;
 	}
 	
 	/**
@@ -380,12 +389,14 @@ public class JumpIn {
 
 	public static void main(String[] args) {
 		JumpIn game = new JumpIn(3);
+		game.printWelcome();
+		game.play();
 	
-		JumpInView view = new JumpInView(game);
-
-		JumpInController controller = new JumpInController(view, game);
-
-		MainMenu menu = new MainMenu(view);
+//		JumpInView view = new JumpInView(game);
+//
+//		JumpInController controller = new JumpInController(view, game);
+//
+//		MainMenu menu = new MainMenu(view);
 
 	}
 
