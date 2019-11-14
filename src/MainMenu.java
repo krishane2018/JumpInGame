@@ -21,6 +21,8 @@ import javax.swing.SwingUtilities;
 public class MainMenu extends JFrame {
 	private static final long serialVersionUID = 1L;
 
+	private JMenu undo,redo;
+	private JMenuBar menuBar;
 	private CardLayout layout;
 	private JPanel menu, content, win;
 	private MainMenuButton play, easy, hard, next, exit1, exit2;
@@ -64,6 +66,14 @@ public class MainMenu extends JFrame {
 		win.add(exit2);
 		win.setBackground(new Color(152, 233, 233));
 
+		undo = new JMenu("UNDO");
+		redo = new JMenu("REDO");
+		menuBar = new JMenuBar();
+		menuBar.add(undo);
+		menuBar.add(redo);
+		menuBar.setVisible(false);
+		this.setJMenuBar(menuBar);
+		
 		content.setLayout(layout);
 		content.add(view.getPanel(), "Game");
 		content.add(menu, "Menu");
@@ -107,6 +117,7 @@ public class MainMenu extends JFrame {
 			JButton src = (JButton) e.getSource();
 			if (src.equals(play)) {
 				layout.show(content, "Game");
+				menuBar.setVisible(true);
 			} else if (src.equals(next)) {
 				layout.show(content, "Game");
 			} else if (src.equals(exit1)||src.equals(exit2)) {
