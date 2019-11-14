@@ -244,10 +244,26 @@ public class JumpInView extends JFrame implements JumpInListener {
 		JOptionPane.showMessageDialog(null, "Invalid Option. Please pick one of the highlighted options.");
 	}
 	
+	/**
+	 * Display error message when user clicks undo too many times and there aren't any more moves
+	 * to undo.
+	 */
+	public void displayNoUndo() {
+		JOptionPane.showMessageDialog(null, "No more moves to undo.");
+	}
+	
+	/**
+	 * 
+	 * @return JMenuItem corresponding to the undo button
+	 */
 	public JMenuItem getUndo() {
 		return mainMenu.getUndo();
 	}
 	
+	/**
+	 * 
+	 * @return JMenuItem corresponding to the redo button
+	 */
 	public JMenuItem getRedo() {
 		return mainMenu.getRedo();
 	}

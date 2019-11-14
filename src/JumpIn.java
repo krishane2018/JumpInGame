@@ -392,8 +392,18 @@ public class JumpIn {
 		return gameBoard[p.y][p.x].getClass().getSimpleName().contentEquals("Rabbit");
 	}
 
-	public void undoMove() {
+	public boolean undoMove() {
 		JumpInEvent e = undoRedo.undoMove();
+		if(e.isEmpty()) {
+			for (int i = 0; i < listeners.size(); i++) {
+				JumpInListener l = listeners.get(i);
+				if(l instanceof JumpInView) {
+					JumpInView v = (JumpInView)l;
+					v.displayNoUndo();
+				}
+			}
+			return false;
+		}
 		if(e.getChosenPiece().getClass().getSimpleName().equals("Rabbit")) {
 			processCommand(new Move(e.getFinalLocation1(), e.getInitialLocation1(), e.getChosenPiece()));
 		} else {
@@ -401,6 +411,15 @@ public class JumpIn {
 			Point[] finalLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
 			processCommand(new Move (initialLocation, finalLocation, e.getChosenPiece()));
 		}
+		return true;
+	}
+	
+	public void redoMove() {
+		
+	}
+	
+	public void setUndoState(boolean state) {
+		undoRedo.setState(state);
 	}
 	
 	/**

@@ -15,7 +15,9 @@ public class JumpInEvent extends EventObject {
 	private Point finalLocation1;
 	private Point finalLocation2;
 	private Point[] holes;
+	private boolean isEmpty;
 
+	
 	/**
 	 * Constructor used when the chosen game piece has 1 coordinate / takes up one
 	 * space
@@ -26,15 +28,31 @@ public class JumpInEvent extends EventObject {
 	 * @param holes       The coordinates of all of the holes on the board
 	 */
 	public JumpInEvent(Object source, GameObject chosenPiece, Point initialLocation, Point finalLocation, Point[] holes) {
-		super(source);
-		this.chosenPiece = chosenPiece;
-		this.initialLocation1 = initialLocation;
-		this.finalLocation1 = finalLocation;
-		this.initialLocation2 = new Point(0,0);
-		this.finalLocation2 = new Point(0,0);
-		this.holes = holes;
+		this(source, chosenPiece, initialLocation, new Point(), finalLocation, new Point(), holes);
 	}
 
+	/**
+	 * @return the isEmpty
+	 */
+	public boolean isEmpty() {
+		return isEmpty;
+	}
+
+
+	/**
+	 * Empty constructor to create empty object to avoid returning null
+	 */
+	public JumpInEvent() {
+		super(new Object());
+		chosenPiece = new GameObject(new Point()); 
+		initialLocation1 = new Point();
+		initialLocation2 = new Point();
+		finalLocation1 = new Point();
+		finalLocation2 = new Point();
+		holes = new Point[5];
+		this.isEmpty = true;
+	}
+	
 	/**
 	 * Constructor used when the chosen game piece has 2 coordinates / takes up two
 	 * spaces
@@ -49,12 +67,11 @@ public class JumpInEvent extends EventObject {
 			Point finalLocation1, Point finalLocation2, Point holes[]) {
 		super(source);
 		this.chosenPiece = chosenPiece;
-
 		this.initialLocation1 = initialLocation1;
 		this.initialLocation2 = intialLocation2;
 		this.finalLocation1 = finalLocation1;
 		this.finalLocation2 = finalLocation2;
-	
+		this.isEmpty = false;
 		this.holes = holes;
 	}
 	

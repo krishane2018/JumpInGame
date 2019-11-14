@@ -61,6 +61,7 @@ public class JumpInController implements MouseListener, ActionListener {
 	public void mouseClicked(MouseEvent e) {
 		GameButton b = (GameButton)e.getSource();
 		// If a button was clicked, user is in selecting state as long as not in moving state
+		model.setUndoState(false);
 		inSelectingState = (inMovingState ? false : true);
 		if (inSelectingState) { 
 			initialLocation = b.getCoordinate();
@@ -136,6 +137,7 @@ public class JumpInController implements MouseListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("undo")) {
+			model.setUndoState(true);
 			model.undoMove();
 		} else if (e.getActionCommand().equals("redo")) {
 //			model.redoMove();
