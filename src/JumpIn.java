@@ -23,6 +23,7 @@ public class JumpIn {
 	public final static int NUM_ROWS = 5;
 	public final static int NUM_COLUMNS = 5;
 	private Point[] holes;
+	private UndoRedo undoRedo;
 
 	/**
 	 * 
@@ -31,6 +32,7 @@ public class JumpIn {
 	public JumpIn(int level) {
 		this.level = level;
 		listeners = new ArrayList<JumpInListener>();
+		undoRedo = new UndoRedo();
 		levelSelector = new LevelSelector(level, this);
 		gameBoard = levelSelector.getBoard();
 		holes = LevelSelector.getHoles();
@@ -230,8 +232,9 @@ public class JumpIn {
 			gameBoard[final2Y][final2X] = move.getChosenAnimal();
 		}
 		
+		undoRedo.addMove(event);
 		
-
+		// model must be updated first
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
