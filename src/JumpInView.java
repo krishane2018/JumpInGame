@@ -68,7 +68,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 	public void createNextBoard() {
 		Board.reset(this);
 		model = new JumpIn(model.getLevel()+1);
-//		JumpInController ctl = new JumpInController(this, model);
 		Board.create(this, model);
 	}
 
