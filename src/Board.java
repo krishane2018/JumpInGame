@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.border.LineBorder;
 
 public class Board {
 	
@@ -20,8 +18,6 @@ public class Board {
 		GameButton[][] g = view.getButtons();
 		for(Point p : LevelSelector.getHoles()) {
 			g[p.y][p.x].setIcon(Resources.HOLE);
-			// TODO add white border around holes
-//			g[p.y][p.x].setBorder(new LineBorder(Color.WHITE, 3, true));
 		}
 		view.setButtons(g);
 		
@@ -37,6 +33,18 @@ public class Board {
 		
 		// Initialize Fox Images
 		g = iterateThroughImagesFox(model.getInitialFoxPositions(), g);
+	}
+	
+	public static void reset(JumpInView view) {
+		GameButton[][] g = view.getButtons();
+		for(GameButton[] b2: g) {
+			for(GameButton b1:b2) {
+				b1.setIcon(Resources.GREEN_CIRCLE);
+			}
+		}
+		for(Point p : LevelSelector.getHoles()) {
+			g[p.y][p.x].setIcon(Resources.HOLE);
+		}
 	}
 	
 	/**

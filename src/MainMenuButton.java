@@ -10,7 +10,6 @@ import javax.swing.JButton;
  *
  */
 public class MainMenuButton extends JButton{
-	private static final long serialVersionUID = 1L;
 
 	public MainMenuButton(String title) {
 		super(title);

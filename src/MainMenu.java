@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -19,11 +22,14 @@ import javax.swing.SwingUtilities;
 public class MainMenu extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	CardLayout layout;
-	JPanel menu, content, win;
-	MainMenuButton play, easy, hard, next, exit;
-	JumpInView view;
-
+	private JMenu options;
+	private JMenuBar menuBar;
+	private CardLayout layout;
+	private JPanel menu, content, win;
+	private MainMenuButton play, easy, hard, next, exit1, exit2;
+	private JumpInView view;
+	private JMenuItem undo, redo, solve, exit;
+	
 	/**
 	 * Creates all the panels and adds it to the card layout.
 	 * 
@@ -42,23 +48,47 @@ public class MainMenu extends JFrame {
 
 		play = new MainMenuButton("PLAY!");
 		play.addActionListener(al);
-		exit = new MainMenuButton("EXIT");
-		exit.addActionListener(al);
+		exit1 = new MainMenuButton("EXIT");
+		exit1.addActionListener(al);
+		exit2 = new MainMenuButton("EXIT");
+		exit2.addActionListener(al);
+		next = new MainMenuButton("NEXT");
+		next.addActionListener(al);
 
 		JLabel logo = new JLabel(Resources.LOGO);
 		menu.setLayout(null);
 		play.setBounds(350, 250, 100, 50);
+		exit1.setBounds(350, 350, 100, 50);
 		logo.setBounds(160, 0, 500, 300);
 		menu.add(logo);
 		menu.add(play);
-		menu.add(exit);
+		menu.add(exit1);
 		menu.setBackground(new Color(152, 233, 233));
-
+		
+		JLabel trophy = new JLabel(Resources.WIN);
 		win.setLayout(null);
-		exit.setBounds(350, 350, 100, 50);
-		win.add(exit);
+		trophy.setBounds(155, 0, 500, 300);
+		win.add(trophy);
+		next.setBounds(350, 300, 100, 50);
+		exit2.setBounds(350, 400, 100, 50);
+		win.add(next);
+		win.add(exit2);
 		win.setBackground(new Color(152, 233, 233));
 
+		options = new JMenu("options");
+		undo = new JMenuItem("undo");
+		redo = new JMenuItem("redo");
+		solve = new JMenuItem("solve");
+		exit = new JMenuItem("exit");
+		options.add(undo);
+		options.add(redo);
+		options.add(solve);
+		options.add(exit);
+		menuBar = new JMenuBar();
+		menuBar.add(options);
+		menuBar.setVisible(false);
+		this.setJMenuBar(menuBar);
+		
 		content.setLayout(layout);
 		content.add(view.getPanel(), "Game");
 		content.add(menu, "Menu");
@@ -70,7 +100,7 @@ public class MainMenu extends JFrame {
 		this.add(panel);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		this.setSize(800, 800);
+		this.setSize(800,800);
 		this.setVisible(true);
 	}
 
@@ -88,6 +118,35 @@ public class MainMenu extends JFrame {
 	public JumpInView getView() {
 		return view;
 	}
+	
+
+	/**
+	 * @return the undo JMenuItem
+	 */
+	public JMenuItem getUndo() {
+		return undo;
+	}
+
+	/**
+	 * @return the redo JMenuItem
+	 */
+	public JMenuItem getRedo() {
+		return redo;
+	}
+
+	/**
+	 * @return the solve JMenuItem
+	 */
+	public JMenuItem getSolve() {
+		return solve;
+	}
+	
+	/**
+	 * @return the exit JMenuItem
+	 */
+	public JMenuItem getExit() {
+		return exit;
+	}
 
 	/**
 	 * A new action listener class was created to change what
@@ -102,11 +161,14 @@ public class MainMenu extends JFrame {
 			JButton src = (JButton) e.getSource();
 			if (src.equals(play)) {
 				layout.show(content, "Game");
+				menuBar.setVisible(true);
 			} else if (src.equals(next)) {
+				view.createNextBoard();
 				layout.show(content, "Game");
-			} else if (src.equals(exit)) {
+			} else if (src.equals(exit1)||src.equals(exit2)) {
 				SwingUtilities.getWindowAncestor((JPanel) src.getParent()).dispose();
 			}
 		}
 	}
+	
 }

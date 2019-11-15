@@ -33,7 +33,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		g = new GridLayout(rows, cols, 0, 0);
 		this.panel = new JPanel();
 		panel.setLayout(g);
-
+		
 		for(int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				buttons[j][i] = new GameButton(new Point(j,i));
@@ -65,7 +65,11 @@ public class JumpInView extends JFrame implements JumpInListener {
 		return panel;
 	}
 
-	
+	public void createNextBoard() {
+		Board.reset(this);
+		model = new JumpIn(model.getLevel()+1);
+		Board.create(this, model);
+	}
 
 	@Override
 	/**
@@ -74,7 +78,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param e - A JumpInEvent object created by the model. It includes all the necessary information needed to move 
 	 * a piece on the board (initial location(s), final location(s), chosen piece)
 	 */
-
 	public void handleEvent(JumpInEvent e) {
 		Point initialLocation = e.getInitialLocation1();
 		Point finalLocation1 = e.getFinalLocation1();
@@ -193,8 +196,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param initialLocation - the coordinate of the button the user selected
 	 * @return true if options were highlighted, false otherwise
 	 */
-	public boolean highlightOptions(Point initialLocation, ArrayList<Object> options) {
-		String selectedAnimalType = model.selectedAnimalType(initialLocation);
+	public boolean highlightOptions(Point initialLocation, String selectedAnimalType, ArrayList<Object> options) {
 		if(options.isEmpty() && (selectedAnimalType.equals("Rabbit") || selectedAnimalType.equals("Fox"))){
 			JOptionPane.showMessageDialog(null, "Selected box has no available moves");
 			return false;
@@ -202,7 +204,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 			JOptionPane.showMessageDialog(null, "Please select an animal to move");
 			return false;
 		}
-		highlight(selectedAnimalType, true, options, initialLocation);
+		highlight(selectedAnimalType, true, options);
 		return true;
 	}
 	
@@ -214,7 +216,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param options - the animal's options from the selecting state
 	 * @param location - initial location of the animal from the selecting state
 	 */
-	public boolean highlight(String selectedAnimalType, boolean highlight, ArrayList<Object> options, Point location) {
+	public boolean highlight(String selectedAnimalType, boolean highlight, ArrayList<Object> options) {
 		if (selectedAnimalType.equals("Rabbit")){
 			for (Object o : options) {
 				Point pt = (Point)o;
@@ -222,7 +224,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 				else unhighlight(pt);
 			}
 		} else if (selectedAnimalType.equals("Fox")) {
-			options = model.getAnimalOptions(location);
 			for(Object o : options) {
 				Point point[] = (Point[])o;
 				for (Point pt : point) {
@@ -235,9 +236,34 @@ public class JumpInView extends JFrame implements JumpInListener {
 	}
 	
 	/**
-	 * Displays an error message when an invalid option was clicked
+	 * Function that allows user to pick which error message to output to reduce 
+	 * the number of one-line functions needed for outputting message dialogs
+	 * @param i the number corresponding to the error message
+	 * 			0 - invalid option
+	 * 			1 - no more undo
+	 * 			2 - no more redo
 	 */
-	public void displayInvalidOption() {
-		JOptionPane.showMessageDialog(null, "Invalid Option. Please pick one of the highlighted options.");
+	public void displayError(int i) {
+		if (i == 0 ) JOptionPane.showMessageDialog(null, "Invalid Option. "
+				+ "Please pick one of the highlighted options.");
+		else if ( i == 1 ) JOptionPane.showMessageDialog(null, "No more moves to undo.");
+		else if ( i == 2 ) JOptionPane.showMessageDialog(null, "No more moves to redo.");
+		else return;
+	}
+	
+	/**
+	 * 
+	 * @return JMenuItem corresponding to the undo button
+	 */
+	public JMenuItem getUndo() {
+		return mainMenu.getUndo();
+	}
+	
+	/**
+	 * 
+	 * @return JMenuItem corresponding to the redo button
+	 */
+	public JMenuItem getRedo() {
+		return mainMenu.getRedo();
 	}
 }

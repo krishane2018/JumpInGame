@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  *
  */
 
-public class JumpInController implements MouseListener {
+public class JumpInController implements MouseListener, ActionListener {
 	private JumpInView view;
 	private JumpIn model;
 	private ArrayList<Object> options;
@@ -46,6 +46,8 @@ public class JumpInController implements MouseListener {
 				b[i][j].addMouseListener(this);
 			}
 		}
+		view.getUndo().addActionListener(this);
+		view.getRedo().addActionListener(this);
 	}
 
 	@Override
@@ -59,11 +61,11 @@ public class JumpInController implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		GameButton b = (GameButton)e.getSource();
 		// If a button was clicked, user is in selecting state as long as not in moving state
+		model.setUndoState(false);
 		inSelectingState = (inMovingState ? false : true);
 		if (inSelectingState) { 
 			initialLocation = b.getCoordinate();
-			options = model.getAnimalOptions(initialLocation);
-			if(model.showOptions(initialLocation, finalLocation, true, options)) {
+			if(model.showOptions(initialLocation, true)) {
 				inSelectingState = false;
 				inMovingState = true;
 			}
@@ -73,15 +75,14 @@ public class JumpInController implements MouseListener {
 			if(moved) {
 				inMovingState = false;
 				inSelectingState = true;
-				model.showOptions(finalLocation,finalLocation, false, options);
 			} 
 			else if (model.selectedAnimalType(finalLocation).equals("GameObject")) {
-				view.displayInvalidOption();
+				view.displayError(0);
 			}
 			else {
 				inMovingState = false;
 				inSelectingState = true;
-				model.showOptions(initialLocation,finalLocation, false, options);	
+				model.showOptions(initialLocation, false );	
 			} 
 		}
 	}
@@ -130,5 +131,20 @@ public class JumpInController implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals("undo")) {
+			model.setUndoState(true);
+			model.undoMove();
+		} else if (e.getActionCommand().equals("redo")) {
+			model.redoMove();
+		} else if (e.getActionCommand().equals("solve")) {
+//			model.solve();
+		} else {
+			
+		}
+		
+	}
 
 }

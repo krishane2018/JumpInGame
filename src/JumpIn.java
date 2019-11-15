@@ -3,7 +3,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.text.View;
 
 /**
  * 
@@ -24,6 +23,7 @@ public class JumpIn {
 	public final static int NUM_ROWS = 5;
 	public final static int NUM_COLUMNS = 5;
 	private Point[] holes;
+	private UndoRedo undoRedo;
 
 	/**
 	 * 
@@ -32,6 +32,7 @@ public class JumpIn {
 	public JumpIn(int level) {
 		this.level = level;
 		listeners = new ArrayList<JumpInListener>();
+		undoRedo = new UndoRedo();
 		levelSelector = new LevelSelector(level, this);
 		gameBoard = levelSelector.getBoard();
 		holes = LevelSelector.getHoles();
@@ -166,7 +167,6 @@ public class JumpIn {
 				JumpIn game = new JumpIn(level + 1);
 				game.play();
 			}
-
 		} else if (status == "exit") {
 			return;
 		}
@@ -231,8 +231,9 @@ public class JumpIn {
 			gameBoard[final2Y][final2X] = move.getChosenAnimal();
 		}
 		
+		undoRedo.addMove(event);
 		
-
+		// model must be updated first
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
@@ -254,6 +255,13 @@ public class JumpIn {
 		}
 
 		return win;
+	}
+	
+	/**
+	 * @return the undoRedo object
+	 */
+	public UndoRedo getUndoRedo() {
+		return undoRedo;
 	}
 
 	/**
@@ -293,6 +301,7 @@ public class JumpIn {
 		ArrayList<Object> options = getAnimalOptions(initial);
 		
 		if(selectedAnimalType(initial).equals("Rabbit") && options.contains(finalLocation)) {
+			showOptions(initial, false);
 			processCommand(new Move(initial, finalLocation, g));
 			return true;
 		} else if (selectedAnimalType(initial).equals("Fox")) {
@@ -307,6 +316,7 @@ public class JumpIn {
 			}
 			if (selectedInOptions) {
 				Fox f = (Fox)g;
+				showOptions(initial, false);
 				processCommand(new Move(f.getCoordinates(), foxLocation, g));
 				return true;
 			}
@@ -314,12 +324,14 @@ public class JumpIn {
 		return false;
 	}
 	
-	public boolean showOptions(Point initialLocation, Point finalLocation, boolean show, ArrayList<Object> options) {
+	public boolean showOptions(Point initialLocation, boolean show) {
+		ArrayList<Object> options = getAnimalOptions(initialLocation);
+		String selectedAnimalType = selectedAnimalType(initialLocation);
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
-				if(show) return ((JumpInView) l).highlightOptions(initialLocation, options);
-				else return ((JumpInView) l).highlight(selectedAnimalType(finalLocation), false, options, initialLocation);
+				if(show) return ((JumpInView) l).highlightOptions(initialLocation, selectedAnimalType, options);
+				else return ((JumpInView) l).highlight(selectedAnimalType, false, options);
 			}
 		}
 		return false;
@@ -384,13 +396,60 @@ public class JumpIn {
 		return gameBoard[p.y][p.x].getClass().getSimpleName().contentEquals("Rabbit");
 	}
 
+	public boolean undoMove() {
+		JumpInEvent e = undoRedo.undoMove();
+		if(e.isEmpty()) {
+			for (int i = 0; i < listeners.size(); i++) {
+				JumpInListener l = listeners.get(i);
+				if(l instanceof JumpInView) {
+					JumpInView v = (JumpInView)l;
+					v.displayError(1);
+				}
+			}
+			return false;
+		}
+		if(e.getChosenPiece().getClass().getSimpleName().equals("Rabbit")) {
+			processCommand(new Move(e.getFinalLocation1(), e.getInitialLocation1(), e.getChosenPiece()));
+		} else {
+			Point[] initialLocation = {e.getFinalLocation1(), e.getFinalLocation2()};
+			Point[] finalLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
+			processCommand(new Move (initialLocation, finalLocation, e.getChosenPiece()));
+		}
+		return true;
+	}
+	
+	public boolean redoMove() {
+		JumpInEvent e = undoRedo.redoMove();
+		if(e.isEmpty()) {
+			for (int i = 0; i < listeners.size(); i++) {
+				JumpInListener l = listeners.get(i);
+				if(l instanceof JumpInView) {
+					JumpInView v = (JumpInView)l;
+					v.displayError(2);
+				}
+			}
+			return false;
+		}
+		if(e.getChosenPiece().getClass().getSimpleName().equals("Rabbit")) {
+			processCommand(new Move(e.getInitialLocation1(), e.getFinalLocation1(), e.getChosenPiece()));
+		} else {
+			Point[] initialLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
+			Point[] finalLocation = {e.getFinalLocation1(), e.getFinalLocation2()};
+			processCommand(new Move (initialLocation, finalLocation, e.getChosenPiece()));
+		}
+		return true;
+	}
+	
+	public void setUndoState(boolean state) {
+		undoRedo.setState(state);
+	}
+	
 	/**
 	 * Creates a game, the GUI, and the controller which handles user input
 	 * @param args 
 	 */
-
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(2);
+		JumpIn game = new JumpIn(3);
 		JumpInView view = new JumpInView(game);
 		JumpInController controller = new JumpInController(view, game);
 	}
