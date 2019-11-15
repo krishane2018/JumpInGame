@@ -79,7 +79,7 @@ public class JumpInController implements MouseListener, ActionListener {
 				model.showOptions(finalLocation,finalLocation, false, options);
 			} 
 			else if (model.selectedAnimalType(finalLocation).equals("GameObject")) {
-				view.displayInvalidOption();
+				view.displayError(0);
 			}
 			else {
 				inMovingState = false;
@@ -140,7 +140,7 @@ public class JumpInController implements MouseListener, ActionListener {
 			model.setUndoState(true);
 			model.undoMove();
 		} else if (e.getActionCommand().equals("redo")) {
-//			model.redoMove();
+			model.redoMove();
 		} else if (e.getActionCommand().equals("solve")) {
 //			model.solve();
 		} else {

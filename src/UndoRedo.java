@@ -45,7 +45,11 @@ public class UndoRedo {
 	}
 
 	public JumpInEvent redoMove() {
-		undo.add(redo.pop());
-		return undo.peek();
+		if(!redo.isEmpty()) {
+			JumpInEvent e = redo.pop();
+			undo.add(e);
+			return e;
+		}
+		return new JumpInEvent();
 	}
 }

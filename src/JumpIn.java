@@ -399,7 +399,7 @@ public class JumpIn {
 				JumpInListener l = listeners.get(i);
 				if(l instanceof JumpInView) {
 					JumpInView v = (JumpInView)l;
-					v.displayNoUndo();
+					v.displayError(1);
 				}
 			}
 			return false;
@@ -414,8 +414,26 @@ public class JumpIn {
 		return true;
 	}
 	
-	public void redoMove() {
-		
+	public boolean redoMove() {
+		JumpInEvent e = undoRedo.redoMove();
+		if(e.isEmpty()) {
+			for (int i = 0; i < listeners.size(); i++) {
+				JumpInListener l = listeners.get(i);
+				if(l instanceof JumpInView) {
+					JumpInView v = (JumpInView)l;
+					v.displayError(2);
+				}
+			}
+			return false;
+		}
+		if(e.getChosenPiece().getClass().getSimpleName().equals("Rabbit")) {
+			processCommand(new Move(e.getInitialLocation1(), e.getFinalLocation1(), e.getChosenPiece()));
+		} else {
+			Point[] initialLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
+			Point[] finalLocation = {e.getFinalLocation1(), e.getFinalLocation2()};
+			processCommand(new Move (initialLocation, finalLocation, e.getChosenPiece()));
+		}
+		return true;
 	}
 	
 	public void setUndoState(boolean state) {
