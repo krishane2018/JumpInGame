@@ -13,6 +13,7 @@ public class UndoRedo {
 	}
 	
 	/**
+	 * Get the stack used for undoing moves
 	 * @return the undo stack
 	 */
 	public Stack<JumpInEvent> getUndo() {
@@ -20,6 +21,7 @@ public class UndoRedo {
 	}
 
 	/**
+	 * Get the stack for redoing moves
 	 * @return the redo stack
 	 */
 	public Stack<JumpInEvent> getRedo() {
@@ -61,7 +63,8 @@ public class UndoRedo {
 	}
 
 	/**
-	 * @param state - the state to set
+	 * @param state - the state to set the object in. Either in undoing moves state 
+	 * or not
 	 */
 	public void setState(boolean state) {
 		this.state = state;
