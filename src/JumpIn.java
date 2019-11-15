@@ -301,6 +301,7 @@ public class JumpIn {
 		ArrayList<Object> options = getAnimalOptions(initial);
 		
 		if(selectedAnimalType(initial).equals("Rabbit") && options.contains(finalLocation)) {
+			showOptions(initial, false);
 			processCommand(new Move(initial, finalLocation, g));
 			return true;
 		} else if (selectedAnimalType(initial).equals("Fox")) {
@@ -315,6 +316,7 @@ public class JumpIn {
 			}
 			if (selectedInOptions) {
 				Fox f = (Fox)g;
+				showOptions(initial, false);
 				processCommand(new Move(f.getCoordinates(), foxLocation, g));
 				return true;
 			}
@@ -322,12 +324,14 @@ public class JumpIn {
 		return false;
 	}
 	
-	public boolean showOptions(Point initialLocation, Point finalLocation, boolean show, ArrayList<Object> options) {
+	public boolean showOptions(Point initialLocation, boolean show) {
+		ArrayList<Object> options = getAnimalOptions(initialLocation);
+		String selectedAnimalType = selectedAnimalType(initialLocation);
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
-				if(show) return ((JumpInView) l).highlightOptions(initialLocation, options);
-				else return ((JumpInView) l).highlight(selectedAnimalType(finalLocation), false, options, initialLocation);
+				if(show) return ((JumpInView) l).highlightOptions(initialLocation, selectedAnimalType, options);
+				else return ((JumpInView) l).highlight(selectedAnimalType, false, options);
 			}
 		}
 		return false;

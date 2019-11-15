@@ -65,8 +65,7 @@ public class JumpInController implements MouseListener, ActionListener {
 		inSelectingState = (inMovingState ? false : true);
 		if (inSelectingState) { 
 			initialLocation = b.getCoordinate();
-			options = model.getAnimalOptions(initialLocation);
-			if(model.showOptions(initialLocation, finalLocation, true, options)) {
+			if(model.showOptions(initialLocation, true)) {
 				inSelectingState = false;
 				inMovingState = true;
 			}
@@ -76,7 +75,6 @@ public class JumpInController implements MouseListener, ActionListener {
 			if(moved) {
 				inMovingState = false;
 				inSelectingState = true;
-				model.showOptions(finalLocation,finalLocation, false, options);
 			} 
 			else if (model.selectedAnimalType(finalLocation).equals("GameObject")) {
 				view.displayError(0);
@@ -84,7 +82,7 @@ public class JumpInController implements MouseListener, ActionListener {
 			else {
 				inMovingState = false;
 				inSelectingState = true;
-				model.showOptions(initialLocation,finalLocation, false, options);	
+				model.showOptions(initialLocation, false );	
 			} 
 		}
 	}

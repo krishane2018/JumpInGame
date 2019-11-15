@@ -196,8 +196,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param initialLocation - the coordinate of the button the user selected
 	 * @return true if options were highlighted, false otherwise
 	 */
-	public boolean highlightOptions(Point initialLocation, ArrayList<Object> options) {
-		String selectedAnimalType = model.selectedAnimalType(initialLocation);
+	public boolean highlightOptions(Point initialLocation, String selectedAnimalType, ArrayList<Object> options) {
 		if(options.isEmpty() && (selectedAnimalType.equals("Rabbit") || selectedAnimalType.equals("Fox"))){
 			JOptionPane.showMessageDialog(null, "Selected box has no available moves");
 			return false;
@@ -205,7 +204,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 			JOptionPane.showMessageDialog(null, "Please select an animal to move");
 			return false;
 		}
-		highlight(selectedAnimalType, true, options, initialLocation);
+		highlight(selectedAnimalType, true, options);
 		return true;
 	}
 	
@@ -217,7 +216,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param options - the animal's options from the selecting state
 	 * @param location - initial location of the animal from the selecting state
 	 */
-	public boolean highlight(String selectedAnimalType, boolean highlight, ArrayList<Object> options, Point location) {
+	public boolean highlight(String selectedAnimalType, boolean highlight, ArrayList<Object> options) {
 		if (selectedAnimalType.equals("Rabbit")){
 			for (Object o : options) {
 				Point pt = (Point)o;
@@ -225,7 +224,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 				else unhighlight(pt);
 			}
 		} else if (selectedAnimalType.equals("Fox")) {
-			options = model.getAnimalOptions(location);
 			for(Object o : options) {
 				Point point[] = (Point[])o;
 				for (Point pt : point) {
