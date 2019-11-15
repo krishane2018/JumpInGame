@@ -12,6 +12,25 @@ public class UndoRedo {
 		state = false;
 	}
 	
+	/**
+	 * @return the undo stack
+	 */
+	public Stack<JumpInEvent> getUndo() {
+		return undo;
+	}
+
+	/**
+	 * @return the redo stack
+	 */
+	public Stack<JumpInEvent> getRedo() {
+		return redo;
+	}
+
+	/**
+	 * Undo an event by getting the last event that was added to the stack. Add that event to the
+	 * redo stack.
+	 * @return JumpInEvent Object of the last move that occured
+	 */
 	public JumpInEvent undoMove() {
 		if(!undo.isEmpty()) {
 			JumpInEvent e = undo.pop();
@@ -23,6 +42,10 @@ public class UndoRedo {
 		
 	}
 	
+	/**
+	 * Adds an event to the stack of moves the user can undo
+	 * @param e - the JumpInEvent object
+	 */
 	public void addMove(JumpInEvent e) {
 		if(!state) {
 			redo.clear();
@@ -31,19 +54,25 @@ public class UndoRedo {
 	}
 	
 	/**
-	 * @return the state
+	 * @return the state, whether the user in undoing moves or not
 	 */
 	public boolean isState() {
 		return state;
 	}
 
 	/**
-	 * @param state the state to set
+	 * @param state - the state to set
 	 */
 	public void setState(boolean state) {
 		this.state = state;
 	}
 
+	/**
+	 * Redo a move by removing the last event added to the redo stack. The event 
+	 * is added back to the undo stack.
+	 * @return the JumpInEvent object with all the information about the move the user would
+	 * like to redo
+	 */
 	public JumpInEvent redoMove() {
 		if(!redo.isEmpty()) {
 			JumpInEvent e = redo.pop();
