@@ -12,9 +12,10 @@ import javax.swing.JOptionPane;
  *
  */
 
-public class JumpInController implements MouseListener {
+public class JumpInController implements MouseListener, ActionListener {
 	private JumpInView view;
 	private JumpIn model;
+	private ArrayList<Object> options;
 	/*
 	 * State is saved through inMovingState and inSelectingState
 	 * inSelectingState - the user is selecting which animal they would like to move
@@ -36,6 +37,8 @@ public class JumpInController implements MouseListener {
 		this.model = model;
 		this.inMovingState = false;
 		this.inSelectingState = false;
+		this.initialLocation = new Point();
+		this.finalLocation = new Point();
 		// listen to the events created by each button
 		GameButton[][] b = view.getButtons();
 		for(int i = 0; i < JumpIn.NUM_ROWS; i ++) {
@@ -43,6 +46,8 @@ public class JumpInController implements MouseListener {
 				b[i][j].addMouseListener(this);
 			}
 		}
+		view.getUndo().addActionListener(this);
+		view.getRedo().addActionListener(this);
 	}
 
 	@Override
@@ -56,6 +61,7 @@ public class JumpInController implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		GameButton b = (GameButton)e.getSource();
 		// If a button was clicked, user is in selecting state as long as not in moving state
+		model.setUndoState(false);
 		inSelectingState = (inMovingState ? false : true);
 		if (inSelectingState) { 
 			initialLocation = b.getCoordinate();
@@ -69,15 +75,14 @@ public class JumpInController implements MouseListener {
 			if(moved) {
 				inMovingState = false;
 				inSelectingState = true;
-				model.showOptions(finalLocation, false);
 			} 
 			else if (model.selectedAnimalType(finalLocation).equals("GameObject")) {
-				view.displayInvalidOption();
+				view.displayError(0);
 			}
 			else {
 				inMovingState = false;
 				inSelectingState = true;
-				model.showOptions(initialLocation, false);	
+				model.showOptions(initialLocation, false );	
 			} 
 		}
 	}
@@ -126,5 +131,20 @@ public class JumpInController implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals("undo")) {
+			model.setUndoState(true);
+			model.undoMove();
+		} else if (e.getActionCommand().equals("redo")) {
+			model.redoMove();
+		} else if (e.getActionCommand().equals("solve")) {
+//			model.solve();
+		} else {
+			
+		}
+		
+	}
 
 }

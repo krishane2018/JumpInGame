@@ -15,7 +15,9 @@ public class JumpInEvent extends EventObject {
 	private Point finalLocation1;
 	private Point finalLocation2;
 	private Point[] holes;
+	private boolean isEmpty;
 
+	
 	/**
 	 * Constructor used when the chosen game piece has 1 coordinate / takes up one
 	 * space
@@ -25,17 +27,32 @@ public class JumpInEvent extends EventObject {
 	 * @param p           The new coordinate of the GameObject
 	 * @param holes       The coordinates of all of the holes on the board
 	 */
-
 	public JumpInEvent(Object source, GameObject chosenPiece, Point initialLocation, Point finalLocation, Point[] holes) {
-		super(source);
-		this.chosenPiece = chosenPiece;
-		this.initialLocation1 = initialLocation;
-		this.finalLocation1 = finalLocation;
-		this.initialLocation2 = new Point(0,0);
-		this.finalLocation2 = new Point(0,0);
-		this.holes = holes;
+		this(source, chosenPiece, initialLocation, new Point(), finalLocation, new Point(), holes);
 	}
 
+	/**
+	 * @return the isEmpty
+	 */
+	public boolean isEmpty() {
+		return isEmpty;
+	}
+
+
+	/**
+	 * Empty constructor to create empty object to avoid returning null
+	 */
+	public JumpInEvent() {
+		super(new Object());
+		chosenPiece = new GameObject(new Point()); 
+		initialLocation1 = new Point();
+		initialLocation2 = new Point();
+		finalLocation1 = new Point();
+		finalLocation2 = new Point();
+		holes = new Point[5];
+		this.isEmpty = true;
+	}
+	
 	/**
 	 * Constructor used when the chosen game piece has 2 coordinates / takes up two
 	 * spaces
@@ -50,13 +67,11 @@ public class JumpInEvent extends EventObject {
 			Point finalLocation1, Point finalLocation2, Point holes[]) {
 		super(source);
 		this.chosenPiece = chosenPiece;
-
 		this.initialLocation1 = initialLocation1;
 		this.initialLocation2 = intialLocation2;
 		this.finalLocation1 = finalLocation1;
 		this.finalLocation2 = finalLocation2;
-		
-	
+		this.isEmpty = false;
 		this.holes = holes;
 	}
 	
@@ -88,57 +103,33 @@ public class JumpInEvent extends EventObject {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Get the first coordinate of the game piece
-	 * 
-	 * @return A Point object of the coordinate
-=======
 	 * Get the location of the first coordinate of the initial location of the animal
 	 * @return x,y coordinate of initial location
->>>>>>> refs/heads/AashnaViewController
 	 */
 	public Point getInitialLocation1() {
 		return initialLocation1;
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Set the first coordinate of the game piece
-	 * 
-	 * @param coordinate1 A Point object of the coordinate
-=======
 	 * Set the location of the first coordinate of the initial location of the animal
 	 * @param initialLocation1 - x,y coordinate of initial location
->>>>>>> refs/heads/AashnaViewController
 	 */
 	public void setInitialLocation1(Point initialLocation1) {
 		this.initialLocation1 = initialLocation1;
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Get the second coordinate
-	 * 
-	 * @return A point object of the second coordinate
-=======
 	 * Get the location of the second coordinate of the initial location of the animal if it exists otherwise
 	 * it is an empty point object
 	 * @return x,y coordinate of initial location
->>>>>>> refs/heads/AashnaViewController
 	 */
 	public Point getInitialLocation2() {
 		return initialLocation2;
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Set the second coordinate
-	 * 
-	 * @param coordinate2 A point object of the second x,y coordinate
-=======
 	 * Set the location of the second coordinate of the initial location of the animal
 	 * @param initialLocation2 - x,y coordinate of initial location
->>>>>>> refs/heads/AashnaViewController
 	 */
 	public void setInitialLocation2(Point initialLocation2) {
 		this.initialLocation2 = initialLocation2;
@@ -175,7 +166,5 @@ public class JumpInEvent extends EventObject {
 	public void setFinalLocation2(Point finalLocation2) {
 		this.finalLocation2 = finalLocation2;
 	}
-
-	
 
 }

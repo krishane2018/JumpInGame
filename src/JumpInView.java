@@ -1,9 +1,5 @@
-import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -15,9 +11,9 @@ import javax.swing.*;
 public class JumpInView extends JFrame implements JumpInListener {
 	private GameButton[][] buttons;
 	private JumpIn model;
-	private ArrayList<Object> options;
-	JPanel panel = new JPanel();
-	GridLayout g;
+	private JPanel panel;
+	private GridLayout g;
+	private MainMenu mainMenu;
 
 	/**
 	 * JumpInView (JFrame) constructor that creates a grid of Game Buttons and adds them all to 
@@ -29,15 +25,15 @@ public class JumpInView extends JFrame implements JumpInListener {
 
 	public JumpInView(JumpIn model){
 		this.model = model;
-		this.options = new ArrayList<Object>();
 		int rows = JumpIn.NUM_ROWS;
 		int cols = JumpIn.NUM_COLUMNS;
-
+		
 		model.addListener(this);
 		buttons = new GameButton[rows][cols];
 		g = new GridLayout(rows, cols, 0, 0);
+		this.panel = new JPanel();
 		panel.setLayout(g);
-
+		
 		for(int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				buttons[j][i] = new GameButton(new Point(j,i));
@@ -45,6 +41,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 			}
 		}
 		Board.create(this, model);
+		this.mainMenu = new MainMenu(this);
 	}
 
 	/**
@@ -64,10 +61,15 @@ public class JumpInView extends JFrame implements JumpInListener {
 	}
 
 	
-	public JPanel getGame() {
+	public JPanel getPanel() {
 		return panel;
 	}
 
+	public void createNextBoard() {
+		Board.reset(this);
+		model = new JumpIn(model.getLevel()+1);
+		Board.create(this, model);
+	}
 
 	@Override
 	/**
@@ -76,7 +78,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param e - A JumpInEvent object created by the model. It includes all the necessary information needed to move 
 	 * a piece on the board (initial location(s), final location(s), chosen piece)
 	 */
-
 	public void handleEvent(JumpInEvent e) {
 		Point initialLocation = e.getInitialLocation1();
 		Point finalLocation1 = e.getFinalLocation1();
@@ -85,6 +86,10 @@ public class JumpInView extends JFrame implements JumpInListener {
 		} else if (e.getChosenPiece().getClass().getSimpleName().contentEquals("Fox")) {
 			handleFox(initialLocation, e.getInitialLocation2(), finalLocation1, e.getFinalLocation2());
 		}
+	}
+	
+	public void handleWin() {
+		mainMenu.handleWin();
 	}
 	
 	/**
@@ -191,9 +196,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * @param initialLocation - the coordinate of the button the user selected
 	 * @return true if options were highlighted, false otherwise
 	 */
-	public boolean highlightOptions(Point initialLocation) {
-		this.options = model.getAnimalOptions(initialLocation);
-		String selectedAnimalType = model.selectedAnimalType(initialLocation);
+	public boolean highlightOptions(Point initialLocation, String selectedAnimalType, ArrayList<Object> options) {
 		if(options.isEmpty() && (selectedAnimalType.equals("Rabbit") || selectedAnimalType.equals("Fox"))){
 			JOptionPane.showMessageDialog(null, "Selected box has no available moves");
 			return false;
@@ -201,7 +204,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 			JOptionPane.showMessageDialog(null, "Please select an animal to move");
 			return false;
 		}
-		highlight(selectedAnimalType, true, initialLocation);
+		highlight(selectedAnimalType, true, options);
 		return true;
 	}
 	
@@ -209,10 +212,11 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * Go through all of the coordinates for possible moves of either a rabbit or fox and highlight them
 	 * or remove the  highlight depending on what is asked from the user. 
 	 * @param selectedAnimalType - the type of movable animal that was selected, either a rabbit or fox
-	 * @param highlight - whether the user would like to highlight the options or remove highlight
+	 * @param highlight - true if the user would like to highlight the options or false if remove highlight
+	 * @param options - the animal's options from the selecting state
+	 * @param location - initial location of the animal from the selecting state
 	 */
-	public boolean highlight(String selectedAnimalType, boolean highlight, Point location) {
-		if(!highlight) options = model.getAnimalOptions(location);
+	public boolean highlight(String selectedAnimalType, boolean highlight, ArrayList<Object> options) {
 		if (selectedAnimalType.equals("Rabbit")){
 			for (Object o : options) {
 				Point pt = (Point)o;
@@ -231,7 +235,35 @@ public class JumpInView extends JFrame implements JumpInListener {
 		return true;
 	}
 	
-	public void displayInvalidOption() {
-		JOptionPane.showMessageDialog(null, "Invalid Option. Please pick one of the highlighted options.");
+	/**
+	 * Function that allows user to pick which error message to output to reduce 
+	 * the number of one-line functions needed for outputting message dialogs
+	 * @param i the number corresponding to the error message
+	 * 			0 - invalid option
+	 * 			1 - no more undo
+	 * 			2 - no more redo
+	 */
+	public void displayError(int i) {
+		if (i == 0 ) JOptionPane.showMessageDialog(null, "Invalid Option. "
+				+ "Please pick one of the highlighted options.");
+		else if ( i == 1 ) JOptionPane.showMessageDialog(null, "No more moves to undo.");
+		else if ( i == 2 ) JOptionPane.showMessageDialog(null, "No more moves to redo.");
+		else return;
+	}
+	
+	/**
+	 * 
+	 * @return JMenuItem corresponding to the undo button
+	 */
+	public JMenuItem getUndo() {
+		return mainMenu.getUndo();
+	}
+	
+	/**
+	 * 
+	 * @return JMenuItem corresponding to the redo button
+	 */
+	public JMenuItem getRedo() {
+		return mainMenu.getRedo();
 	}
 }
