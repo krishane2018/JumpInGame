@@ -40,7 +40,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 				panel.add(buttons[j][i]);
 			}
 		}
-		Board.create(this, model);
+		Board.create(this, this.model);
 		this.mainMenu = new MainMenu(this);
 	}
 
