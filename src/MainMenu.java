@@ -32,7 +32,6 @@ public class MainMenu extends JFrame {
 	
 	/**
 	 * Creates all the panels and adds it to the card layout.
-	 * 
 	 * @param view - sets game panel
 	 */
 	public MainMenu(JumpInView view) {
