@@ -89,7 +89,7 @@ public class MainMenu extends JFrame {
 		this.setJMenuBar(menuBar);
 		
 		content.setLayout(layout);
-		content.add(view.getPanel(), "Game");
+		content.add(this.view.getPanel(), "Game");
 		content.add(menu, "Menu");
 		content.add(win, "Win");
 		this.setContentPane(content);
