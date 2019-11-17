@@ -47,7 +47,6 @@ public class JumpIn {
 	}
 
 	public void solver() {
-		Move previousMove = new Move(new Point(0,0), new Point(0,0), new Rabbit(new Point(0,0), "temp"));
 		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
 		for (int i = 0; i<listeners.size();i++) {
 			JumpInListener l = listeners.get(i);
@@ -56,7 +55,7 @@ public class JumpIn {
 				i--;
 			}
 		}
-		solverHelper((MovableAnimal)previousMove.getChosenAnimal(), previousMove.getInitialLocation(),
+		solverHelper(new Rabbit(new Point(0,0), "temp"),
 				new Stack<Move>(), new Stack<ArrayList<Point>>());
 		displaySolverMoves();
 		listeners.addAll(viewListeners);
@@ -88,11 +87,10 @@ public class JumpIn {
 		return true;
 	}
 	
-	private boolean solverHelper(MovableAnimal previousAnimal, Point previousPoint, Stack<Move> tryMoves, 
+	private boolean solverHelper(MovableAnimal previousAnimal, Stack<Move> tryMoves, 
 			Stack<ArrayList<Point>> previousStates) {
 		boolean isWin = false;
 		MovableAnimal animal;
-		Point currentPoint;
 		
 		if (isPreviousState(previousStates)) {
 			return false;
@@ -109,22 +107,14 @@ public class JumpIn {
 		
 		
 		for (JumpInListener l : listeners) {
-			if (l instanceof MovableAnimal) {
-				 animal = (MovableAnimal)l;
-				 currentPoint = animal.getCoordinate();
-			}
-			else {
-				continue;
-			}
+			animal = (MovableAnimal)l;
 			ArrayList<Object>options = animal.determineOptions(gameBoard);
 			for(int i=0; i<options.size();i++) {
+				if (animal instanceof Fox && animal.equals(previousAnimal)) {
+					continue;
+				}
 				Object option = options.get(i);
 				undoRedo.setState(false);
-				if (animal instanceof Fox) {
-					if (animal.equals(previousAnimal)) {
-						continue;
-					}
-				}
 				Move tryMove = (animal instanceof Rabbit) ? new Move(animal.getPosition(), (Point)option, animal) : new Move(animal.getPosition(), (Point[])option, animal);
 				tryMoves.add(tryMove);
 				isWin = processCommand(tryMove);
@@ -134,7 +124,7 @@ public class JumpIn {
 					return true;
 				}
 				else {
-					if (solverHelper(animal, currentPoint,tryMoves,previousStates)) {
+					if (solverHelper(animal, tryMoves,previousStates)) {
 						undoMove();
 						return true;
 					}
