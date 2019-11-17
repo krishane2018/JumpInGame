@@ -1,10 +1,18 @@
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * This class takes in user input and deals with it accordingly 
@@ -46,8 +54,12 @@ public class JumpInController implements MouseListener, ActionListener {
 				b[i][j].addMouseListener(this);
 			}
 		}
+		for (JButton button : view.getMMenu().getButtons()) {
+				button.addActionListener(this);
+		}
 		view.getUndo().addActionListener(this);
 		view.getRedo().addActionListener(this);
+		
 	}
 
 	@Override
@@ -141,10 +153,31 @@ public class JumpInController implements MouseListener, ActionListener {
 			model.redoMove();
 		} else if (e.getActionCommand().equals("solve")) {
 //			model.solve();
-		} else {
-			
+		} else if (e.getActionCommand().equals("PLAY!")) {
+			view.getMMenu().showGame();
+		} else if (e.getActionCommand().equals("NEXT")) {
+//			view.createNextBoard();
+//			view.getMMenu().showGame();
+			Play.nextLevel();
+		} else if (e.getActionCommand().equals("EXIT")) {
+			JButton src = (JButton) e.getSource();
+			SwingUtilities.getWindowAncestor((JPanel) src.getParent()).dispose();
 		}
 		
+	}
+	
+	public void removeListener() {
+		GameButton[][] b = view.getButtons();
+		for(int i = 0; i < JumpIn.NUM_ROWS; i ++) {
+			for(int j = 0; j < JumpIn.NUM_COLUMNS; j++) {
+				b[i][j].removeMouseListener(this);
+			}
+		}
+		for (JButton button : view.getMMenu().getButtons()) {
+				button.removeActionListener(this);
+		}
+		view.getUndo().removeActionListener(this);
+		view.getRedo().removeActionListener(this);
 	}
 
 }
