@@ -382,9 +382,4 @@ class TestRabbit {
 		assertFalse(r1.getStatus());
 	}
 	
-	@Test
-	void testGetStatusTrue() {
-		Rabbit r1 = new Rabbit(new Point(2, 0), "R1");
-		assertTrue(r1.getStatus());
-	}
 }

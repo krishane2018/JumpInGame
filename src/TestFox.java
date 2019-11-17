@@ -357,13 +357,6 @@ class TestFox {
 	}
 	
 	@Test
-	void testGetCoordinates() {
-		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
-		Point[] c = new Point[] {new Point(1,1),new Point(1,2)};
-		assertEquals(c,fox.getCoordinates());
-	}
-	
-	@Test
 	void testGetCoordinates2() {
 		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
 		assertEquals(new Point(1,2), fox.getCoordinate2());

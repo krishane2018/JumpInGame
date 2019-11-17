@@ -75,7 +75,7 @@ class TestJumpIn {
 	}
 	
 	@Test
-	void testSetGameBoard1() {
+	void testSetGetGameBoard1() {
 		JumpIn jumpIn = new JumpIn(1);
 		LevelSelector level = new LevelSelector(1,jumpIn);
 		jumpIn.setGameBoard(level.getBoard());
@@ -83,7 +83,7 @@ class TestJumpIn {
 	}
 	
 	@Test
-	void testSetGameBoard2() {
+	void testSetGetGameBoard2() {
 		JumpIn jumpIn = new JumpIn(2);
 		LevelSelector level = new LevelSelector(1,jumpIn);
 		jumpIn.setGameBoard(level.getBoard());
@@ -91,32 +91,12 @@ class TestJumpIn {
 	}
 	
 	@Test
-	void testSetGameBoard3() {
+	void testSetGetGameBoard3() {
 		JumpIn jumpIn = new JumpIn(3);
 		LevelSelector level = new LevelSelector(1,jumpIn);
 		jumpIn.setGameBoard(level.getBoard());
 		assertEquals(level.getBoard(),jumpIn.getGameBoard());
 	}
 	
-	@Test
-	void testGetGameBoard1() {
-		JumpIn jumpIn = new JumpIn(1);
-		LevelSelector level = new LevelSelector(1,jumpIn);
-		assertEquals(level.getBoard(),jumpIn.getGameBoard());
-	}
-	
-	@Test
-	void testGetGameBoard2() {
-		JumpIn jumpIn = new JumpIn(2);
-		LevelSelector level = new LevelSelector(1,jumpIn);
-		assertEquals(level.getBoard(),jumpIn.getGameBoard());
-	}
-	
-	@Test
-	void testGetGameBoard3() {
-		JumpIn jumpIn = new JumpIn(3);
-		LevelSelector level = new LevelSelector(1,jumpIn);
-		assertEquals(level.getBoard(),jumpIn.getGameBoard());
-	}
 	
 }
