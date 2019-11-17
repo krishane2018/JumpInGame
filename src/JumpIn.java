@@ -87,6 +87,19 @@ public class JumpIn {
 		return true;
 	}
 	
+	private boolean isMovedFox (Stack<Move> tryMoves, MovableAnimal animal) {
+		for (int i = tryMoves.size()-1; i>-1;i--) {
+			Move move = tryMoves.get(i);
+			if (move.getChosenAnimal()==animal) {
+				return true;
+			}
+			else if (move.getChosenAnimal() instanceof Rabbit){
+				break;
+			}
+		}
+		return false;
+	}
+	
 	private boolean solverHelper(MovableAnimal previousAnimal, Stack<Move> tryMoves, 
 			Stack<ArrayList<Point>> previousStates) {
 		boolean isWin = false;
@@ -109,10 +122,10 @@ public class JumpIn {
 		for (JumpInListener l : listeners) {
 			animal = (MovableAnimal)l;
 			ArrayList<Object>options = animal.determineOptions(gameBoard);
+			if (animal instanceof Fox && isMovedFox(tryMoves, animal)) {
+				continue;
+			}
 			for(int i=0; i<options.size();i++) {
-				if (animal instanceof Fox && animal.equals(previousAnimal)) {
-					continue;
-				}
 				Object option = options.get(i);
 				undoRedo.setState(false);
 				Move tryMove = (animal instanceof Rabbit) ? new Move(animal.getPosition(), (Point)option, animal) : new Move(animal.getPosition(), (Point[])option, animal);

@@ -239,4 +239,18 @@ public class Fox extends MovableAnimal {
 		return new Point[] {getCoordinate(), getCoordinate2()};
 	}
 
+	public boolean equals(Object o) {
+		if (o == null)
+			return false;
+		if (this.getClass() != o.getClass())
+			return false;
+		if (this == o)
+			return true;
+
+		Fox f = (Fox) o;
+		return (super.equals(f)&&
+				this.coordinate2.equals(f.getCoordinate2())&&
+				this.direction.equals(f.getDirection()));
+	}
+	
 }
