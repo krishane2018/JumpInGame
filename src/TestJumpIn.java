@@ -68,4 +68,55 @@ class TestJumpIn {
 		assertEquals(jumpIn.toString(),level3);
 	}
 
+	@Test
+	void testGetLevel() {
+		JumpIn jumpIn = new JumpIn(3);
+		assertEquals(3,jumpIn.getLevel());
+	}
+	
+	@Test
+	void testSetGameBoard1() {
+		JumpIn jumpIn = new JumpIn(1);
+		LevelSelector level = new LevelSelector(1,jumpIn);
+		jumpIn.setGameBoard(level.getBoard());
+		assertEquals(level.getBoard(),jumpIn.getGameBoard());
+	}
+	
+	@Test
+	void testSetGameBoard2() {
+		JumpIn jumpIn = new JumpIn(2);
+		LevelSelector level = new LevelSelector(1,jumpIn);
+		jumpIn.setGameBoard(level.getBoard());
+		assertEquals(level.getBoard(),jumpIn.getGameBoard());
+	}
+	
+	@Test
+	void testSetGameBoard3() {
+		JumpIn jumpIn = new JumpIn(3);
+		LevelSelector level = new LevelSelector(1,jumpIn);
+		jumpIn.setGameBoard(level.getBoard());
+		assertEquals(level.getBoard(),jumpIn.getGameBoard());
+	}
+	
+	@Test
+	void testGetGameBoard1() {
+		JumpIn jumpIn = new JumpIn(1);
+		LevelSelector level = new LevelSelector(1,jumpIn);
+		assertEquals(level.getBoard(),jumpIn.getGameBoard());
+	}
+	
+	@Test
+	void testGetGameBoard2() {
+		JumpIn jumpIn = new JumpIn(2);
+		LevelSelector level = new LevelSelector(1,jumpIn);
+		assertEquals(level.getBoard(),jumpIn.getGameBoard());
+	}
+	
+	@Test
+	void testGetGameBoard3() {
+		JumpIn jumpIn = new JumpIn(3);
+		LevelSelector level = new LevelSelector(1,jumpIn);
+		assertEquals(level.getBoard(),jumpIn.getGameBoard());
+	}
+	
 }

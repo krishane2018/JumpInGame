@@ -355,6 +355,50 @@ class TestFox {
 			new Fox(new Point(0, 1), new Point(0, -1), "F1", "north");
 		});
 	}
+	
+	@Test
+	void testGetCoordinates() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		Point[] c = new Point[] {new Point(1,1),new Point(1,2)};
+		assertEquals(c,fox.getCoordinates());
+	}
+	
+	@Test
+	void testGetCoordinates2() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		assertEquals(new Point(1,2), fox.getCoordinate2());
+	}
+	
+	@Test
+	void testSetCoordinate2() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		fox.setCoordinate2(new Point(1,3));
+		assertEquals(new Point(1,3),fox.getCoordinate2());
+	}
 
 
+	@Test
+	void testGetX2() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		assertEquals(1, fox.getX2());
+	}
+	
+	@Test
+	void testGetY2() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		assertEquals(2,fox.getY2());
+	}
+	
+	@Test
+	void testGetDirection() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		assertEquals("Vertical",fox.getDirection());
+	}
+	
+	@Test
+	void testSetDirection() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		fox.setDirection("Horizontal");
+		assertEquals("Horizontal",fox.getDirection());
+	}
 }
