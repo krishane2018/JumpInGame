@@ -120,28 +120,14 @@ public class JumpIn {
 			for(int i=0; i<options.size();i++) {
 				Object option = options.get(i);
 				undoRedo.setState(false);
-				if (animal instanceof Rabbit) {
-					Point rabbitOption = (Point)option;
-//					if (animal.equals(previousAnimal)&&rabbitOption.equals(previousPoint)) {
-//						continue;
-//					}
-//					else {
-						Move tryMove = new Move(animal.getCoordinate(), rabbitOption, animal);
-						tryMoves.add(tryMove);
-						isWin = processCommand(tryMove);
-//					}
-				}
-				else if (animal instanceof Fox) {
-					Point[] foxOption = (Point[])option;
+				if (animal instanceof Fox) {
 					if (animal.equals(previousAnimal)) {
 						continue;
 					}
-					else {
-						Move tryMove = new Move(((Fox) animal).getCoordinates(), foxOption, animal);
-						tryMoves.add(tryMove);
-						isWin = processCommand(tryMove);
-					}
 				}
+				Move tryMove = (animal instanceof Rabbit) ? new Move(animal.getPosition(), (Point)option, animal) : new Move(animal.getPosition(), (Point[])option, animal);
+				tryMoves.add(tryMove);
+				isWin = processCommand(tryMove);
 				if (isWin) {
 					solverMoves = new LinkedList<Move>(tryMoves);
 					undoMove();

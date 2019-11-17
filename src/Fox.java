@@ -234,4 +234,9 @@ public class Fox extends MovableAnimal {
 		return output;
 	}
 
+	@Override
+	public Point[] getPosition() {
+		return new Point[] {getCoordinate(), getCoordinate2()};
+	}
+
 }

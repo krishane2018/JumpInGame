@@ -30,7 +30,6 @@ public class Move {
 
 	public Move(Point[] initialLocation, Point finalLocation[],	GameObject chosenAnimal) {
 		
-		
 		if (Utility.checkValidPoint(initialLocation[0])&&Utility.checkValidPoint(initialLocation[1])
 				&&Utility.checkValidPoint(finalLocation[0])&&Utility.checkValidPoint(finalLocation[1])) {
 			this.initialLocation = initialLocation[0];

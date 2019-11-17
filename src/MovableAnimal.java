@@ -13,6 +13,8 @@ public abstract class MovableAnimal extends GameObject implements JumpInListener
 		// TODO Auto-generated constructor stub
 	}
 
+	public abstract <E> E getPosition();
+	
 	public abstract ArrayList<Object> determineOptions(GameObject[][] gameBoard);
 
 	protected abstract boolean helperDetermineOptions(ArrayList<Object> options, int startingPosition,
