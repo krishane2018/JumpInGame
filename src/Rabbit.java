@@ -125,7 +125,7 @@ public class Rabbit extends MovableAnimal {
 		helperDetermineOptions(options, y + 1, x, Utility.getIncrement(), Utility.getDecrement(), gameBoard,
 				"Vertical");
 
-		return options;
+		return new ArrayList<Object>(options);
 	}
 
 	protected boolean helperDetermineOptions(ArrayList<Object> options, int changingCoordinate, int uniformCoordinate,

@@ -130,7 +130,6 @@ public class Fox extends MovableAnimal {
 		Fox f = (Fox) e.getChosenPiece();
 		if (f.equals(this)) {
 			Point[] points = correctPointOrdering(new Point[] {e.getFinalLocation1(), e.getFinalLocation2()});
-			System.out.println(Arrays.toString(points));
 			super.setCoordinate(points[0]);
 			setCoordinate2(points[1]);
 		}
@@ -165,7 +164,7 @@ public class Fox extends MovableAnimal {
 		helperDetermineOptions(options, startingPosition2, uniformCoordinate, Utility.getIncrement(),
 				Utility.getDecrement(), gameBoard, this.direction);
 
-		return options;
+		return new ArrayList<Object>(options);
 	}
 
 	protected boolean helperDetermineOptions(ArrayList<Object> options, int changingCoordinate, int uniformCoordinate,
