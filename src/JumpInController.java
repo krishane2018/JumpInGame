@@ -1,5 +1,3 @@
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,9 +6,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -151,13 +146,11 @@ public class JumpInController implements MouseListener, ActionListener {
 			model.undoMove();
 		} else if (e.getActionCommand().equals("redo")) {
 			model.redoMove();
-		} else if (e.getActionCommand().equals("solve")) {
-//			model.solve();
+		} else if (e.getActionCommand().equals("hint")) {
+			
 		} else if (e.getActionCommand().equals("PLAY!")) {
 			view.getMMenu().showGame();
 		} else if (e.getActionCommand().equals("NEXT")) {
-//			view.createNextBoard();
-//			view.getMMenu().showGame();
 			Play.nextLevel();
 		} else if (e.getActionCommand().equals("EXIT")) {
 			JButton src = (JButton) e.getSource();
