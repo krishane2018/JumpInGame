@@ -90,4 +90,17 @@ public class GameObject {
 		this.coordinate = coordinate;
 	}
 
+	public boolean equals(Object o) {
+		if (o == null)
+			return false;
+		if (this.getClass() != o.getClass())
+			return false;
+		if (this == o)
+			return true;
+
+		GameObject g = (GameObject) o;
+		return (this.coordinate.equals(g.getCoordinate())&&
+				this.name.equals(g.getName()));
+	} 
+	
 }

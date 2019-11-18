@@ -54,7 +54,6 @@ public class JumpIn {
 	}
 
 	public void solver() {
-		Move previousMove = new Move(new Point(0,0), new Point(0,0), new Rabbit(new Point(0,0), "temp"));
 		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
 		for (int i = 0; i<listeners.size();i++) {
 			JumpInListener l = listeners.get(i);
@@ -63,7 +62,7 @@ public class JumpIn {
 				i--;
 			}
 		}
-		solverHelper((MovableAnimal)previousMove.getChosenAnimal(), previousMove.getInitialLocation(),
+		solverHelper(new Rabbit(new Point(0,0), "temp"),
 				new Stack<Move>(), new Stack<ArrayList<Point>>());
 		listeners.addAll(viewListeners);
 	}
@@ -88,11 +87,23 @@ public class JumpIn {
 		return true;
 	}
 	
-	private boolean solverHelper(MovableAnimal previousAnimal, Point previousPoint, Stack<Move> tryMoves, 
+	private boolean isMovedFox (Stack<Move> tryMoves, MovableAnimal animal) {
+		for (int i = tryMoves.size()-1; i>-1;i--) {
+			Move move = tryMoves.get(i);
+			if (move.getChosenAnimal()==animal) {
+				return true;
+			}
+			else if (move.getChosenAnimal() instanceof Rabbit){
+				break;
+			}
+		}
+		return false;
+	}
+	
+	private boolean solverHelper(MovableAnimal previousAnimal, Stack<Move> tryMoves, 
 			Stack<ArrayList<Point>> previousStates) {
 		boolean isWin = false;
 		MovableAnimal animal;
-		Point currentPoint;
 		
 		if (isPreviousState(previousStates)) {
 			return false;
@@ -109,46 +120,24 @@ public class JumpIn {
 		
 		
 		for (JumpInListener l : listeners) {
-			if (l instanceof MovableAnimal) {
-				 animal = (MovableAnimal)l;
-				 currentPoint = animal.getCoordinate();
-			}
-			else {
+			animal = (MovableAnimal)l;
+			ArrayList<Object>options = animal.determineOptions(gameBoard);
+			if (animal instanceof Fox && isMovedFox(tryMoves, animal)) {
 				continue;
 			}
-			ArrayList<Object>options = animal.determineOptions(gameBoard);
 			for(int i=0; i<options.size();i++) {
 				Object option = options.get(i);
 				undoRedo.setState(false);
-				if (animal instanceof Rabbit) {
-					Point rabbitOption = (Point)option;
-//					if (animal.equals(previousAnimal)&&rabbitOption.equals(previousPoint)) {
-//						continue;
-//					}
-//					else {
-						Move tryMove = new Move(animal.getCoordinate(), rabbitOption, animal);
-						tryMoves.add(tryMove);
-						isWin = processCommand(tryMove);
-//					}
-				}
-				else if (animal instanceof Fox) {
-					Point[] foxOption = (Point[])option;
-					if (animal.equals(previousAnimal)) {
-						continue;
-					}
-					else {
-						Move tryMove = new Move(((Fox) animal).getCoordinates(), foxOption, animal);
-						tryMoves.add(tryMove);
-						isWin = processCommand(tryMove);
-					}
-				}
+				Move tryMove = (animal instanceof Rabbit) ? new Move(animal.getPosition(), (Point)option, animal) : new Move(animal.getPosition(), (Point[])option, animal);
+				tryMoves.add(tryMove);
+				isWin = processCommand(tryMove);
 				if (isWin) {
 					solverMoves = new LinkedList<Move>(tryMoves);
 					undoMove();
 					return true;
 				}
 				else {
-					if (solverHelper(animal, currentPoint,tryMoves,previousStates)) {
+					if (solverHelper(animal, tryMoves,previousStates)) {
 						undoMove();
 						return true;
 					}
