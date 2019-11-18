@@ -40,7 +40,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 				panel.add(buttons[j][i]);
 			}
 		}
-		Board.create(this, model);
+		Board.create(this, this.model);
 		this.mainMenu = new MainMenu(this);
 	}
 
@@ -67,8 +67,8 @@ public class JumpInView extends JFrame implements JumpInListener {
 
 	public void createNextBoard() {
 		Board.reset(this);
-		model = new JumpIn(model.getLevel()+1);
 		Board.create(this, model);
+		model.addListener(this);
 	}
 
 	@Override
@@ -90,6 +90,10 @@ public class JumpInView extends JFrame implements JumpInListener {
 	
 	public void handleWin() {
 		mainMenu.handleWin();
+	}
+	
+	public void handleDone() {
+		mainMenu.handleDone();
 	}
 	
 	/**
@@ -180,6 +184,20 @@ public class JumpInView extends JFrame implements JumpInListener {
 	}
 	
 	/**
+	 * @return the model
+	 */
+	public JumpIn getModel() {
+		return model;
+	}
+
+	/**
+	 * @param model the model to set
+	 */
+	public void setModel(JumpIn model) {
+		this.model = model;
+	}
+
+	/**
 	 * Remove the highlight at a given point
 	 * @param p - the coordinate of the button the user would like to remove the highlight
 	 * @return true if it worked and is highlighted
@@ -265,5 +283,9 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 */
 	public JMenuItem getRedo() {
 		return mainMenu.getRedo();
+	}
+	
+	public MainMenu getMMenu() {
+		return mainMenu;
 	}
 }

@@ -1,7 +1,8 @@
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Font;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -9,7 +10,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  * 
@@ -25,10 +25,10 @@ public class MainMenu extends JFrame {
 	private JMenu options;
 	private JMenuBar menuBar;
 	private CardLayout layout;
-	private JPanel menu, content, win;
-	private MainMenuButton play, easy, hard, next, exit1, exit2;
+	private JPanel menu, content, win, done;
 	private JumpInView view;
 	private JMenuItem undo, redo, solve, exit;
+	private ArrayList<JButton> buttons;
 	
 	/**
 	 * Creates all the panels and adds it to the card layout.
@@ -43,17 +43,20 @@ public class MainMenu extends JFrame {
 		menu = new JPanel();
 		content = new JPanel();
 		win = new JPanel();
+		done = new JPanel();
+		buttons = new ArrayList<JButton>();
+		
 
-		actionListener al = new actionListener();
-
-		play = new MainMenuButton("PLAY!");
-		play.addActionListener(al);
-		exit1 = new MainMenuButton("EXIT");
-		exit1.addActionListener(al);
-		exit2 = new MainMenuButton("EXIT");
-		exit2.addActionListener(al);
-		next = new MainMenuButton("NEXT");
-		next.addActionListener(al);
+		JButton play = MainMenuButton("PLAY!");
+		buttons.add(play);
+		JButton exit1 = MainMenuButton("EXIT");
+		buttons.add(exit1);
+		JButton exit2 = MainMenuButton("EXIT");
+		buttons.add(exit2);
+		JButton exit3 = MainMenuButton("EXIT");
+		buttons.add(exit3);
+		JButton next = MainMenuButton("NEXT");
+		buttons.add(next);
 
 		JLabel logo = new JLabel(Resources.LOGO);
 		menu.setLayout(null);
@@ -64,6 +67,16 @@ public class MainMenu extends JFrame {
 		menu.add(play);
 		menu.add(exit1);
 		menu.setBackground(new Color(152, 233, 233));
+		
+		done.setLayout(null);
+		JLabel logo2 = new JLabel(Resources.LOGO);
+		exit3.setBounds(350, 350, 100, 50);
+		logo2.setBounds(160, 0, 500, 300);
+		done.add(logo2);
+		done.add(exit3);
+		done.setBackground(new Color(152, 233, 233));
+		
+		
 		
 		JLabel trophy = new JLabel(Resources.WIN);
 		win.setLayout(null);
@@ -80,6 +93,7 @@ public class MainMenu extends JFrame {
 		redo = new JMenuItem("redo");
 		solve = new JMenuItem("solve");
 		exit = new JMenuItem("exit");
+		
 		options.add(undo);
 		options.add(redo);
 		options.add(solve);
@@ -90,9 +104,10 @@ public class MainMenu extends JFrame {
 		this.setJMenuBar(menuBar);
 		
 		content.setLayout(layout);
-		content.add(view.getPanel(), "Game");
+		content.add(this.view.getPanel(), "Game");
 		content.add(menu, "Menu");
 		content.add(win, "Win");
+		content.add(done, "Done");
 		this.setContentPane(content);
 		layout.show(content, "Menu");
 
@@ -109,6 +124,7 @@ public class MainMenu extends JFrame {
 	 */
 	public void handleWin() {
 		layout.show(content, "Win");
+		menuBar.setVisible(false);
 	}
 
 	/**
@@ -118,7 +134,6 @@ public class MainMenu extends JFrame {
 	public JumpInView getView() {
 		return view;
 	}
-	
 
 	/**
 	 * @return the undo JMenuItem
@@ -147,28 +162,27 @@ public class MainMenu extends JFrame {
 	public JMenuItem getExit() {
 		return exit;
 	}
-
-	/**
-	 * A new action listener class was created to change what
-	 * happens when the buttons are clicked.
-	 * 
-	 * @author Kush Gopeechund
-	 *
-	 */
-	public class actionListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			JButton src = (JButton) e.getSource();
-			if (src.equals(play)) {
-				layout.show(content, "Game");
-				menuBar.setVisible(true);
-			} else if (src.equals(next)) {
-				view.createNextBoard();
-				layout.show(content, "Game");
-			} else if (src.equals(exit1)||src.equals(exit2)) {
-				SwingUtilities.getWindowAncestor((JPanel) src.getParent()).dispose();
-			}
-		}
+	
+	public ArrayList<JButton> getButtons() {
+		return buttons;
 	}
 	
+	public JButton MainMenuButton(String title) {
+		JButton b = new JButton(title);
+		b.setBackground(new Color(70,170,70));
+		b.setForeground(Color.white);
+		b.setFocusPainted(false);
+		b.setFont(new Font("Arial", Font.BOLD,20));
+		return b;
+	}
+	
+	public void showGame() {
+		layout.show(content, "Game");
+		menuBar.setVisible(true);
+	}
+	
+	public void handleDone() {
+		layout.show(content, "Done");
+		menuBar.setVisible(false);
+	}
 }

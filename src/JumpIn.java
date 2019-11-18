@@ -249,7 +249,8 @@ public class JumpIn {
 				l.handleEvent(event);
 				if(win) {
 					JumpInView v =(JumpInView)l;
-					v.handleWin();
+					if(level == 3) v.handleDone();
+					else v.handleWin();
 				}
 			}
 		}
@@ -332,7 +333,7 @@ public class JumpIn {
 			if(l instanceof JumpInView) {
 				if(show) return ((JumpInView) l).highlightOptions(initialLocation, selectedAnimalType, options);
 				else return ((JumpInView) l).highlight(selectedAnimalType, false, options);
-			}
+			} 
 		}
 		return false;
 	}
@@ -449,9 +450,7 @@ public class JumpIn {
 	 * @param args 
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(3);
-		JumpInView view = new JumpInView(game);
-		JumpInController controller = new JumpInController(view, game);
+		Play.play(1);
 	}
 
 
