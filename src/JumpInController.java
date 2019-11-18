@@ -1,10 +1,9 @@
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 /**
  * This class takes in user input and deals with it accordingly 
@@ -12,10 +11,9 @@ import javax.swing.JOptionPane;
  *
  */
 
-public class JumpInController implements MouseListener, ActionListener {
+public class JumpInController extends MouseAdapter implements MouseListener, ActionListener {
 	private JumpInView view;
 	private JumpIn model;
-	private ArrayList<Object> options;
 	/*
 	 * State is saved through inMovingState and inSelectingState
 	 * inSelectingState - the user is selecting which animal they would like to move
@@ -39,6 +37,7 @@ public class JumpInController implements MouseListener, ActionListener {
 		this.inSelectingState = false;
 		this.initialLocation = new Point();
 		this.finalLocation = new Point();
+		
 		// listen to the events created by each button
 		GameButton[][] b = view.getButtons();
 		for(int i = 0; i < JumpIn.NUM_ROWS; i ++) {
@@ -117,21 +116,7 @@ public class JumpInController implements MouseListener, ActionListener {
 	public void setInSelectingState(boolean inSelectingState) {
 		this.inSelectingState = inSelectingState;
 	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {}
-
-	@Override
-	// TODO have a lighter image appear to show what the animal would look 
-	// 		like if this box was selected
-	public void mouseEntered(MouseEvent e) {}
-
-	@Override
-	public void mouseExited(MouseEvent e) {}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("undo")) {
@@ -139,7 +124,7 @@ public class JumpInController implements MouseListener, ActionListener {
 			model.undoMove();
 		} else if (e.getActionCommand().equals("redo")) {
 			model.redoMove();
-		} else if (e.getActionCommand().equals("solve")) {
+		} else if (e.getActionCommand().equals("hint")) {
 //			model.solve();
 		} else {
 			

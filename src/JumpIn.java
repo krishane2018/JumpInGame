@@ -92,7 +92,7 @@ public class JumpIn {
 	 */
 
 	public String objectToString(int x, int y) {
-		if (isHole(x, y) && gameBoard[y][x].getClass().getSimpleName().equals("Rabbit")) {
+		if (isHole(x, y) && gameBoard[y][x] instanceof Rabbit) {
 			return gameBoard[y][x].getName() + "H";
 		} else if (isHole(x, y)) {
 			return "H";
@@ -117,7 +117,6 @@ public class JumpIn {
 	 * @return
 	 */
 	public boolean isHole(int x, int y) {
-
 		for (int i = 0; i < holes.length; i++) {
 			if (holes[i].getX() == x && holes[i].getY() == y) {
 				return true;
@@ -180,19 +179,15 @@ public class JumpIn {
 	 * 
 	 * @return
 	 */
-	private boolean checkWin() {
-		for (int i = 0; i < listeners.size(); i++) {
-			if(listeners.get(i) instanceof GameObject) {
-				GameObject g = (GameObject) listeners.get(i);
-				if (g.getClass().getSimpleName().equals("Rabbit")) {
+	public boolean checkWin() {
+		for (JumpInListener j : getGameObjectListeners()) {
+				GameObject g = (GameObject) j;
+				if (g instanceof Rabbit) {
 					Rabbit r = (Rabbit) g;
 					if (r.getStatus() == false) {
 						return false;
 					}
 				}
-			} else {
-				
-			}
 		}
 		return true;
 	}
@@ -212,7 +207,7 @@ public class JumpIn {
 		if (move.isNoMove()) {
 			return false;
 		}
-		if (move.getChosenAnimal().getClass().getSimpleName() == "Rabbit") {
+		if (move.getChosenAnimal() instanceof Rabbit) {
 			event = new JumpInEvent(this, move.getChosenAnimal(), move.getChosenAnimal().getCoordinate(), move.getFinalLocation(), holes);
 			gameBoard[initialY][initialX] = new GameObject(new Point(initialX, initialY));
 			gameBoard[finalY][finalX] = move.getChosenAnimal();
@@ -234,27 +229,84 @@ public class JumpIn {
 		undoRedo.addMove(event);
 		
 		// model must be updated first
-		for (int i = 0; i < listeners.size(); i++) {
-			JumpInListener l = listeners.get(i);
-			if ((l instanceof GameObject) && (GameObject) l == move.getChosenAnimal()) {
-				l.handleEvent(event);
+		for(JumpInListener j : getGameObjectListeners()) {
+			if((GameObject) j == move.getChosenAnimal()) {
+				j.handleEvent(event);
 			}
 		}
 		
 		boolean win = checkWin();
-			
-		for (int i = 0; i < listeners.size(); i++) {
-			JumpInListener l = listeners.get(i);
-			if(l instanceof JumpInView) {
-				l.handleEvent(event);
-				if(win) {
-					JumpInView v =(JumpInView)l;
-					v.handleWin();
-				}
+		
+		for(JumpInView v : getViewListeners()) {
+			v.handleEvent(event);
+			if(win) {
+				v.handleWin();
 			}
 		}
 
 		return win;
+	}
+	
+	/**
+	 * 
+	 */
+	public String toString() {
+		String board = "";
+		for (int i = 0; i < NUM_ROWS; i++) {
+			board += "--------------------------\n";
+			for (int j = 0; j < NUM_COLUMNS; j++) {
+				board += String.format("|%4s", objectToString(j, i));
+			}
+			board += "|\n";
+		}
+		board += "--------------------------\n";
+		return board;
+	}
+	
+	public int getNumRows() {
+		return JumpIn.NUM_ROWS;
+	}
+	
+	public int getNumColumns() {
+		return JumpIn.NUM_COLUMNS;
+	}
+	
+	/**
+	 * Author for all methods below: Aashna Narang
+	 */
+	
+	
+	/**
+	 * Method to get listeners of type GameObject. Use this instead of separating
+	 * listeners array list because listeners can be added at any time
+	 * @return JumpIn listeners of type GameObject
+	 */
+	public ArrayList<JumpInListener> getGameObjectListeners() {
+		ArrayList<JumpInListener> list = new ArrayList<JumpInListener>();
+		for (int i = 0; i < listeners.size(); i++) {
+			JumpInListener l = listeners.get(i);
+			if ((l instanceof GameObject)) {
+				list.add(l);
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * Method to get listeners of type JumpInView. Use this instead of separating
+	 * listeners array list because listeners can be added at any time
+	 * @return JumpInViews that are listening to the game
+	 */
+	public ArrayList<JumpInView> getViewListeners() {
+		ArrayList<JumpInView> list = new ArrayList<JumpInView>();
+		for (int i = 0; i < listeners.size(); i++) {
+			JumpInListener l = listeners.get(i);
+			if ((l instanceof JumpInView)) {
+				JumpInView v = (JumpInView)l;
+				list.add(v);
+			}
+		}
+		return list;
 	}
 	
 	/**
@@ -291,7 +343,7 @@ public class JumpIn {
 	
 	/**
 	 * This function is called from the controller whenever the user gives input. This function 
-	 * updates the game board if necessary 
+	 * updates the game board and calls a function to remove the view's highlighting if necessary 
 	 * @param initial - the initial location of the animal / location of the animal user would like to move
 	 * @param finalLocation - location of where the user would like to move the animal
 	 * @return true if animal can be moved there, otherwise false
@@ -300,11 +352,11 @@ public class JumpIn {
 		GameObject g = gameBoard[initial.y][initial.x];
 		ArrayList<Object> options = getAnimalOptions(initial);
 		
-		if(selectedAnimalType(initial).equals("Rabbit") && options.contains(finalLocation)) {
+		if(g instanceof Rabbit && options.contains(finalLocation)) {
 			showOptions(initial, false);
 			processCommand(new Move(initial, finalLocation, g));
 			return true;
-		} else if (selectedAnimalType(initial).equals("Fox")) {
+		} else if (g instanceof Fox) {
 			boolean selectedInOptions = false;
 			Point foxLocation[] = (Point[])options.get(0);
 			for(Object o : options) {
@@ -324,42 +376,21 @@ public class JumpIn {
 		return false;
 	}
 	
+	/**
+	 * Call the view listeners to highlight the options of an animal when the user
+	 * has selected to move that animal.
+	 * @param initialLocation - the coordinate the user has selected
+	 * @param show - whether the options will be highlighted or remove highlight
+	 * @return true if there are options to highlight/unhighlight, otherwise false
+	 */
 	public boolean showOptions(Point initialLocation, boolean show) {
 		ArrayList<Object> options = getAnimalOptions(initialLocation);
 		String selectedAnimalType = selectedAnimalType(initialLocation);
-		for (int i = 0; i < listeners.size(); i++) {
-			JumpInListener l = listeners.get(i);
-			if(l instanceof JumpInView) {
-				if(show) return ((JumpInView) l).highlightOptions(initialLocation, selectedAnimalType, options);
-				else return ((JumpInView) l).highlight(selectedAnimalType, false, options);
-			}
+		for (JumpInView v : getViewListeners()) {
+				if(show) return (v.highlightOptions(initialLocation, selectedAnimalType, options));
+				else return (v.highlight(selectedAnimalType, false, options));
 		}
 		return false;
-	}
-	
-	
-	/**
-	 * 
-	 */
-	public String toString() {
-		String board = "";
-		for (int i = 0; i < NUM_ROWS; i++) {
-			board += "--------------------------\n";
-			for (int j = 0; j < NUM_COLUMNS; j++) {
-				board += String.format("|%4s", objectToString(j, i));
-			}
-			board += "|\n";
-		}
-		board += "--------------------------\n";
-		return board;
-	}
-	
-	public int getNumRows() {
-		return JumpIn.NUM_ROWS;
-	}
-	
-	public int getNumColumns() {
-		return JumpIn.NUM_COLUMNS;
 	}
 	
 	/**
@@ -387,28 +418,28 @@ public class JumpIn {
 		return levelSelector.getFoxInitialPositions();
 	}
 	
+	
 	/**
-	 * Checks if object at given location is a rabbit
-	 * @param p coordinate user would like to check
-	 * @return true if it is a rabbit
+	 * @return the JumpIn listeners
 	 */
-	public boolean isRabbit(Point p) {
-		return gameBoard[p.y][p.x].getClass().getSimpleName().contentEquals("Rabbit");
+	public ArrayList<JumpInListener> getListeners() {
+		return listeners;
 	}
 
+	/**
+	 * Undo a move by getting the last move that was done. Update the board
+	 * and update the view
+	 * @return True if a move was undone, otherwise false
+	 */
 	public boolean undoMove() {
 		JumpInEvent e = undoRedo.undoMove();
 		if(e.isEmpty()) {
-			for (int i = 0; i < listeners.size(); i++) {
-				JumpInListener l = listeners.get(i);
-				if(l instanceof JumpInView) {
-					JumpInView v = (JumpInView)l;
+			for (JumpInView v : getViewListeners()) {
 					v.displayError(1);
-				}
 			}
 			return false;
 		}
-		if(e.getChosenPiece().getClass().getSimpleName().equals("Rabbit")) {
+		if(e.getChosenPiece() instanceof Rabbit) {
 			processCommand(new Move(e.getFinalLocation1(), e.getInitialLocation1(), e.getChosenPiece()));
 		} else {
 			Point[] initialLocation = {e.getFinalLocation1(), e.getFinalLocation2()};
@@ -418,19 +449,19 @@ public class JumpIn {
 		return true;
 	}
 	
+	/**
+	 * Redo a move by getting the last JumpInEvent that was "undone" and update the board accordingly
+	 * @return true if a move was redone, otherwise false.
+	 */
 	public boolean redoMove() {
 		JumpInEvent e = undoRedo.redoMove();
 		if(e.isEmpty()) {
-			for (int i = 0; i < listeners.size(); i++) {
-				JumpInListener l = listeners.get(i);
-				if(l instanceof JumpInView) {
-					JumpInView v = (JumpInView)l;
+			for (JumpInView v : getViewListeners()) {
 					v.displayError(2);
-				}
 			}
 			return false;
 		}
-		if(e.getChosenPiece().getClass().getSimpleName().equals("Rabbit")) {
+		if(e.getChosenPiece() instanceof Rabbit) {
 			processCommand(new Move(e.getInitialLocation1(), e.getFinalLocation1(), e.getChosenPiece()));
 		} else {
 			Point[] initialLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
@@ -440,6 +471,11 @@ public class JumpIn {
 		return true;
 	}
 	
+	/**
+	 * Set the state of the undoRedo class. True if currently undoing/redoing moves. 
+	 * False if the user is selecting a new object to move.
+	 * @param state
+	 */
 	public void setUndoState(boolean state) {
 		undoRedo.setState(state);
 	}
@@ -449,7 +485,7 @@ public class JumpIn {
 	 * @param args 
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(3);
+		JumpIn game = new JumpIn(1);
 		JumpInView view = new JumpInView(game);
 		JumpInController controller = new JumpInController(view, game);
 	}
