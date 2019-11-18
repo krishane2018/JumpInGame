@@ -2,6 +2,9 @@
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 
 /**
@@ -24,6 +27,8 @@ public class JumpIn {
 	public final static int NUM_COLUMNS = 5;
 	private Point[] holes;
 	private UndoRedo undoRedo;
+	private Queue<Move> solverMoves;
+	 
 
 	/**
 	 * 
@@ -37,34 +42,114 @@ public class JumpIn {
 		gameBoard = levelSelector.getBoard();
 		holes = LevelSelector.getHoles();
 		parser = new Parser();
+		solverMoves = new LinkedList<Move>();
+		solver();
 	}
 
-	public void solver(MovableAnimal previousAnimal, Point previousPoint) {
-		for (JumpInListener l : listeners) {
-			MovableAnimal animal = (MovableAnimal)l;
-			ArrayList<Object>options = animal.determineOptions(gameBoard);
-			for(Object option : options) {
-				if (animal instanceof Rabbit) {
-					Point rabbitOption = (Point)option;
-					if (animal.equals(previousAnimal)&&rabbitOption.equals(previousPoint)) {
-						continue;
-					}
-					else {
-						processCommand(new Move(animal.getCoordinate(), rabbitOption, animal));
-					}
-				}
-				else if (animal instanceof Fox) {
-					Point[] foxOption = (Point[])option;
-					if (animal.equals(previousAnimal)&&foxOption[0].equals(previousPoint)) {
-						continue;
-					}
-					else {
-						processCommand(new Move(((Fox) animal).getCoordinates(), foxOption, animal));
-					}
-				}
-				solver(animal, animal.getCoordinate());
+	/**
+	 * @return the solverMoves
+	 */
+	public Queue<Move> getSolverMoves() {
+		return solverMoves;
+	}
+
+	public void solver() {
+		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
+		for (int i = 0; i<listeners.size();i++) {
+			JumpInListener l = listeners.get(i);
+			if(l instanceof JumpInView) {
+				viewListeners.add(listeners.remove(i));
+				i--;
 			}
 		}
+		solverHelper(new Rabbit(new Point(0,0), "temp"),
+				new Stack<Move>(), new Stack<ArrayList<Point>>());
+		listeners.addAll(viewListeners);
+	}
+	
+	
+	private boolean isPreviousState(Stack<ArrayList<Point>> previousStates) {
+		for (ArrayList<Point> state : previousStates) {
+			if (helperIsPreviousState(state)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean helperIsPreviousState(ArrayList<Point> state) {
+		for (int i = 0; i<listeners.size();i++) {
+			GameObject g = (GameObject)listeners.get(i);
+			if (!(g.getCoordinate().equals(state.get(i)))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private boolean isMovedFox (Stack<Move> tryMoves, MovableAnimal animal) {
+		for (int i = tryMoves.size()-1; i>-1;i--) {
+			Move move = tryMoves.get(i);
+			if (move.getChosenAnimal()==animal) {
+				return true;
+			}
+			else if (move.getChosenAnimal() instanceof Rabbit){
+				break;
+			}
+		}
+		return false;
+	}
+	
+	private boolean solverHelper(MovableAnimal previousAnimal, Stack<Move> tryMoves, 
+			Stack<ArrayList<Point>> previousStates) {
+		boolean isWin = false;
+		MovableAnimal animal;
+		
+		if (isPreviousState(previousStates)) {
+			return false;
+		}
+		
+		
+		ArrayList<Point> currentState = new ArrayList<Point>();
+
+		for (JumpInListener l : listeners) {
+			Point p = ((GameObject)l).getCoordinate();
+			currentState.add(new Point(p));
+		}
+		previousStates.add(currentState);
+		
+		
+		for (JumpInListener l : listeners) {
+			animal = (MovableAnimal)l;
+			ArrayList<Object>options = animal.determineOptions(gameBoard);
+			if (animal instanceof Fox && isMovedFox(tryMoves, animal)) {
+				continue;
+			}
+			for(int i=0; i<options.size();i++) {
+				Object option = options.get(i);
+				undoRedo.setState(false);
+				Move tryMove = (animal instanceof Rabbit) ? new Move(animal.getPosition(), (Point)option, animal) : new Move(animal.getPosition(), (Point[])option, animal);
+				tryMoves.add(tryMove);
+				isWin = processCommand(tryMove);
+				if (isWin) {
+					solverMoves = new LinkedList<Move>(tryMoves);
+					undoMove();
+					return true;
+				}
+				else {
+					if (solverHelper(animal, tryMoves,previousStates)) {
+						undoMove();
+						return true;
+					}
+					else {
+						tryMoves.pop();
+						undoMove();
+					}
+				}
+			}
+		}
+		previousStates.pop();
+		return false;
 	}
 	
 	/**
@@ -243,7 +328,7 @@ public class JumpIn {
 				v.handleWin();
 			}
 		}
-
+		
 		return win;
 	}
 	
@@ -354,7 +439,11 @@ public class JumpIn {
 		
 		if(g instanceof Rabbit && options.contains(finalLocation)) {
 			showOptions(initial, false);
+			Move move = new Move(initial, finalLocation, g);
 			processCommand(new Move(initial, finalLocation, g));
+			if (!(solverMoves.poll().equals(move))) {
+				solver();
+			}
 			return true;
 		} else if (g instanceof Fox) {
 			boolean selectedInOptions = false;
@@ -369,7 +458,12 @@ public class JumpIn {
 			if (selectedInOptions) {
 				Fox f = (Fox)g;
 				showOptions(initial, false);
-				processCommand(new Move(f.getCoordinates(), foxLocation, g));
+				Move move = new Move(f.getCoordinates(), foxLocation, g);
+				processCommand(move);
+				if (!(solverMoves.poll().equals(move))) {
+					System.out.println("hi");
+					solver();
+				}
 				return true;
 			}
 		}
@@ -483,11 +577,10 @@ public class JumpIn {
 	/**
 	 * Creates a game, the GUI, and the controller which handles user input
 	 * @param args 
+
 	 */
 	public static void main(String[] args) {
-		JumpIn game = new JumpIn(1);
-		JumpInView view = new JumpInView(game);
-		JumpInController controller = new JumpInController(view, game);
+		Play.play(1);
 	}
 
 

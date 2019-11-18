@@ -41,6 +41,16 @@ public class Rabbit extends MovableAnimal {
 	public boolean getStatus() {
 		return this.status;
 	}
+	
+	public String getRabbitColour() {
+		if(getName().equals("R1")) {
+			return "Brown";
+		} else if (getName().equals("R2")) {
+			return "Grey";
+		} else {
+			return "White";
+		}
+	}
 
 	@Override
 	/**
@@ -125,7 +135,7 @@ public class Rabbit extends MovableAnimal {
 		helperDetermineOptions(options, y + 1, x, Utility.getIncrement(), Utility.getDecrement(), gameBoard,
 				"Vertical");
 
-		return options;
+		return new ArrayList<Object>(options);
 	}
 
 	protected boolean helperDetermineOptions(ArrayList<Object> options, int changingCoordinate, int uniformCoordinate,
@@ -166,6 +176,12 @@ public class Rabbit extends MovableAnimal {
 			options.add(new Point(changingCoordinate, uniformCoordinate));
 		}
 
+	}
+
+	@Override
+	public Point getPosition() {
+		// TODO Auto-generated method stub
+		return getCoordinate();
 	}
 
 }

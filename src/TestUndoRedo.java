@@ -4,6 +4,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * 
+ * @author Aashna Narang
+ *
+ */
+
 class TestUndoRedo {
 
 	private UndoRedo u;
@@ -85,6 +91,11 @@ class TestUndoRedo {
 		u.setState(true);
 		assertTrue(u.isState());
 		u.setState(false);
+		assertFalse(u.isState());
+	}
+	
+	@Test
+	void testInitialState() {
 		assertFalse(u.isState());
 	}
 
