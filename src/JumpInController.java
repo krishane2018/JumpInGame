@@ -54,7 +54,7 @@ public class JumpInController implements MouseListener, ActionListener {
 		}
 		view.getUndo().addActionListener(this);
 		view.getRedo().addActionListener(this);
-		
+		view.getHint().addActionListener(this);
 	}
 
 	@Override
@@ -140,6 +140,10 @@ public class JumpInController implements MouseListener, ActionListener {
 	public void mouseExited(MouseEvent e) {}
 
 	@Override
+	/**
+	 * This method checks which JMenuItem was clicked and calls the appropriate function
+	 * @param e - action event created when menu item was clicked. Stores all needed information of the action
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("undo")) {
 			model.setUndoState(true);
@@ -147,7 +151,7 @@ public class JumpInController implements MouseListener, ActionListener {
 		} else if (e.getActionCommand().equals("redo")) {
 			model.redoMove();
 		} else if (e.getActionCommand().equals("hint")) {
-			
+			view.showHint();
 		} else if (e.getActionCommand().equals("PLAY!")) {
 			view.getMMenu().showGame();
 		} else if (e.getActionCommand().equals("NEXT")) {

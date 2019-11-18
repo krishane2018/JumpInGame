@@ -46,6 +46,13 @@ public class JumpIn {
 		solver();
 	}
 
+	/**
+	 * @return the solverMoves
+	 */
+	public Queue<Move> getSolverMoves() {
+		return solverMoves;
+	}
+
 	public void solver() {
 		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
 		for (int i = 0; i<listeners.size();i++) {
@@ -57,16 +64,9 @@ public class JumpIn {
 		}
 		solverHelper(new Rabbit(new Point(0,0), "temp"),
 				new Stack<Move>(), new Stack<ArrayList<Point>>());
-		displaySolverMoves();
 		listeners.addAll(viewListeners);
 	}
 	
-	public void displaySolverMoves() {
-		for (Move move : solverMoves) {
-			System.out.println(move);
-		}
-		System.out.println();
-	}
 	
 	private boolean isPreviousState(Stack<ArrayList<Point>> previousStates) {
 		for (ArrayList<Point> state : previousStates) {
@@ -393,9 +393,6 @@ public class JumpIn {
 			if (!(solverMoves.poll().equals(move))) {
 				solver();
 			}
-			else {
-				displaySolverMoves();
-			}
 			return true;
 		} else if (selectedAnimalType(initial).equals("Fox")) {
 			boolean selectedInOptions = false;
@@ -415,9 +412,6 @@ public class JumpIn {
 				if (!(solverMoves.poll().equals(move))) {
 					System.out.println("hi");
 					solver();
-				}
-				else {
-					displaySolverMoves();
 				}
 				return true;
 			}
