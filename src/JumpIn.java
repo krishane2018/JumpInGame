@@ -176,7 +176,7 @@ public class JumpIn {
 	 * @return
 	 */
 
-	public String objectToString(int x, int y) {
+	private String objectToString(int x, int y) {
 		if (isHole(x, y) && gameBoard[y][x].getClass().getSimpleName().equals("Rabbit")) {
 			return gameBoard[y][x].getName() + "H";
 		} else if (isHole(x, y)) {
@@ -214,7 +214,7 @@ public class JumpIn {
 	/**
 	 * 
 	 */
-	public void printWelcome() {
+	private void printWelcome() {
 		System.out.println("Welcome to JumpIn!");
 		System.out.println("Please type \"play\" to start the game.\n");
 	}

@@ -52,4 +52,13 @@ public class UndoRedo {
 		}
 		return new JumpInEvent();
 	}
+
+	public Stack<JumpInEvent> getUndo() {
+		return undo;
+	}
+
+	public Stack<JumpInEvent> getRedo() {
+		return redo;
+	}
+	
 }
