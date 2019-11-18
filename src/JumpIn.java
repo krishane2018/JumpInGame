@@ -570,7 +570,7 @@ public class JumpIn {
 	 */
 	public static void main(String[] args) {
 
-		Play.play(2);
+		Play.play(1);
 	}
 
 

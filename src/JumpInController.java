@@ -175,6 +175,7 @@ public class JumpInController implements MouseListener, ActionListener {
 		}
 		view.getUndo().removeActionListener(this);
 		view.getRedo().removeActionListener(this);
+		view.getHint().removeActionListener(this);
 	}
 
 }
