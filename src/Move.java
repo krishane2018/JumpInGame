@@ -14,6 +14,12 @@ public class Move {
 	private GameObject chosenAnimal;
 	private boolean noMove;
 
+	/**
+	 * Constructor to make Move object for GameObject whose location consists of 1 point.
+	 * @param initialLocation Initial Location of GameObject.
+	 * @param finalLocation Initial Location of GameObject.
+	 * @param chosenAnimal GameObject that is being moved.
+	 */
 	public Move(Point initialLocation, Point finalLocation, GameObject chosenAnimal) {
 		if (Utility.checkValidPoint(initialLocation)&&Utility.checkValidPoint(finalLocation)) {
 			this.initialLocation = initialLocation;
@@ -28,6 +34,12 @@ public class Move {
 		noMove = false;
 	}
 
+	/**
+	 * Constructor to make Move object for GameObject whose location consists of 2 points.
+	 * @param initialLocation Initial Location of GameObject.
+	 * @param finalLocation Final Location of GameObject.
+	 * @param chosenAnimal GameObject that is being moved.
+	 */
 	public Move(Point[] initialLocation, Point finalLocation[],	GameObject chosenAnimal) {
 		
 		if (Utility.checkValidPoint(initialLocation[0])&&Utility.checkValidPoint(initialLocation[1])
@@ -44,55 +56,115 @@ public class Move {
 		noMove = false;
 	}
 
+	/**
+	 * Default constructor for Move.
+	 */
 	public Move() {
 		noMove = true;
 	}
 
+	/**
+	 * Gets the second point of the initial location.
+	 * @return The second Point of the initial location. 
+	 */
 	public Point getInitialLocation2() {
 		return initialLocation2;
 	}
 
+	/**
+	 * Sets the second point of the initial location.
+	 * @param initialLocation2 The point which the second point of the initial location will be set to. 
+	 */
+	
 	public void setInitialLocation2(Point initialLocation2) {
 		this.initialLocation2 = initialLocation2;
 	}
-
+	
+	/**
+	 * Gets the second point of the final location.
+	 * @return The second Point of the final location. 
+	 */
+	
 	public Point getFinalLocation2() {
 		return finalLocation2;
 	}
 
+	/**
+	 * Sets the second point of the final location.
+	 * @param finalLocation2 The point which the second point of the final location will be set to. 
+	 */
+	
 	public void setFinalLocation2(Point finalLocation2) {
 		this.finalLocation2 = finalLocation2;
 	}
 
+	/**
+	 * Gets the first point of the initial location.
+	 * @return The first Point of the initial location. 
+	 */
+	
 	public Point getInitialLocation() {
 		return initialLocation;
 	}
 
+	/**
+	 * Sets the first point of the initial location.
+	 * @param initialLocation The point which the first point of the initial location will be set to. 
+	 */
+	
 	public void setInitialLocation(Point initialLocation) {
 		this.initialLocation = initialLocation;
 	}
 
+	/**
+	 * Gets the first point of the final location.
+	 * @return The first Point of the final location. 
+	 */
+	
 	public Point getFinalLocation() {
 		return finalLocation;
 	}
 
+	/**
+	 * Sets the first point of the final location.
+	 * @param finalLocation The point which the first point of the final location will be set to. 
+	 */
+	
 	public void setFinalLocation(Point finalLocation) {
 		this.finalLocation = finalLocation;
 	}
 
+	/**
+	 * Gets the Game Object that is moving.
+	 * @return The Game Object that is moving.
+	 */
+	
 	public GameObject getChosenAnimal() {
 		return chosenAnimal;
 	}
 
+	/**
+	 * Sets the Game Object that is moving.
+	 * @param chosenAnimal The Game Object that is moving.
+	 */
+	
 	public void setChosenAnimal(GameObject chosenAnimal) {
 		this.chosenAnimal = chosenAnimal;
 	}
 
+	/**
+	 * Returns whether there is a move or not.
+	 * @return A boolean indicating whether there is a move or not.
+	 */
+	
 	public boolean isNoMove() {
 		return noMove;
 	}
 
-	
+	/**
+	 * Returns a string representation of the Move Object.
+	 * @return A string representation of the Move Object.
+	 */
 	public String toString() {
 		if (initialLocation2==null&&finalLocation2==null) {
 			return "Animal: "+chosenAnimal.getName() + pointToString();
@@ -101,7 +173,10 @@ public class Move {
 			return "Animal: "+chosenAnimal.getName()+ pointToString();
 		}
 	}
-	
+	/**
+	 * Returns a string representation of the initial and final location of the Move Object.
+	 * @return A string representation of the initial and final location of the Move Object.
+	 */
 	public String pointToString() {
 		if (chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
 			return  " Initial Location: (" + initialLocation.x + ","+ initialLocation.y +")"+   ", to Final Location: "
@@ -115,7 +190,11 @@ public class Move {
 		}
 	}
 	
-	
+	/**
+	 * Determines whether an object is equal to a Move object.
+	 * @param Object being compared to Move object.
+	 * @return A boolean indicating whether an object is equal to a Move object.
+	 */
 	public boolean equals(Object o) {
 		if (o == null)
 			return false;
@@ -133,6 +212,10 @@ public class Move {
 				this.noMove==m.noMove);
 	}
 	
+	/**
+	 * Gets the type of the GameObject.
+	 * @return A String representing the type of the GameObject.
+	 */
 	public String getNameType() {
 		if(chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
 			Rabbit r = (Rabbit) chosenAnimal;

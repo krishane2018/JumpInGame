@@ -244,6 +244,12 @@ public class Fox extends MovableAnimal {
 		return new Point[] {getCoordinate(), getCoordinate2()};
 	}
 
+	
+	/**
+	 * Determines whether an object is equal to a Fox object.
+	 * @param Object being compared to Fox object.
+	 * @return A boolean indicating whether an object is equal to a Fox object.
+	 */
 	public boolean equals(Object o) {
 		if (o == null)
 			return false;
