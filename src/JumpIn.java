@@ -53,6 +53,9 @@ public class JumpIn {
 		return solverMoves;
 	}
 
+	/**
+	 * Determines the moves that will lead the user to a successful win.
+	 */
 	public void solver() {
 		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
 		for (int i = 0; i<listeners.size();i++) {
@@ -67,7 +70,11 @@ public class JumpIn {
 		listeners.addAll(viewListeners);
 	}
 	
-	
+	/**
+	 * Determines if the game board is in a state that it was in previously 
+	 * @param previousStates An ArrayList containing the previous states of the board.
+	 * @return A boolean indicating whether the game board is in a state that it was in previously. 
+	 */
 	private boolean isPreviousState(Stack<ArrayList<Point>> previousStates) {
 		for (ArrayList<Point> state : previousStates) {
 			if (helperIsPreviousState(state)) {
@@ -76,7 +83,11 @@ public class JumpIn {
 		}
 		return false;
 	}
-	
+	/**
+	 * Helper method for isPreviousState
+	 * @param state A previous state of the game board. 
+	 * @return A boolean indicating whether the game board is in a previous state. 
+	 */
 	private boolean helperIsPreviousState(ArrayList<Point> state) {
 		for (int i = 0; i<listeners.size();i++) {
 			GameObject g = (GameObject)listeners.get(i);
@@ -86,7 +97,12 @@ public class JumpIn {
 		}
 		return true;
 	}
-	
+	/**
+	 * Determines if the Fox has moved since the last Rabbit move.
+	 * @param tryMoves Stack of moves that the solver has tried.
+	 * @param animal The Fox which is being checked.
+	 * @return A boolean indicating whether the Fox has moved since the last Rabbit move.
+	 */
 	private boolean isMovedFox (Stack<Move> tryMoves, MovableAnimal animal) {
 		for (int i = tryMoves.size()-1; i>-1;i--) {
 			Move move = tryMoves.get(i);
@@ -99,6 +115,14 @@ public class JumpIn {
 		}
 		return false;
 	}
+	
+	/**
+	 * Helper method for solver, determines if a solution is available.
+	 * @param previousAnimal Animal that was moved in previous move.
+	 * @param tryMoves ArrayList of moves that the solver has tried.
+	 * @param previousStates ArrayList of states that the game board has already been in.
+	 * @return A boolean indicating whether a solution has been found.
+	 */
 	
 	private boolean solverHelper(MovableAnimal previousAnimal, Stack<Move> tryMoves, 
 			Stack<ArrayList<Point>> previousStates) {
@@ -546,7 +570,7 @@ public class JumpIn {
 	 */
 	public static void main(String[] args) {
 
-		Play.play(1);
+		Play.play(2);
 	}
 
 
