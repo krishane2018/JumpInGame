@@ -96,13 +96,23 @@ public class Move {
 	
 	public String toString() {
 		if (initialLocation2==null&&finalLocation2==null) {
-			return "Animal: "+chosenAnimal.getName()+", Initial Location: "+initialLocation+", Final Location: "
-					+finalLocation;
+			return "Animal: "+chosenAnimal.getName() + pointToString();
 		}
 		else {
-			return "Animal: "+chosenAnimal.getName()+", Initial Location: "+initialLocation
-					+", Initial Location2: "+initialLocation2+", Final Location: "
-					+finalLocation+", Final Location2: "+finalLocation2;
+			return "Animal: "+chosenAnimal.getName()+ pointToString();
+		}
+	}
+	
+	public String pointToString() {
+		if (chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
+			return  " Initial Location: (" + initialLocation.x + ","+ initialLocation.y +")"+   ", to Final Location: "
+					+ "(" + finalLocation.x + ","+ finalLocation.y +")";
+		}
+		else {
+			return " Initial Location: "+ "(" + initialLocation.x + ","+ initialLocation.y +")"
+					+",   Initial Location2: " + "(" + initialLocation2.x + ","+ initialLocation2.y +")" + 
+					",   to Final Location: " + "(" + finalLocation.x + ","+ finalLocation.y +")" + 
+					",   Final Location2: " + "(" + finalLocation2.x + ","+ finalLocation2.y +")";
 		}
 	}
 	
@@ -122,5 +132,15 @@ public class Move {
 				this.finalLocation2.equals(m.getFinalLocation2())&&
 				this.chosenAnimal.equals(m.getChosenAnimal())&&
 				this.noMove==m.noMove);
+	}
+	
+	public String getNameType() {
+		if(chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
+			Rabbit r = (Rabbit) chosenAnimal;
+			return r.getRabbitColour();
+		} else {
+			Fox f = (Fox) chosenAnimal;
+			return f.getDirection();
+		}
 	}
 }

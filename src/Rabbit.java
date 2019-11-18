@@ -41,6 +41,16 @@ public class Rabbit extends MovableAnimal {
 	public boolean getStatus() {
 		return this.status;
 	}
+	
+	public String getRabbitColour() {
+		if(getName().equals("R1")) {
+			return "Brown";
+		} else if (getName().equals("R2")) {
+			return "Grey";
+		} else {
+			return "White";
+		}
+	}
 
 	@Override
 	/**

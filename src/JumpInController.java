@@ -48,6 +48,7 @@ public class JumpInController implements MouseListener, ActionListener {
 		}
 		view.getUndo().addActionListener(this);
 		view.getRedo().addActionListener(this);
+		view.getHint().addActionListener(this);
 	}
 
 	@Override
@@ -139,8 +140,8 @@ public class JumpInController implements MouseListener, ActionListener {
 			model.undoMove();
 		} else if (e.getActionCommand().equals("redo")) {
 			model.redoMove();
-		} else if (e.getActionCommand().equals("solve")) {
-//			model.solve();
+		} else if (e.getActionCommand().equals("hint")) {
+			view.showHint();
 		} else {
 			
 		}

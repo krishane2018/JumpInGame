@@ -28,7 +28,7 @@ public class MainMenu extends JFrame {
 	private JPanel menu, content, win;
 	private MainMenuButton play, easy, hard, next, exit1, exit2;
 	private JumpInView view;
-	private JMenuItem undo, redo, solve, exit;
+	private JMenuItem undo, redo, hint, exit;
 	
 	/**
 	 * Creates all the panels and adds it to the card layout.
@@ -78,11 +78,12 @@ public class MainMenu extends JFrame {
 		options = new JMenu("options");
 		undo = new JMenuItem("undo");
 		redo = new JMenuItem("redo");
-		solve = new JMenuItem("solve");
+		hint = new JMenuItem("hint");
 		exit = new JMenuItem("exit");
+		
 		options.add(undo);
 		options.add(redo);
-		options.add(solve);
+		options.add(hint);
 		options.add(exit);
 		menuBar = new JMenuBar();
 		menuBar.add(options);
@@ -137,8 +138,8 @@ public class MainMenu extends JFrame {
 	/**
 	 * @return the solve JMenuItem
 	 */
-	public JMenuItem getSolve() {
-		return solve;
+	public JMenuItem getHint() {
+		return hint;
 	}
 	
 	/**

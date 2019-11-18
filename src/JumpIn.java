@@ -46,6 +46,13 @@ public class JumpIn {
 		solver();
 	}
 
+	/**
+	 * @return the solverMoves
+	 */
+	public Queue<Move> getSolverMoves() {
+		return solverMoves;
+	}
+
 	public void solver() {
 		Move previousMove = new Move(new Point(0,0), new Point(0,0), new Rabbit(new Point(0,0), "temp"));
 		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
@@ -58,16 +65,9 @@ public class JumpIn {
 		}
 		solverHelper((MovableAnimal)previousMove.getChosenAnimal(), previousMove.getInitialLocation(),
 				new Stack<Move>(), new Stack<ArrayList<Point>>());
-		displaySolverMoves();
 		listeners.addAll(viewListeners);
 	}
 	
-	public void displaySolverMoves() {
-		for (Move move : solverMoves) {
-			System.out.println(move);
-		}
-		System.out.println();
-	}
 	
 	private boolean isPreviousState(Stack<ArrayList<Point>> previousStates) {
 		for (ArrayList<Point> state : previousStates) {
@@ -403,9 +403,6 @@ public class JumpIn {
 			if (!(solverMoves.poll().equals(move))) {
 				solver();
 			}
-			else {
-				displaySolverMoves();
-			}
 			return true;
 		} else if (selectedAnimalType(initial).equals("Fox")) {
 			boolean selectedInOptions = false;
@@ -425,9 +422,6 @@ public class JumpIn {
 				if (!(solverMoves.poll().equals(move))) {
 					System.out.println("hi");
 					solver();
-				}
-				else {
-					displaySolverMoves();
 				}
 				return true;
 			}
