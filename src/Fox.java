@@ -97,6 +97,11 @@ public class Fox extends MovableAnimal {
 		this.direction = direction;
 	}
 
+	/**
+	 * Correctly orders the points of the Fox from smallest to largest.
+	 * @param points An array containing the current ordering of the points. 
+	 * @return An array containing the correct ordering of the points.
+	 */
 	private Point[] correctPointOrdering(Point[] points) {
 		
 		Point p1 = points[0];
@@ -239,6 +244,12 @@ public class Fox extends MovableAnimal {
 		return new Point[] {getCoordinate(), getCoordinate2()};
 	}
 
+	
+	/**
+	 * Determines whether an object is equal to a Fox object.
+	 * @param Object being compared to Fox object.
+	 * @return A boolean indicating whether an object is equal to a Fox object.
+	 */
 	public boolean equals(Object o) {
 		if (o == null)
 			return false;

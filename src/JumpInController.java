@@ -160,6 +160,7 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		}
 		view.getUndo().removeActionListener(this);
 		view.getRedo().removeActionListener(this);
+		view.getHint().removeActionListener(this);
 	}
 
 }

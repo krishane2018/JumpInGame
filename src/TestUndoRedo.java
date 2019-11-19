@@ -1,19 +1,19 @@
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 /**
  * 
  * @author Aashna Narang
  *
  */
-
 class TestUndoRedo {
-
 	private UndoRedo u;
 	private JumpInEvent e;
+	
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		u = new UndoRedo();
@@ -98,5 +98,4 @@ class TestUndoRedo {
 	void testInitialState() {
 		assertFalse(u.isState());
 	}
-
 }

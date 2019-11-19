@@ -17,14 +17,11 @@ into a rabbit hole.
 
 How to play:
 Click on the animal you would like to move. The board will highlight the possible moves.
-Continue moving the objects until you get all the rabbits in a hole.
+Continue moving the objects until you get all the rabbits in a hole. Press the undo button
+if you wish to undo a move. This move can be redone by pressing the redo button.
 
 
 Changes:
-We added a GUI component to the game to replace the text-based version, so instead of typing
-in where you want to move a game piece, you click the piece and move it to a highlighted tile.
-This required us to create several new clasess including, Board, GameButton, JumpInController,
-JumpInEvent, JumpInView, MainMenu, MainMenuButton, Resources, Utility, WinEvent and WinListener. 
-We also added all the test cases for all the logical components of the game(not the GUI).
-
-
+We added an undo and a redo option to the game. This allows for moves to be undone and then redone.
+This required the creation of the UndoRedo class, and the test cases for this class. Changes were
+also made to existing classes to include the UndoRedo logic.

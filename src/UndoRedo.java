@@ -84,4 +84,9 @@ public class UndoRedo {
 		}
 		return new JumpInEvent();
 	}
+	
+	public void clearRedo() {
+		redo.clear();
+	}
+	
 }

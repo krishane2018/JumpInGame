@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
  * @author Aashna Narang and Kush
  *
  */
-class testJumpIn {
+class TestJumpIn {
 	private JumpIn jumpIn;
 	private JumpIn jumpIn3;
 	private Point inRabbit, fRabbit, inFox, fFox;
@@ -25,6 +25,8 @@ class testJumpIn {
 		fRabbit = new Point(0,1);
 		inFox = new Point(1,4);
 		fFox = new Point(1,2);
+		jumpIn.setUndoState(false);
+		jumpIn3.setUndoState(false);
 	}
 
 	@AfterEach
@@ -87,6 +89,28 @@ class testJumpIn {
 				+ "--------------------------\n";
 		
 		assertEquals(jumpIn3.toString(),level3);
+	}
+	
+	@Test
+	void testSetGetGameBoard1() {
+		LevelSelector level = new LevelSelector(1,jumpIn);
+		jumpIn.setGameBoard(level.getBoard());
+		assertEquals(level.getBoard(),jumpIn.getGameBoard());
+	}
+	
+	@Test
+	void testSetGetGameBoard2() {
+		JumpIn jumpIn = new JumpIn(2);
+		LevelSelector level = new LevelSelector(1,jumpIn);
+		jumpIn.setGameBoard(level.getBoard());
+		assertEquals(level.getBoard(),jumpIn.getGameBoard());
+	}
+	
+	@Test
+	void testSetGetGameBoard3() {
+		LevelSelector level = new LevelSelector(1,jumpIn3);
+		jumpIn3.setGameBoard(level.getBoard());
+		assertEquals(level.getBoard(),jumpIn3.getGameBoard());
 	}
 	
 	/**
@@ -258,4 +282,3 @@ class testJumpIn {
 	}
 	
 }
-

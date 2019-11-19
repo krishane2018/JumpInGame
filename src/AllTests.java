@@ -11,7 +11,8 @@ import org.junit.runners.Suite.SuiteClasses;
         TestGameObject.class, 
         TestLevelSelector.class,
         TestMove.class,
-        TestRabbit.class})
+        TestRabbit.class,
+        TestUndoRedo.class})
 public class AllTests {
 
 }
