@@ -1,8 +1,15 @@
-package source;
+package gui;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.util.ArrayList;
 import javax.swing.*;
+
+import source.Fox;
+import source.JumpIn;
+import source.JumpInEvent;
+import source.JumpInListener;
+import source.Move;
+import source.Rabbit;
 
 /**
  * This class handles all of the GUI manipulation and updates the GUI whenever an event occurs

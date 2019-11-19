@@ -1,4 +1,4 @@
-package source;
+package gui;
 import java.awt.Color;
 import java.awt.Point;
 import javax.swing.ImageIcon;
