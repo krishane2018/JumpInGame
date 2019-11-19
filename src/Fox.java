@@ -104,19 +104,18 @@ public class Fox extends MovableAnimal {
 		Point p2 = points[1];
 
 		if (direction.equals("Vertical")) {
-			double y1 = p1.getY();
-			double y2 = p2.getY();
-			if (y2 < y1) {
-				points[0] = p2;
-				points[1] = p1;
-			}
+			points = orderingHelper(p1.getY(), p2.getY(), points);
 		} else if (direction.equals("Horizontal")) {
-			double x1 = p1.getX();
-			double x2 = p2.getX();
-			if (x2 < x1) {
-				points[0] = p2;
-				points[1] = p1;
-			}
+			points = orderingHelper(p1.getX(), p2.getX(), points);
+		}
+		return points;
+	}
+	
+	private Point[] orderingHelper(double first, double last, Point[] points) {
+		if(last < first) {
+			Point temp = points[0];
+			points[0] = points[1];
+			points[1] = temp;
 		}
 		return points;
 	}

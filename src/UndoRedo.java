@@ -1,5 +1,10 @@
 import java.util.Stack;
 
+/**
+ * 
+ * @author Aashna Narang and Kush Gopeechund
+ *
+ */
 public class UndoRedo {
 
 	private Stack<JumpInEvent> undo;

@@ -52,9 +52,9 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		for (JButton button : view.getMMenu().getButtons()) {
 				button.addActionListener(this);
 		}
-		view.getUndo().addActionListener(this);
-		view.getRedo().addActionListener(this);
-		view.getHint().addActionListener(this);
+		for(JMenuItem j : view.getMenuItems()) {
+			j.addActionListener(this);
+		}
 	}
 
 	@Override
@@ -149,6 +149,10 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		
 	}
 	
+	/**
+	 * Remove this object as a listener, used when going to a new level and a new controller must 
+	 * be created.
+	 */
 	public void removeListener() {
 		GameButton[][] b = view.getButtons();
 		for(int i = 0; i < JumpIn.NUM_ROWS; i ++) {
@@ -159,9 +163,9 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		for (JButton button : view.getMMenu().getButtons()) {
 				button.removeActionListener(this);
 		}
-		view.getUndo().removeActionListener(this);
-		view.getRedo().removeActionListener(this);
-		view.getHint().removeActionListener(this);
+		for(JMenuItem j : view.getMenuItems()) {
+			j.removeActionListener(this);
+		}
 	}
 
 }
