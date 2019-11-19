@@ -26,4 +26,5 @@ Changes:
 We added an undo and a redo option to the game, and also a hint option. This allows for moves to be 
 undone and then redone, and also for the game to give the user hints of what move to do.
 This required the creation of the UndoRedo class, and the test cases for this class. Changes were
-also made to existing classes to include the UndoRedo logic and the solver.
+also made to existing classes to include the UndoRedo logic and the solver. We also seperated the 
+classes into seperate packages.
