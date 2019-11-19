@@ -1,6 +1,8 @@
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Queue;
+
 import org.junit.jupiter.api.Test;
 
 
@@ -98,5 +100,37 @@ class TestJumpIn {
 		assertEquals(level.getBoard(),jumpIn.getGameBoard());
 	}
 	
+	@Test
+	void testSolverLevel1() {
+		JumpIn jumpIn = new JumpIn(1);
+		Queue<Move> moves = jumpIn.getSolverMoves();
+		while (!(moves.isEmpty())) {
+			Move move = moves.peek();
+			jumpIn.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
+		}
+		assertTrue(jumpIn.checkWin());
+	}
+	
+	@Test
+	void testSolverLevel2() {
+		JumpIn jumpIn = new JumpIn(2);
+		Queue<Move> moves = jumpIn.getSolverMoves();
+		while (!(moves.isEmpty())) {
+			Move move = moves.peek();
+			jumpIn.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
+		}
+		assertTrue(jumpIn.checkWin());
+	}
+	
+	@Test
+	void testSolverLevel3() {
+		JumpIn jumpIn = new JumpIn(3);
+		Queue<Move> moves = jumpIn.getSolverMoves();
+		while (!(moves.isEmpty())) {
+			Move move = moves.peek();
+			jumpIn.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
+		}
+		assertTrue(jumpIn.checkWin());
+	}
 	
 }

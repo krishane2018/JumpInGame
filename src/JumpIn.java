@@ -289,7 +289,7 @@ public class JumpIn {
 	 * 
 	 * @return
 	 */
-	private boolean checkWin() {
+	public boolean checkWin() {
 		for (int i = 0; i < listeners.size(); i++) {
 			if(listeners.get(i) instanceof GameObject) {
 				GameObject g = (GameObject) listeners.get(i);
@@ -570,7 +570,7 @@ public class JumpIn {
 	 */
 	public static void main(String[] args) {
 
-		Play.play(2);
+		Play.play(1);
 	}
 
 
