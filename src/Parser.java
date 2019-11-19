@@ -103,7 +103,7 @@ public class Parser {
 		int selectedOption = Integer.valueOf(input.nextLine());
 		if (userOptions.keySet().contains(selectedOption)) {
 			Point[] chosenDestination = userOptions.get(selectedOption);
-			return new Move(chosenFox.getCoordinates(),	chosenDestination, chosenFox);
+			return new Move(chosenFox.getPosition(),	chosenDestination, chosenFox);
 		} else {
 			System.out.println("Invalid input.");
 			return confirmOption(options, chosenFox, displayOptions);
