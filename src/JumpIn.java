@@ -550,6 +550,10 @@ public class JumpIn {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean redoMove() {
 		JumpInEvent e = undoRedo.redoMove();
 		if(e.isEmpty()) {
