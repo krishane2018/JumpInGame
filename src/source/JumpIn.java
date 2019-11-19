@@ -74,8 +74,7 @@ public class JumpIn {
 				i--;
 			}
 		}
-		solverHelper(new Rabbit(new Point(0,0), "temp"),
-				new Stack<Move>(), new Stack<ArrayList<Point>>());
+		solverHelper(new Stack<Move>(), new Stack<ArrayList<Point>>());
 		listeners.addAll(viewListeners);
 		undoRedo.clearRedo();
 	}
@@ -134,8 +133,7 @@ public class JumpIn {
 	 * @return A boolean indicating whether a solution has been found.
 	 */
 	
-	private boolean solverHelper(MovableAnimal previousAnimal, Stack<Move> tryMoves, 
-			Stack<ArrayList<Point>> previousStates) {
+	private boolean solverHelper(Stack<Move> tryMoves, Stack<ArrayList<Point>> previousStates) {
 		boolean isWin = false;
 		MovableAnimal animal;
 		
@@ -171,7 +169,7 @@ public class JumpIn {
 					return true;
 				}
 				else {
-					if (solverHelper(animal, tryMoves,previousStates)) {
+					if (solverHelper(tryMoves,previousStates)) {
 						undoMove();
 						return true;
 					}
