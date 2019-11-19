@@ -180,6 +180,5 @@ public class MainMenu extends JFrame {
 		layout.show(content, "Done");
 		menuBar.setVisible(false);
 	}
-	
-	
+
 }
