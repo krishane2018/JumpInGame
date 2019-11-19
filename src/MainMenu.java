@@ -29,6 +29,7 @@ public class MainMenu extends JFrame {
 	private JumpInView view;
 	private ArrayList<JButton> buttons;
 	private JMenuItem undo, redo, hint;
+	private ArrayList<JMenuItem> menuItems;
 	
 	/**
 	 * Creates all the panels and adds it to the card layout.
@@ -45,20 +46,57 @@ public class MainMenu extends JFrame {
 		win = new JPanel();
 		done = new JPanel();
 		buttons = new ArrayList<JButton>();
+		menuItems = new ArrayList<JMenuItem>();
+		options = new JMenu("options");
+		undo = new JMenuItem("undo");
+		redo = new JMenuItem("redo");
+		hint = new JMenuItem("hint");
 		
-
+		setUpTitleScreen();
+		setUpWinScreen();
+		setUpDoneScreen();
+		setUpContent();
+		setUpMenuBar();
+		
+		panel.setLayout(layout);
+		this.add(panel);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
+		this.setSize(800,800);
+		this.setVisible(true);
+	}
+	
+	private void setUpMenuBar() {
+		menuItems.add(undo);
+		menuItems.add(redo);
+		menuItems.add(hint);
+		
+		for(JMenuItem j : menuItems) {
+			options.add(j);
+		}
+		
+		menuBar = new JMenuBar();
+		menuBar.add(options);
+		menuBar.setVisible(false);
+		this.setJMenuBar(menuBar);
+	}
+	
+	private void setUpContent() {
+		content.setLayout(layout);
+		content.add(this.view.getPanel(), "Game");
+		content.add(menu, "Menu");
+		content.add(win, "Win");
+		content.add(done, "Done");
+		this.setContentPane(content);
+		layout.show(content, "Menu");
+	}
+	
+	private void setUpTitleScreen() {
+		JLabel logo = new JLabel(Resources.LOGO);
 		JButton play = MainMenuButton("PLAY!");
 		buttons.add(play);
 		JButton exit1 = MainMenuButton("EXIT");
 		buttons.add(exit1);
-		JButton exit2 = MainMenuButton("EXIT");
-		buttons.add(exit2);
-		JButton exit3 = MainMenuButton("EXIT");
-		buttons.add(exit3);
-		JButton next = MainMenuButton("NEXT");
-		buttons.add(next);
-
-		JLabel logo = new JLabel(Resources.LOGO);
 		menu.setLayout(null);
 		play.setBounds(350, 250, 100, 50);
 		exit1.setBounds(350, 350, 100, 50);
@@ -67,18 +105,14 @@ public class MainMenu extends JFrame {
 		menu.add(play);
 		menu.add(exit1);
 		menu.setBackground(new Color(152, 233, 233));
-		
-		done.setLayout(null);
-		JLabel logo2 = new JLabel(Resources.LOGO);
-		exit3.setBounds(350, 350, 100, 50);
-		logo2.setBounds(160, 0, 500, 300);
-		done.add(logo2);
-		done.add(exit3);
-		done.setBackground(new Color(152, 233, 233));
-		
-		
-		
+	}
+	
+	private void setUpWinScreen() {
 		JLabel trophy = new JLabel(Resources.WIN);
+		JButton exit2 = MainMenuButton("EXIT");
+		JButton next = MainMenuButton("NEXT");
+		buttons.add(next);
+		buttons.add(exit2);
 		win.setLayout(null);
 		trophy.setBounds(155, 0, 500, 300);
 		win.add(trophy);
@@ -87,35 +121,18 @@ public class MainMenu extends JFrame {
 		win.add(next);
 		win.add(exit2);
 		win.setBackground(new Color(152, 233, 233));
-
-		options = new JMenu("options");
-		undo = new JMenuItem("undo");
-		redo = new JMenuItem("redo");
-		hint = new JMenuItem("hint");
-		
-		options.add(undo);
-		options.add(redo);
-		options.add(hint);
-		
-		menuBar = new JMenuBar();
-		menuBar.add(options);
-		menuBar.setVisible(false);
-		this.setJMenuBar(menuBar);
-		
-		content.setLayout(layout);
-		content.add(this.view.getPanel(), "Game");
-		content.add(menu, "Menu");
-		content.add(win, "Win");
-		content.add(done, "Done");
-		this.setContentPane(content);
-		layout.show(content, "Menu");
-
-		panel.setLayout(layout);
-		this.add(panel);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
-		this.setSize(800,800);
-		this.setVisible(true);
+	}
+	
+	private void setUpDoneScreen() {
+		JButton exit3 = MainMenuButton("EXIT");
+		JLabel logo2 = new JLabel(Resources.LOGO);
+		buttons.add(exit3);
+		done.setLayout(null);
+		exit3.setBounds(350, 350, 100, 50);
+		logo2.setBounds(160, 0, 500, 300);
+		done.add(logo2);
+		done.add(exit3);
+		done.setBackground(new Color(152, 233, 233));
 	}
 
 	/**
@@ -135,24 +152,10 @@ public class MainMenu extends JFrame {
 	}
 
 	/**
-	 * @return the undo JMenuItem
+	 * @return all of the JMenItems in the menu bar
 	 */
-	public JMenuItem getUndo() {
-		return undo;
-	}
-
-	/**
-	 * @return the redo JMenuItem
-	 */
-	public JMenuItem getRedo() {
-		return redo;
-	}
-
-	/**
-	 * @return the solve JMenuItem
-	 */
-	public JMenuItem getHint() {
-		return hint;
+	public ArrayList<JMenuItem> getMenuItems() {
+		return menuItems;
 	}
 	
 	public ArrayList<JButton> getButtons() {
@@ -177,4 +180,6 @@ public class MainMenu extends JFrame {
 		layout.show(content, "Done");
 		menuBar.setVisible(false);
 	}
+	
+	
 }

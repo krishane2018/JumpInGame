@@ -273,28 +273,12 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * 
 	 * @return JMenuItem corresponding to the undo button
 	 */
-	public JMenuItem getUndo() {
-		return mainMenu.getUndo();
-	}
-	
-	/**
-	 * 
-	 * @return JMenuItem corresponding to the redo button
-	 */
-	public JMenuItem getRedo() {
-		return mainMenu.getRedo();
+	public ArrayList<JMenuItem> getMenuItems() {
+		return mainMenu.getMenuItems();
 	}
 	
 	public MainMenu getMMenu() {
 		return mainMenu;
-	}
-	
-	/**
-	 * 
-	 * @return JMenuItem corresponding to the solve button
-	 */
-	public JMenuItem getHint() {
-		return mainMenu.getHint();
 	}
 	
 	public void showHint() {
