@@ -38,10 +38,6 @@ public class Fox extends MovableAnimal {
 		p2.setLocation(points[1]);
 
 	}
-
-	public Point[] getCoordinates() {
-		return new Point[] {this.getCoordinate(), this.getCoordinate2()};
-	}
 	
 	/**
 	 * Get the second coordinate of the fox

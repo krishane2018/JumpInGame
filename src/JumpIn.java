@@ -496,7 +496,7 @@ public class JumpIn {
 			if (selectedInOptions) {
 				Fox f = (Fox)g;
 				showOptions(initial, false);
-				Move move = new Move(f.getCoordinates(), foxLocation, g);
+				Move move = new Move(f.getPosition(), foxLocation, g);
 				processCommand(move);
 				if (!(solverMoves.poll().equals(move))) {
 					solver();
