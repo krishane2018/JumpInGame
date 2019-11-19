@@ -9,9 +9,13 @@ import java.util.Stack;
 
 /**
  * 
+ * JumpIn is a single player puzzle game where the user has to strategically
+ * move the rabbits and foxes to get all the rabbits in a hole. To play the
+ * game the user has to click on the piece they would like to move, then click
+ * on a highlighted area to make a move.
+ * 
+ * 
  * @author Kush Gopeechund and Aashna Narang
- * 
- * 
  *
  */
 // TODO add an easy and hard mode - easy is with highlight, hard without
@@ -31,8 +35,10 @@ public class JumpIn {
 	 
 
 	/**
+	 * This is a constructor for the main class JumpIn which initializes
+	 * all the variables based off the level.
 	 * 
-	 * @param level
+	 * @param level - game level
 	 */
 	public JumpIn(int level) {
 		this.level = level;
@@ -177,8 +183,8 @@ public class JumpIn {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Getter for the game board
+	 * @return - an array of game objects, defined by the level
 	 */
 
 	public GameObject[][] getGameBoard() {
@@ -186,7 +192,7 @@ public class JumpIn {
 	}
 
 	/**
-	 * 
+	 * Sets the game board
 	 * @param gameBoard
 	 */
 	public void setGameBoard(GameObject[][] gameBoard) {
@@ -194,10 +200,11 @@ public class JumpIn {
 	}
 
 	/**
+	 * Creates a string representation of a point in the game board.
 	 * 
-	 * @param y
-	 * @param x
-	 * @return
+	 * @param y - y coordinate of the game board
+	 * @param x - x coordinate of the game board
+	 * @return - string of the game board
 	 */
 
 	private String objectToString(int x, int y) {
@@ -212,18 +219,18 @@ public class JumpIn {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Getter for current level.
+	 * @return - current level object
 	 */
 	public int getLevel() {
 		return level;
 	}
 
 	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * Checks if a point in the game board is a hole.
+	 * @param x - x coordinate of the board
+	 * @param y - y coordinate of the board
+	 * @return - boolean of if it is a hole
 	 */
 	public boolean isHole(int x, int y) {
 
@@ -236,7 +243,7 @@ public class JumpIn {
 	}
 
 	/**
-	 * 
+	 * Welcome statement for the text based version
 	 */
 	private void printWelcome() {
 		System.out.println("Welcome to JumpIn!");
@@ -281,13 +288,19 @@ public class JumpIn {
 		}
 	}
 	
+	/**
+	 * Adds listener
+	 * @param j - new jump in listener
+	 * @return updated listeners
+	 */
 	public boolean addListener(JumpInListener j) {
 		return listeners.add(j);
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Iterates through the game board to see if any of the rabbits
+	 * are not in a hole. If one of them isn't, it returns false. 
+	 * @return - boolean of if the game is won
 	 */
 	public boolean checkWin() {
 		for (int i = 0; i < listeners.size(); i++) {
@@ -307,8 +320,8 @@ public class JumpIn {
 	}
 
 	/**
-	 * 
-	 * @param move
+	 * Processes through a move object to change the locations of a piece
+	 * @param move - user inputed move
 	 * @return
 	 */
 	private boolean processCommand(Move move) {
@@ -458,7 +471,7 @@ public class JumpIn {
 	
 	
 	/**
-	 * 
+	 * Gives a string representation of the game board.
 	 */
 	public String toString() {
 		String board = "";
@@ -537,6 +550,10 @@ public class JumpIn {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean redoMove() {
 		JumpInEvent e = undoRedo.redoMove();
 		if(e.isEmpty()) {
