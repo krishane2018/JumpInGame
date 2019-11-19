@@ -81,9 +81,9 @@ public class JumpInView extends JFrame implements JumpInListener {
 	public void handleEvent(JumpInEvent e) {
 		Point initialLocation = e.getInitialLocation1();
 		Point finalLocation1 = e.getFinalLocation1();
-		if(e.getChosenPiece().getClass().getSimpleName().contentEquals("Rabbit")) {
+		if(e.getChosenPiece() instanceof Rabbit) {
 			handleRabbit(initialLocation, finalLocation1);
-		} else if (e.getChosenPiece().getClass().getSimpleName().contentEquals("Fox")) {
+		} else if (e.getChosenPiece() instanceof Fox) {
 			handleFox(initialLocation, e.getInitialLocation2(), finalLocation1, e.getFinalLocation2());
 		}
 	}
@@ -288,6 +288,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	public MainMenu getMMenu() {
 		return mainMenu;
 	}
+	
 	/**
 	 * 
 	 * @return JMenuItem corresponding to the solve button

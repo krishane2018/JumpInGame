@@ -1,85 +1,101 @@
 import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TestUndoRedo {
 
-	UndoRedo undoRedo;
+/**
+ * 
+ * @author Aashna Narang
+ *
+ */
+class TestUndoRedo {
+	private UndoRedo u;
+	private JumpInEvent e;
+	
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		undoRedo = new UndoRedo();
+		u = new UndoRedo();
+		e = new JumpInEvent();
+	}
+
+	@AfterEach
+	void tearDown() throws Exception {
+		u.getUndo().clear();
+		u.getRedo().clear();
 	}
 
 	@Test
 	void testConstructor() {
-		assertNotNull(undoRedo);
-	}
-
-	@Test
-	void testAddMove() {
-		undoRedo.addMove(new JumpInEvent());
-		assertEquals(undoRedo.getUndo().size(),1);
-	}
-	
-	@Test
-	void testIsState() {
-		assertFalse(undoRedo.isState());
-	}
-	
-	@Test
-	void testSetState() {
-		undoRedo.setState(true);
-		assertTrue(undoRedo.isState());
-	}
-	
-	@Test
-	void testUndoMove1() {
-		JumpInEvent e = new JumpInEvent();
-		undoRedo.addMove(e);
-		undoRedo.undoMove();
-		assertEquals(undoRedo.getUndo().size(),0);
-	}
-	
-	@Test
-	void testUndoMove2() {
-		JumpInEvent e = new JumpInEvent();
-		undoRedo.addMove(e);
-		undoRedo.undoMove();
-		assertEquals(undoRedo.getRedo().size(),1);
-	}
-	
-	@Test
-	void testRedoMove1() {
-		JumpInEvent e = new JumpInEvent();
-		undoRedo.addMove(e);
-		undoRedo.undoMove();
-		undoRedo.redoMove();
-		assertEquals(undoRedo.getUndo().size(),1);
-	}
-	
-	@Test
-	void testRedoMove2() {
-		JumpInEvent e = new JumpInEvent();
-		undoRedo.addMove(e);
-		undoRedo.undoMove();
-		undoRedo.redoMove();
-		assertEquals(undoRedo.getRedo().size(),0);
+		assertNotNull(u.getUndo());
+		assertNotNull(u.getRedo());
 	}
 	
 	@Test
 	void testGetUndo() {
-		JumpInEvent e = new JumpInEvent();
-		undoRedo.addMove(e);
-		assertEquals(e, undoRedo.getUndo().peek());
+		u.addMove(e);
+		assertNotNull(u.getUndo());
+		assertNotNull(u.getUndo().get(0));
 	}
 	
 	@Test
 	void testGetRedo() {
-		JumpInEvent e = new JumpInEvent();
-		undoRedo.addMove(e);
-		undoRedo.undoMove();
-		assertEquals(e, undoRedo.getRedo().peek());
+		u.addMove(e);
+		u.undoMove();
+		assertNotNull(u.getRedo());
+		assertNotNull(u.getRedo().get(0));
+	}
+	
+	@Test
+	void testAddMove() {
+		u.addMove(e);
+		assertNotNull(u.getUndo().get(0));
+	}
+	
+	@Test
+	void testUndoMove() {
+		u.addMove(e);
+		assertEquals(e, u.undoMove());
+		assertTrue(u.getUndo().isEmpty());
+		assertNotNull(u.getRedo().get(0));
+	}
+	
+	@Test
+	void testRedoMove() {
+		u.addMove(e);
+		u.undoMove();
+		assertEquals(e, u.redoMove());
+		assertTrue(u.getRedo().isEmpty());
+	}
+	
+	@Test
+	void testUndoMoveEmpty() {
+		assertTrue(u.undoMove().isEmpty());
+	}
+	
+	@Test
+	void testRedoMoveEmpty() {
+		assertTrue(u.redoMove().isEmpty());
+	}
+	
+	@Test
+	void testProperState() {
+		u.addMove(e);
+		u.undoMove();
+		assertTrue(u.isState());
+	}
+	
+	@Test
+	void testSetState() {
+		u.setState(true);
+		assertTrue(u.isState());
+		u.setState(false);
+		assertFalse(u.isState());
+	}
+	
+	@Test
+	void testInitialState() {
+		assertFalse(u.isState());
 	}
 }
