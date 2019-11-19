@@ -1,3 +1,4 @@
+package source;
 import java.awt.Image;
 import java.util.HashMap;
 import javax.swing.ImageIcon;
