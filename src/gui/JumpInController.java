@@ -1,4 +1,4 @@
-package source;
+package gui;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import source.JumpIn;
+import source.Play;
 
 /**
  * This class takes in user input and deals with it accordingly 

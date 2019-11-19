@@ -1,4 +1,8 @@
 package source;
+
+import gui.JumpInController;
+import gui.JumpInView;
+
 /**
  * 
  * @author Aashna Narang
