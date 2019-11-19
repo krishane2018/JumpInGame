@@ -2,142 +2,143 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
 
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TestJumpInEvent {
 
-	Point[] holes = new Point[] {new Point(0,0),new Point(0,4),new Point(4,0),new Point(4,4),new Point(2,2)};
-	
+	private Point[] holes;
+	private GameObject gameObject;
+	private Point p1;
+	private Point p2;
+	private Point p3;
+	private Point i;
+	private Object o;
+	private JumpInEvent e;
+
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUpClass() {
+		holes = new Point[] { new Point(0, 0), new Point(0, 4), new Point(4, 0), new Point(4, 4), new Point(2, 2) };
+		gameObject = new GameObject(new Point(0, 0));
+		p1 = new Point(0, 0);
+		p2 = new Point(1, 0);
+		p3 = new Point(2, 0);
+		i = new Point(1, 1);
+		o = new Object();
+
 	}
 
 	@Test
 	void testConsrtructorNoParam() {
-		JumpInEvent e = new JumpInEvent();
+		e = new JumpInEvent();
 		assertNotNull(e);
 	}
 
 	@Test
 	void testConsrtructor5Param() {
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), new Point(1, 0), holes);
+		e = new JumpInEvent(o, gameObject, p1, p2, holes);
 		assertNotNull(e);
 	}
 
 	@Test
 	void testConsrtructor7Param() {
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), new Point(1, 0),
-				new Point(1, 0), new Point(2, 0), holes);
+		e = new JumpInEvent(o, gameObject, p1, p2, p1, p3, holes);
 		assertNotNull(e);
 	}
 
 	@Test
 	void testGetHoleNo() {
-		JumpInEvent e = new JumpInEvent();
+		e = new JumpInEvent();
 		assertNotNull(e.getHoles());
 	}
-	
+
 	@Test
 	void testGetHole5() {
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), new Point(1, 0), holes);
-		assertEquals(holes,e.getHoles());
+		e = new JumpInEvent(o, gameObject, p1, p2, holes);
+		assertEquals(holes, e.getHoles());
 	}
-	
+
 	@Test
 	void testGetHole7() {
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), new Point(1, 0),
-				new Point(1, 0), new Point(2, 0), holes);
+		e = new JumpInEvent(o, gameObject, p1, p2, p1, p3, holes);
 		assertEquals(holes, e.getHoles());
 	}
 
 	@Test
 	void testGetChosenPiece() {
-		GameObject g =  new GameObject(new Point(0,0));
-		JumpInEvent e = new JumpInEvent(new Object(),g, new Point(0, 0), new Point(1, 0), holes);
-		assertEquals(g,e.getChosenPiece());
+		GameObject g = new GameObject(new Point(0, 0));
+		e = new JumpInEvent(o, g, p1, p2, holes);
+		assertEquals(g, e.getChosenPiece());
 	}
 
 	@Test
 	void testGetInitialLocation1() {
-		Point i = new Point(1,1);
-		JumpInEvent e = new JumpInEvent(new Object(),new GameObject(new Point(0,0)),i, new Point(1, 0), holes);
-		assertEquals(i,e.getInitialLocation1());
+		e = new JumpInEvent(o, gameObject, i, p2, holes);
+		assertEquals(i, e.getInitialLocation1());
 	}
 
 	@Test
 	void testSetInitialLocation1() {
-		Point i = new Point(1,1);
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), new Point(1, 0), holes);
+		e = new JumpInEvent(o, gameObject, p1, p2, holes);
 		e.setInitialLocation1(i);
-		assertEquals(i,e.getInitialLocation1());
+		assertEquals(i, e.getInitialLocation1());
 	}
 
 	@Test
 	void testGetFinalLocation1() {
-		Point i = new Point(1,1);
-		JumpInEvent e = new JumpInEvent(new Object(),new GameObject(new Point(0,0)), new Point(1, 0),i, holes);
-		assertEquals(i,e.getFinalLocation1());
+		e = new JumpInEvent(o, gameObject, p2, i, holes);
+		assertEquals(i, e.getFinalLocation1());
 	}
 
 	@Test
 	void testSetFinalLocation1() {
-		Point i = new Point(1,1);
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), new Point(1, 0), holes);
+		e = new JumpInEvent(o, gameObject, p1, p2, holes);
 		e.setFinalLocation1(i);
-		assertEquals(i,e.getFinalLocation1());
+		assertEquals(i, e.getFinalLocation1());
 	}
 
 	@Test
 	void testGetInitialLocation2() {
-		Point i = new Point(1,1);
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), i,
-				new Point(1, 0), new Point(2, 0), holes);
+		e = new JumpInEvent(o, gameObject, p1, i, p2, p3, holes);
 		assertEquals(i, e.getInitialLocation2());
 	}
 
 	@Test
 	void testSetInitialLocation2() {
-		Point i = new Point(1,1);
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), new Point(1, 0),
-				new Point(1, 0), new Point(2, 0), holes);
+		e = new JumpInEvent(o, gameObject, p1, p2, p2, p3, holes);
 		e.setInitialLocation2(i);
 		assertEquals(i, e.getInitialLocation2());
 	}
 
 	@Test
 	void testGetFinalLocation2() {
-		Point i = new Point(1,1);
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), new Point(1, 0),
-				new Point(1, 0), i, holes);
+		e = new JumpInEvent(o, gameObject, p1, p2, p2, i, holes);
 		assertEquals(i, e.getFinalLocation2());
 	}
 
 	@Test
 	void testSetFinalLocation2() {
-		Point i = new Point(1,1);
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), new Point(1, 0),
-				new Point(1, 0), new Point(2, 0), holes);
+		e = new JumpInEvent(o, gameObject, p1, p2, p2, p3, holes);
 		e.setFinalLocation2(i);
 		assertEquals(i, e.getFinalLocation2());
 	}
 
 	@Test
 	void testIsEmptyTrue() {
-		JumpInEvent e = new JumpInEvent();
+		e = new JumpInEvent();
 		assertTrue(e.isEmpty());
 	}
-	
+
 	@Test
 	void testIsEmptyFalse1() {
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), new Point(1, 0),
-				new Point(1, 0), new Point(2, 0), holes);
+		e = new JumpInEvent(o, gameObject, p1, p2, p2, p3, holes);
 		assertFalse(e.isEmpty());
 	}
-	
+
 	@Test
 	void testIsEmptyFalse2() {
-		JumpInEvent e = new JumpInEvent(new Object(), new GameObject(new Point(0,0)), new Point(0, 0), new Point(1, 0), holes);
+		e = new JumpInEvent(o, gameObject, p1, p2, holes);
 		assertFalse(e.isEmpty());
 	}
 }
