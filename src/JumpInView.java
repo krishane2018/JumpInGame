@@ -288,6 +288,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	public MainMenu getMMenu() {
 		return mainMenu;
 	}
+	
 	/**
 	 * 
 	 * @return JMenuItem corresponding to the solve button
