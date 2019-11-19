@@ -2,9 +2,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
 import java.util.ArrayList;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import java.util.Queue;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -111,6 +111,39 @@ class TestJumpIn {
 		LevelSelector level = new LevelSelector(1,jumpIn3);
 		jumpIn3.setGameBoard(level.getBoard());
 		assertEquals(level.getBoard(),jumpIn3.getGameBoard());
+	}
+	
+	@Test
+	void testSolverLevel1() {
+		JumpIn jumpIn = new JumpIn(1);
+		Queue<Move> moves = jumpIn.getSolverMoves();
+		while (!(moves.isEmpty())) {
+			Move move = moves.peek();
+			jumpIn.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
+		}
+		assertTrue(jumpIn.checkWin());
+	}
+	
+	@Test
+	void testSolverLevel2() {
+		JumpIn jumpIn = new JumpIn(2);
+		Queue<Move> moves = jumpIn.getSolverMoves();
+		while (!(moves.isEmpty())) {
+			Move move = moves.peek();
+			jumpIn.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
+		}
+		assertTrue(jumpIn.checkWin());
+	}
+	
+	@Test
+	void testSolverLevel3() {
+		JumpIn jumpIn = new JumpIn(3);
+		Queue<Move> moves = jumpIn.getSolverMoves();
+		while (!(moves.isEmpty())) {
+			Move move = moves.peek();
+			jumpIn.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
+		}
+		assertTrue(jumpIn.checkWin());
 	}
 	
 	/**
