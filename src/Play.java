@@ -15,13 +15,15 @@ public class Play {
 	
 	public static void nextLevel() {
 		Play.level = level + 1;
-		view.handleDone();
-		controller.removeListener();
-		model = new JumpIn(level);
-		view.setModel(model);
-		view.createNextBoard();
-		controller = new JumpInController(view, model);
-		view.getMMenu().showGame();
-		
+		if (Play.level > 3) {
+			view.handleDone();
+		} else {
+			controller.removeListener();
+			model = new JumpIn(level);
+			view.setModel(model);
+			view.createNextBoard();
+			controller = new JumpInController(view, model);
+			view.getMMenu().showGame();
+		}
 	}	
 }
