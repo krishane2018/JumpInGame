@@ -55,7 +55,6 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		view.getUndo().addActionListener(this);
 		view.getRedo().addActionListener(this);
 		view.getHint().addActionListener(this);
-		view.getExit().addActionListener(this);
 	}
 
 	@Override
@@ -143,9 +142,6 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 			view.getMMenu().showGame();
 		} else if (e.getActionCommand().equals("NEXT")) {
 			Play.nextLevel();
-		} else if (e.getActionCommand().equals("exit")) {
-			JMenuItem src = (JMenuItem) e.getSource();
-			SwingUtilities.getWindowAncestor((JPanel) src.getParent().getParent().getParent()).dispose();
 		} else if (e.getActionCommand().equals("EXIT")) {
 			JButton src = (JButton) e.getSource();
 			SwingUtilities.getWindowAncestor((JPanel) src.getParent()).dispose();
@@ -166,7 +162,6 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		view.getUndo().removeActionListener(this);
 		view.getRedo().removeActionListener(this);
 		view.getHint().removeActionListener(this);
-		view.getExit().removeActionListener(this);
 	}
 
 }
