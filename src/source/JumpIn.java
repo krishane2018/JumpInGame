@@ -266,11 +266,11 @@ public class JumpIn {
 			// would like to move.
 			ArrayList<Object> options = chosenAnimal.determineOptions(gameBoard);
 
-			if (chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
+			if (chosenAnimal instanceof Rabbit) {
 				move = parser.confirmOption(options, (Rabbit) chosenAnimal, chosenAnimal.displayOptions(gameBoard));
 			}
 
-			else if (chosenAnimal.getClass().getSimpleName().equals("Fox")) {
+			else if (chosenAnimal instanceof Fox) {
 				move = parser.confirmOption(options, (Fox) chosenAnimal, chosenAnimal.displayOptions(gameBoard));
 			}
 			// Moves the animal to the user's selected position on the game board.
