@@ -339,80 +339,41 @@ class TestFox {
 		assertTrue(options.equals(setOptions));
 	}
 	
-	//FIX
-//	@Test
-//	void testNumberOptionsVerticalHorizontalFoxBlocking() {
-//		Fox fox = new Fox(new Point(1, 3), new Point(2, 3), "F1", "Horizontal");
-//
-//		board[3][1] = fox;
-//		board[3][2] = fox;
-//
-//		HashSet<HashSet<Point>> options = new HashSet<HashSet<Point>>();
-//		Fox fox2 = new Fox(new Point(1, 1), new Point(1, 2), "F2", "Vertical");
-//		board[1][1] = fox2;
-//		board[2][1] = fox2;
-//		ArrayList<Object> returnedOptions = fox2.determineOptions(board);
-//		assertEquals(returnedOptions.size(), options.size());
-//	}
+	@Test
+	void testNumberOptionsVerticalHorizontalFoxBlocking() {
+		Fox fox = new Fox(new Point(1, 3), new Point(2, 3), "F1", "Horizontal");
+
+		board[3][1] = fox;
+		board[3][2] = fox;
+
+		Fox fox2 = new Fox(new Point(1, 1), new Point(1, 2), "F2", "Vertical");
+		board[1][1] = fox2;
+		board[2][1] = fox2;
+		ArrayList<Object> returnedOptions = fox2.determineOptions(board);
+		assertEquals(returnedOptions.size(), 1);
+	}
 	
-	//FIX
-//	@Test
-//	void testCorrectOptionsVerticalHorizontalFoxBlocking() {
-//		Fox fox = new Fox(new Point(1, 3), new Point(2, 3), "F1", "Horizontal");
-//
-//		board[3][1] = fox;
-//		board[3][2] = fox;
-//
-//		HashSet<HashSet<Point>> options = new HashSet<HashSet<Point>>();
-//		Fox fox2 = new Fox(new Point(1, 1), new Point(1, 2), "F2", "Vertical");
-//		board[1][1] = fox2;
-//		board[2][1] = fox2;
-//		ArrayList<Object> returnedOptions = fox2.determineOptions(board);
-//		HashSet<HashSet<Point>> setOptions = new HashSet<HashSet<Point>>();
-//		for (Object element : returnedOptions) {
-//			Point[] tempArray = (Point[]) element;
-//			setOptions.add(new HashSet<Point>(Arrays.asList(tempArray)));
-//		}
-//		assertTrue(options.equals(setOptions));
-//	}
+	@Test
+	void testCorrectOptionsVerticalHorizontalFoxBlocking() {
+		Fox fox = new Fox(new Point(1, 3), new Point(2, 3), "F1", "Horizontal");
 
-//	@Test
-//	void testNumberOptionsHorizontalVerticalFoxBlocking() {
-//		Fox fox = new Fox(new Point(4, 3), new Point(4,4), "F1", "Vertical");
-//
-//		board[3][4] = fox;
-//		board[4][4] = fox;
-//
-//		HashSet<HashSet<Point>> options = new HashSet<HashSet<Point>>();
-//		Fox fox2 = new Fox(new Point(1, 3), new Point(2, 3), "F2", "Horizontal");
-//		board[3][1] = fox2;
-//		board[3][2] = fox2;
-//		ArrayList<Object> returnedOptions = fox2.determineOptions(board);
-//		assertEquals(returnedOptions.size(), options.size());
-//	}
+		board[3][1] = fox;
+		board[3][2] = fox;
 
-//	@Test
-//	void testCorrectOptionsHorizontalVerticalFoxBlocking() {
-//		Fox fox = new Fox(new Point(4, 3), new Point(4,4), "F1", "Vertical");
-//
-//		board[3][4] = fox;
-//		board[4][4] = fox;
-//
-//		HashSet<HashSet<Point>> options = new HashSet<HashSet<Point>>();
-//
-//		Fox fox2 = new Fox(new Point(1, 3), new Point(2, 3), "F2", "Horizontal");
-//		board[3][1] = fox2;
-//		board[3][2] = fox2;
-//		ArrayList<Object> returnedOptions = fox2.determineOptions(board);
-//		HashSet<HashSet<Point>> setOptions = new HashSet<HashSet<Point>>();
-//		for (Object element : returnedOptions) {
-//			Point[] tempArray = (Point[]) element;
-//			setOptions.add(new HashSet<Point>(Arrays.asList(tempArray)));
-//		}
-//		assertTrue(options.equals(setOptions));
-//	}
+		HashSet<HashSet<Point>> options = new HashSet<HashSet<Point>>();
+		options.add(new HashSet<Point>(Arrays.asList(new Point[] {new Point(1,0), new Point(1,1)})));
+		Fox fox2 = new Fox(new Point(1, 1), new Point(1, 2), "F2", "Vertical");
+		board[1][1] = fox2;
+		board[2][1] = fox2;
+		ArrayList<Object> returnedOptions = fox2.determineOptions(board);
+		HashSet<HashSet<Point>> setOptions = new HashSet<HashSet<Point>>();
+		for (Object element : returnedOptions) {
+			Point[] tempArray = (Point[]) element;
+			setOptions.add(new HashSet<Point>(Arrays.asList(tempArray)));
+		}
+		assertTrue(options.equals(setOptions));
+	}
 
-	//FIX
 	@Test
 	void testDisplayOptions() {
 		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
