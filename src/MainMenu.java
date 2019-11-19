@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 
 /**
  * 
- * The main menu class is a JFrame that holds all the panels in a card layout. This allows
- * the user to view the main menu, game, and a win panel.
+ * The main menu class is a JFrame that holds all the panels in a card layout.
+ * This allows the user to view the main menu, game, and a win panel.
  * 
  * @author Kush Gopeechund
  *
@@ -30,7 +30,7 @@ public class MainMenu extends JFrame {
 	private ArrayList<JButton> buttons;
 	private JMenuItem undo, redo, hint;
 	private ArrayList<JMenuItem> menuItems;
-	
+
 	/**
 	 * Creates all the panels and adds it to the card layout.
 	 * 
@@ -38,7 +38,7 @@ public class MainMenu extends JFrame {
 	 */
 	public MainMenu(JumpInView view) {
 		this.view = view;
-		
+
 		JPanel panel = new JPanel();
 		layout = new CardLayout();
 		menu = new JPanel();
@@ -51,36 +51,42 @@ public class MainMenu extends JFrame {
 		undo = new JMenuItem("undo");
 		redo = new JMenuItem("redo");
 		hint = new JMenuItem("hint");
-		
+
 		setUpTitleScreen();
 		setUpWinScreen();
 		setUpDoneScreen();
 		setUpContent();
 		setUpMenuBar();
-		
+
 		panel.setLayout(layout);
 		this.add(panel);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		this.setSize(800,800);
+		this.setSize(800, 800);
 		this.setVisible(true);
 	}
-	
+
+	/**
+	 * Sets up the menu bar to include the option undo, redo and hint.
+	 */
 	private void setUpMenuBar() {
 		menuItems.add(undo);
 		menuItems.add(redo);
 		menuItems.add(hint);
-		
-		for(JMenuItem j : menuItems) {
+
+		for (JMenuItem j : menuItems) {
 			options.add(j);
 		}
-		
+
 		menuBar = new JMenuBar();
 		menuBar.add(options);
 		menuBar.setVisible(false);
 		this.setJMenuBar(menuBar);
 	}
-	
+
+	/**
+	 * Sets up the card layout to include the menu, win screen, and game.
+	 */
 	private void setUpContent() {
 		content.setLayout(layout);
 		content.add(this.view.getPanel(), "Game");
@@ -90,7 +96,10 @@ public class MainMenu extends JFrame {
 		this.setContentPane(content);
 		layout.show(content, "Menu");
 	}
-	
+
+	/**
+	 * Sets up the title screen.
+	 */
 	private void setUpTitleScreen() {
 		JLabel logo = new JLabel(Resources.LOGO);
 		JButton play = MainMenuButton("PLAY!");
@@ -106,7 +115,10 @@ public class MainMenu extends JFrame {
 		menu.add(exit1);
 		menu.setBackground(new Color(152, 233, 233));
 	}
-	
+
+	/**
+	 * Sets up the win screen.
+	 */
 	private void setUpWinScreen() {
 		JLabel trophy = new JLabel(Resources.WIN);
 		JButton exit2 = MainMenuButton("EXIT");
@@ -122,7 +134,10 @@ public class MainMenu extends JFrame {
 		win.add(exit2);
 		win.setBackground(new Color(152, 233, 233));
 	}
-	
+
+	/**
+	 * Sets up the last screen.
+	 */
 	private void setUpDoneScreen() {
 		JButton exit3 = MainMenuButton("EXIT");
 		JLabel logo2 = new JLabel(Resources.LOGO);
@@ -136,7 +151,7 @@ public class MainMenu extends JFrame {
 	}
 
 	/**
-	 * @param e
+	 * Changes screen to win screen once game is won.
 	 */
 	public void handleWin() {
 		layout.show(content, "Win");
@@ -144,7 +159,8 @@ public class MainMenu extends JFrame {
 	}
 
 	/**
-	 * getter for view
+	 * Getter for view
+	 * 
 	 * @return
 	 */
 	public JumpInView getView() {
@@ -152,34 +168,52 @@ public class MainMenu extends JFrame {
 	}
 
 	/**
+	 * Get the menu items.
+	 * 
 	 * @return all of the JMenItems in the menu bar
 	 */
 	public ArrayList<JMenuItem> getMenuItems() {
 		return menuItems;
 	}
-	
+
+	/**
+	 * Getter for buttons.
+	 * 
+	 * @return
+	 */
 	public ArrayList<JButton> getButtons() {
 		return buttons;
 	}
-	
+
+	/**
+	 * Sets the general form of the buttons.
+	 * 
+	 * @param title
+	 * @return
+	 */
 	public JButton MainMenuButton(String title) {
 		JButton b = new JButton(title);
-		b.setBackground(new Color(70,170,70));
+		b.setBackground(new Color(70, 170, 70));
 		b.setForeground(Color.white);
 		b.setFocusPainted(false);
-		b.setFont(new Font("Arial", Font.BOLD,20));
+		b.setFont(new Font("Arial", Font.BOLD, 20));
 		return b;
 	}
-	
+
+	/**
+	 * Displays game screen
+	 */
 	public void showGame() {
 		layout.show(content, "Game");
 		menuBar.setVisible(true);
 	}
-	
+
+	/**
+	 * Displays end screen once all levels are finished.
+	 */
 	public void handleDone() {
 		layout.show(content, "Done");
 		menuBar.setVisible(false);
 	}
-	
-	
+
 }
