@@ -277,10 +277,17 @@ public class JumpInView extends JFrame implements JumpInListener {
 		return mainMenu.getMenuItems();
 	}
 	
+	/**
+	 * Return the main menu object
+	 * @return main menu object
+	 */
 	public MainMenu getMMenu() {
 		return mainMenu;
 	}
 	
+	/**
+	 * Display a message dialog to show the hint
+	 */
 	public void showHint() {
 		Move hint = model.getSolverMoves().peek();
 		String name = hint.getNameType();

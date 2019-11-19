@@ -149,6 +149,10 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		
 	}
 	
+	/**
+	 * Remove this object as a listener, used when going to a new level and a new controller must 
+	 * be created.
+	 */
 	public void removeListener() {
 		GameButton[][] b = view.getButtons();
 		for(int i = 0; i < JumpIn.NUM_ROWS; i ++) {
