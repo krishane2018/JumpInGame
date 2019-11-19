@@ -14,7 +14,6 @@ import source.Rabbit;
 /**
  * This class handles all of the GUI manipulation and updates the GUI whenever an event occurs
  * @author Aashna Narang
- *
  */
 public class JumpInView extends JFrame implements JumpInListener {
 	private GameButton[][] buttons;
