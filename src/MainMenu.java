@@ -28,7 +28,7 @@ public class MainMenu extends JFrame {
 	private JPanel menu, content, win, done;
 	private JumpInView view;
 	private ArrayList<JButton> buttons;
-	private JMenuItem undo, redo, hint, exit;
+	private JMenuItem undo, redo, hint;
 	
 	/**
 	 * Creates all the panels and adds it to the card layout.
@@ -92,12 +92,11 @@ public class MainMenu extends JFrame {
 		undo = new JMenuItem("undo");
 		redo = new JMenuItem("redo");
 		hint = new JMenuItem("hint");
-		exit = new JMenuItem("exit");
 		
 		options.add(undo);
 		options.add(redo);
 		options.add(hint);
-		options.add(exit);
+		
 		menuBar = new JMenuBar();
 		menuBar.add(options);
 		menuBar.setVisible(false);
@@ -154,13 +153,6 @@ public class MainMenu extends JFrame {
 	 */
 	public JMenuItem getHint() {
 		return hint;
-	}
-	
-	/**
-	 * @return the exit JMenuItem
-	 */
-	public JMenuItem getExit() {
-		return exit;
 	}
 	
 	public ArrayList<JButton> getButtons() {
