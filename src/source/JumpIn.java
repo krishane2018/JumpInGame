@@ -627,6 +627,11 @@ public class JumpIn {
 				s += f.toXML() + "\n";
 			}
 		}
+		for(Point p : getInitialMushroomPositions()) {
+			s += "<Mushroom>\n";
+			s += gameBoard[p.y][p.x].toXML() + "\n";
+			s += "</Mushroom>\n";
+		}
 		s += "</JumpIn>";
 		return s;
 	}

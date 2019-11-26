@@ -1,5 +1,6 @@
 package source;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import org.xml.sax.SAXException;
@@ -22,6 +23,11 @@ public class XMLHandler extends DefaultHandler {
 	private boolean foxState;
 	private boolean directionState;
 	private boolean levelState;
+	
+	private String name;
+	private Point coordinate1;
+	private 
+	
 	
 	
 	public XMLHandler() {
