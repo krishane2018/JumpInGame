@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -151,14 +153,18 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 			JButton src = (JButton) e.getSource();
 			SwingUtilities.getWindowAncestor((JPanel) src.getParent()).dispose();
 		} else if (e.getActionCommand().equals("save")) {
-			System.out.println("got here");
 			try {
 				this.filename = model.exportToXMLFile("saveLevel.txt");
 			} catch (Exception e1) {
 				view.displayError(3);
 			}
 		} else if (e.getActionCommand().equals("CONTINUE")) {
-			Play.loadGame();
+			try {
+				Play.loadGame("saveLevel.txt");
+			} catch (IOException e1) {
+				view.displayError(4);
+				Play.play(1);
+			}
 		}
 		
 	}

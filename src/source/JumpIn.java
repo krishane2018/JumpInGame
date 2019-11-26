@@ -629,7 +629,7 @@ public class JumpIn {
 		}
 		for(Point p : getInitialMushroomPositions()) {
 			s += "<Mushroom>\n";
-			s += gameBoard[p.y][p.x].toXML() + "\n";
+			s += gameBoard[p.y][p.x].toXML();
 			s += "</Mushroom>\n";
 		}
 		s += "</JumpIn>";

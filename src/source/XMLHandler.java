@@ -9,10 +9,10 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.*;
 
 public class XMLHandler extends DefaultHandler {
-	private JumpIn model;
 	private StringBuilder data;
-	private ArrayList<GameObject> animals;
-	private int level;
+	private GameObject[][] board;
+	private static final Point[] HOLES = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0),
+			new Point(4, 4) };
 	
 	private boolean rabbitState;
 	private boolean x1;
@@ -21,19 +21,25 @@ public class XMLHandler extends DefaultHandler {
 	private boolean y2;
 	private boolean nameState;
 	private boolean foxState;
+	private boolean mushState;
 	private boolean directionState;
 	private boolean levelState;
 	
 	private String name;
 	private Point coordinate1;
-	private 
-	
+	private Point coordinate2;
+	private int level;
+	private String direction;
 	
 	
 	public XMLHandler() {
-		model = null;
+		board = new GameObject[5][5];
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				board[j][i] = new GameObject(new Point(i, j));
+			}
+		}
 		data = null;
-		animals = new ArrayList<>();
 		level = -1;
 		rabbitState = false;
 		nameState = false;
@@ -44,6 +50,11 @@ public class XMLHandler extends DefaultHandler {
 		x2 = false;
 		y1 = false;
 		y2 = false;	
+		name = "";
+		coordinate1 = new Point();
+		coordinate2 = new Point();
+		level = -1;
+		direction = "";
 	}
 	
 	@Override
@@ -58,46 +69,129 @@ public class XMLHandler extends DefaultHandler {
 			y1 = true;
 		} else if(qName.equals("y2")) {
 			y2 = true;
-		} else if(qName.equals("Rabbit")) {
-			rabbitState = true;
-		} else if(qName.equals("Fox")) {
-			foxState = true;
 		} else if(qName.equals("level")) {
 			levelState = true;
 		} else if(qName.equals("direction")) {
 			directionState = true;
+		} else if(qName.equals("Rabbit")) {
+			rabbitState = true;
+		} else if(qName.equals("Fox")) {
+			foxState = true;
+		} else if (qName.equals("Mushroom")) {
+			mushState = true;
 		}
 		data = new StringBuilder();
 	}
 	
-//	@Override
-//	public void endElement(String uri, String localName, String qName) throws SAXException {
-//		if(nameState) {
-//			name = new String(data.toString());
-//			nameState = false;
-//		} else if(ageState) {
-//			this.age = new String(data.toString());
-//			ageState = false;
-//		} else if(phoneState) {
-//			phone = new String(data.toString());
-//			phoneState = false;
-//		} else if(addyState) {
-//			address = new String(data.toString());
-//			addyState = false;
-//		}
-//		
-//		if(age != "" && name != "" && phone != "" && address != "" ) {
-//			addy.addBuddy(new BuddyInfo(name, address, phone, Integer.parseInt(age)));
-//			this.name = "";
-//			this.age = "";
-//			this.address = ""; 
-//			this.phone = "";
-//		}
-//	}
+	@Override
+	// to reduce smellyness maybe make a hashmap of states and their corresponding object
+	public void endElement(String uri, String localName, String qName) throws SAXException {
+		boolean justCreated = false;
+		if (levelState) {
+			level = Integer.parseInt(data.toString());
+			levelState = false;
+		} else if(nameState) {
+			name = new String(data.toString());
+			nameState = false;
+		} else if(x1) {
+			coordinate1.x = Integer.parseInt(data.toString());
+			x1 = false;
+		} else if(x2) {
+			coordinate2.x = Integer.parseInt(data.toString());
+			x2 = false;
+		} else if(y1) {
+			coordinate1.y = Integer.parseInt(data.toString());
+			y1 = false;
+		} else if(y2) {
+			coordinate2.y = Integer.parseInt(data.toString());
+			y2 = false;
+		} else if (directionState) {
+			direction = new String(data.toString());
+			directionState = false;
+		} else if (rabbitState) {
+			if (name != "" && !coordinate1.equals(new Point())) {
+				Rabbit r = new Rabbit(coordinate1, name);
+//				game.addListener(g);
+				board[coordinate1.y][coordinate1.x] = r;
+			}
+			rabbitState = false;
+			justCreated = true;
+		} else if (foxState) {
+			if (name != "" && !coordinate1.equals(new Point()) && !coordinate2.equals(new Point())
+					&& direction != "") {
+				Fox f = new Fox(coordinate1, coordinate2, name, direction);
+//				game.addListener(f);
+				board[coordinate1.y][coordinate1.x] = f;
+				board[coordinate2.y][coordinate2.x] = f;
+			}
+			foxState = false;
+			justCreated = true;
+		} else if (mushState) {
+			GameObject g = new GameObject(coordinate1, name);
+			board[coordinate1.y][coordinate1.x] = g;
+			mushState = false;
+			justCreated = true;
+		}
+		
+		if(justCreated) {
+			name = "";
+			coordinate1 = new Point();
+			coordinate2 = new Point();
+			direction = "";
+		}
+	}
 	
 	@Override
 	public void characters(char ch[], int start, int length) throws SAXException {
 		data.append(new String(ch,start,length));
 	} 
+	
+	public GameObject[][] getGameBoard(){
+		return this.board;
+	}
+	
+	public int getLevel() {
+		return this.level;
+	}
+	
+	public String toString() {
+		String board = "";
+		for (int i = 0; i < 5; i++) {
+			board += "--------------------------\n";
+			for (int j = 0; j < 5; j++) {
+				board += String.format("|%4s", objectToString(j, i));
+			}
+			board += "|\n";
+		}
+		board += "--------------------------\n";
+		return board;
+	}
+	
+	public String objectToString(int x, int y) {
+		if (isHole(x, y) && board[y][x] instanceof Rabbit) {
+			return board[y][x].getName() + "H";
+		} else if (isHole(x, y)) {
+			return "H";
+		} else if (!(board[y][x].getClass().getSimpleName().equals(""))) {
+			return board[y][x].getName();
+		}
+		return "  ";
+	}
+
+	/**
+	 * Checks if a point in the game board is a hole.
+	 * @param x - x coordinate of the board
+	 * @param y - y coordinate of the board
+	 * @return - boolean of if it is a hole
+	 */
+	public boolean isHole(int x, int y) {
+		for (int i = 0; i < HOLES.length; i++) {
+			if (HOLES[i].getX() == x && HOLES[i].getY() == y) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	
 }
