@@ -273,6 +273,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 				+ "Please pick one of the highlighted options.");
 		else if ( i == 1 ) JOptionPane.showMessageDialog(null, "No more moves to undo.");
 		else if ( i == 2 ) JOptionPane.showMessageDialog(null, "No more moves to redo.");
+		else if ( i == 3 ) JOptionPane.showMessageDialog(null, "Could not save game");
 		else return;
 	}
 	

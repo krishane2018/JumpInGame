@@ -1,6 +1,9 @@
 package source;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -610,6 +613,42 @@ public class JumpIn {
 	 */
 	public void setUndoState(boolean state) {
 		undoRedo.setState(state);
+	}
+	
+	public String toXML() {
+		String s = "<JumpIn>\n";
+		s += "<level>" + this.level + "</level>\n";
+		for(JumpInListener l : getGameObjectListeners()) {
+			if(l instanceof Rabbit) {
+				Rabbit r = (Rabbit)l;
+				s += r.toXML() + "\n";
+			} else {
+				Fox f = (Fox)l;
+				s += f.toXML() + "\n";
+			}
+		}
+		s += "</JumpIn>";
+		return s;
+	}
+	
+	public String exportToXMLFile(String filename) throws Exception {
+		FileWriter writer;
+		boolean done = false;
+		int count = 0;
+		while (!done) {
+			try {
+				File f = new File(filename);
+				writer = new FileWriter(f, false);
+				writer.write(this.toXML());
+				writer.close();
+				done = true;
+			} catch (IOException e) {
+				count++;
+				filename = "temp.txt";
+				if(count > 1) throw new Exception("Could not write to file");
+			}
+		}
+		return filename;
 	}
 	
 	/**

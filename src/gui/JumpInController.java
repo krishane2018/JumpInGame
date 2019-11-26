@@ -31,6 +31,7 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 	private boolean inSelectingState;
 	private Point initialLocation;
 	private Point finalLocation;
+	private String filename;
 	
 	/**
 	 * Initialize all instance variables and add the controller as a listener to events created by
@@ -149,6 +150,15 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		} else if (e.getActionCommand().equals("EXIT")) {
 			JButton src = (JButton) e.getSource();
 			SwingUtilities.getWindowAncestor((JPanel) src.getParent()).dispose();
+		} else if (e.getActionCommand().equals("save")) {
+			System.out.println("got here");
+			try {
+				this.filename = model.exportToXMLFile("saveLevel.txt");
+			} catch (Exception e1) {
+				view.displayError(3);
+			}
+		} else if (e.getActionCommand().equals("CONTINUE")) {
+			Play.loadGame();
 		}
 		
 	}

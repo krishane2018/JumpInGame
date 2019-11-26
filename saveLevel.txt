@@ -1,0 +1,13 @@
+<JumpIn>
+<Rabbit>
+<name>R1</name>
+<x1>2</x1>
+<y1>0</y1>
+</Rabbit>
+<Rabbit>
+<name>R2</name>
+<x1>0</x1>
+<y1>4</y1>
+</Rabbit>
+<level>1</level>
+</JumpIn>

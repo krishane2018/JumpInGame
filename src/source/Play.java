@@ -45,4 +45,8 @@ public class Play {
 			view.getMMenu().showGame();
 		}
 	}	
+	
+	public static void loadGame() {
+		
+	}
 }
