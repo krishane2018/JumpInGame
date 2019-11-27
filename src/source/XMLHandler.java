@@ -13,6 +13,7 @@ public class XMLHandler extends DefaultHandler {
 	private GameObject[][] board;
 	private static final Point[] HOLES = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0),
 			new Point(4, 4) };
+	private JumpIn model;
 	
 	private boolean rabbitState;
 	private boolean x1;
@@ -89,6 +90,8 @@ public class XMLHandler extends DefaultHandler {
 		boolean justCreated = false;
 		if (levelState) {
 			level = Integer.parseInt(data.toString());
+			model = new JumpIn(level);
+			model.setListeners(new ArrayList<JumpInListener>());
 			levelState = false;
 		} else if(nameState) {
 			name = new String(data.toString());
@@ -111,7 +114,7 @@ public class XMLHandler extends DefaultHandler {
 		} else if (rabbitState) {
 			if (name != "" && !coordinate1.equals(new Point())) {
 				Rabbit r = new Rabbit(coordinate1, name);
-//				game.addListener(g);
+				model.addListener(r);
 				board[coordinate1.y][coordinate1.x] = r;
 			}
 			rabbitState = false;
@@ -120,7 +123,7 @@ public class XMLHandler extends DefaultHandler {
 			if (name != "" && !coordinate1.equals(new Point()) && !coordinate2.equals(new Point())
 					&& direction != "") {
 				Fox f = new Fox(coordinate1, coordinate2, name, direction);
-//				game.addListener(f);
+				model.addListener(f);
 				board[coordinate1.y][coordinate1.x] = f;
 				board[coordinate2.y][coordinate2.x] = f;
 			}
@@ -148,6 +151,10 @@ public class XMLHandler extends DefaultHandler {
 	
 	public GameObject[][] getGameBoard(){
 		return this.board;
+	}
+	
+	public JumpIn getModel() {
+		return this.model;
 	}
 	
 	public int getLevel() {

@@ -84,8 +84,10 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 				inMovingState = true;
 			}
 		} else if (inMovingState) {
+			System.out.println("in moving state");
 			finalLocation = b.getCoordinate();
 			boolean moved = model.moveAnimal(initialLocation, finalLocation);
+			System.out.println(model.toString());
 			if(moved) {
 				inMovingState = false;
 				inSelectingState = true;
@@ -187,5 +189,42 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 			j.removeActionListener(this);
 		}
 	}
+
+	/**
+	 * @return the view
+	 */
+	public JumpInView getView() {
+		return view;
+	}
+
+	/**
+	 * @param view the view to set
+	 */
+	public void setView(JumpInView view) {
+		this.view = view;
+	}
+
+	/**
+	 * @return the model
+	 */
+	public JumpIn getModel() {
+		return model;
+	}
+
+	/**
+	 * @param model the model to set
+	 */
+	public void setModel(JumpIn model) {
+		this.model = model;
+	}
+
+	/**
+	 * @return the filename
+	 */
+	public String getFilename() {
+		return filename;
+	}
+	
+	
 
 }

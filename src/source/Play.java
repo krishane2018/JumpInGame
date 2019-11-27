@@ -24,6 +24,7 @@ public class Play {
 	private static JumpInView view;
 	private static JumpInController controller;
 	public static int level;
+	private static String filename;
 	
 	/**
 	 * Create a model, view, controller for the level
@@ -32,7 +33,7 @@ public class Play {
 	public static void play(int level) {
 		Play.level = level;
 		if (!(level > 0 && level <= 3)) level = 1;
-		model = new JumpIn(level);
+		model = new JumpIn(level, true);
 		view = new JumpInView(model);
 		controller = new JumpInController(view, model);
 	}
@@ -47,41 +48,59 @@ public class Play {
 		if (Play.level > 3) {
 			view.handleDone();
 		} else {
-			controller.removeListener();
-			model = new JumpIn(level);
-			view.setModel(model);
-			view.createNextBoard();
-			controller = new JumpInController(view, model);
-			view.getMMenu().showGame();
+			try {
+				changeBoard(true);
+			} catch (IOException e) {
+				//add something but shouldn't get here bc input = true
+			}
 		}
 	}	
 	
-	public static void loadGame(String filename) throws IOException {
-		System.out.println(filename);
-		GameObject[][] board = importFromXMLFile(filename);
+	public static void loadGame(String file) throws IOException {
+		filename = file;
 		if (!(level > 0 && level <= 3)) level = 1;
-		model = new JumpIn(level);
-		model.setGameBoard(board);
-		view = new JumpInView(model);
+		controller.removeListener();
+		model = importFromXMLFile(filename);
+		model.setNewGameState(false);
+		view.setModel(model);
+		view.createNextBoard();
 		controller = new JumpInController(view, model);
+		view.getMMenu().showGame();
 	}
 	
-	private static GameObject[][] importFromXMLFile(String filename) throws IOException  {
+	
+	private static void changeBoard(boolean nextLevel) throws IOException {
+		controller.removeListener();
+		if (nextLevel) {
+			model = new JumpIn(level, true);
+		} else {
+			model = importFromXMLFile(filename);
+			System.out.println(model.toString());
+		}
+		view.setModel(model);
+		view.createNextBoard();
+		controller = new JumpInController(view, model);
+		view.getMMenu().showGame();
+	}
+	
+	private static JumpIn importFromXMLFile(String filename) throws IOException  {
 		SAXParserFactory sax = SAXParserFactory.newInstance();
 		SAXParser parser;
-		GameObject[][] board = new GameObject[5][5];
 		try {
 			XMLHandler handler = new XMLHandler();
 			parser = sax.newSAXParser();
 			parser.parse(new File(filename), handler);
 			level = handler.getLevel();
-			board = handler.getGameBoard();
+			model = handler.getModel();
+			GameObject[][] board = handler.getGameBoard();
+			model.setGameBoard(board);
 			System.out.println(handler.toString());
+			return model;
 		} catch(SAXException e) {
 			
 		} catch(ParserConfigurationException e) {
 			
 		}
-		return board;
+		return new JumpIn(1);
 	}
 }
