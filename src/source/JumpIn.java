@@ -1,6 +1,7 @@
 package source;
 
 import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -54,6 +55,18 @@ public class JumpIn {
 		solverMoves = new LinkedList<Move>();
 		solver();
 	}
+	
+	public JumpIn(int level, GameObject[][] board) {
+		this.level = level;
+		listeners = new ArrayList<JumpInListener>();
+		undoRedo = new UndoRedo();
+		levelSelector = new LevelSelector(level, this);
+		gameBoard = board;
+		holes = LevelSelector.getHoles();
+		parser = new Parser();
+		solverMoves = new LinkedList<Move>();
+		solver();
+	}
 
 	/**
 	 * @return the solverMoves
@@ -65,7 +78,7 @@ public class JumpIn {
 	/**
 	 * Determines the moves that will lead the user to a successful win.
 	 */
-	public void solver() {
+	public boolean solver() {
 		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
 		for (int i = 0; i<listeners.size();i++) {
 			JumpInListener l = listeners.get(i);
@@ -74,9 +87,10 @@ public class JumpIn {
 				i--;
 			}
 		}
-		solverHelper(new Stack<Move>(), new Stack<ArrayList<Point>>());
+		boolean isSolved = solverHelper(new Stack<Move>(), new Stack<ArrayList<Point>>());
 		listeners.addAll(viewListeners);
 		undoRedo.clearRedo();
+		return isSolved;
 	}
 	
 	/**

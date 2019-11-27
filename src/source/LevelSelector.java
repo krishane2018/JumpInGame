@@ -28,7 +28,7 @@ public class LevelSelector {
 		rabbitInitialPositions = new ArrayList<Point>();
 		mushroomPositions = new ArrayList<Point>();
 		foxInitialPositions = new HashMap<ArrayList<Point>, String>();
-		if (1 > level | level > 3) {
+		if (0 > level | level > 3) {
 			throw new IllegalArgumentException("Levels must be between 1-3");
 		}
 		board = new GameObject[5][5];
@@ -37,8 +37,10 @@ public class LevelSelector {
 				board[j][i] = new GameObject(new Point(i, j));
 			}
 		}
-
-		if (level == 1) {
+		if (level == 0) {
+			
+		}
+		else if (level == 1) {
 			// based on JumpIn' level 5 (C)
 			
 			// Rabbit positions
