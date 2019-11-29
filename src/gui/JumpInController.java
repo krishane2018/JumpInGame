@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -31,6 +33,7 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 	private boolean inSelectingState;
 	private Point initialLocation;
 	private Point finalLocation;
+	private String filename;
 	
 	/**
 	 * Initialize all instance variables and add the controller as a listener to events created by
@@ -81,8 +84,10 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 				inMovingState = true;
 			}
 		} else if (inMovingState) {
+			System.out.println("in moving state");
 			finalLocation = b.getCoordinate();
 			boolean moved = model.moveAnimal(initialLocation, finalLocation);
+			System.out.println(model.toString());
 			if(moved) {
 				inMovingState = false;
 				inSelectingState = true;
@@ -149,6 +154,19 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		} else if (e.getActionCommand().equals("EXIT")) {
 			JButton src = (JButton) e.getSource();
 			SwingUtilities.getWindowAncestor((JPanel) src.getParent()).dispose();
+		} else if (e.getActionCommand().equals("save")) {
+			try {
+				this.filename = model.exportToXMLFile("saveLevel.txt");
+			} catch (Exception e1) {
+				view.displayError(3);
+			}
+		} else if (e.getActionCommand().equals("CONTINUE")) {
+			try {
+				Play.loadGame("saveLevel.txt");
+			} catch (IOException e1) {
+				view.displayError(4);
+				Play.play(1);
+			}
 		}
 		
 	}
@@ -171,5 +189,42 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 			j.removeActionListener(this);
 		}
 	}
+
+	/**
+	 * @return the view
+	 */
+	public JumpInView getView() {
+		return view;
+	}
+
+	/**
+	 * @param view the view to set
+	 */
+	public void setView(JumpInView view) {
+		this.view = view;
+	}
+
+	/**
+	 * @return the model
+	 */
+	public JumpIn getModel() {
+		return model;
+	}
+
+	/**
+	 * @param model the model to set
+	 */
+	public void setModel(JumpIn model) {
+		this.model = model;
+	}
+
+	/**
+	 * @return the filename
+	 */
+	public String getFilename() {
+		return filename;
+	}
+	
+	
 
 }

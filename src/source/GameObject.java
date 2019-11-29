@@ -90,6 +90,13 @@ public class GameObject {
 	public void setCoordinate(Point coordinate) {
 		this.coordinate = coordinate;
 	}
+	
+	public String toXML() {
+		String s = "<name>" + this.name + "</name>\n";
+		s += "<x1>" + this.coordinate.x + "</x1>\n";
+		s += "<y1>" + this.coordinate.y + "</y1>\n";	
+		return s;
+	}
 
 	public boolean equals(Object o) {
 		if (o == null)

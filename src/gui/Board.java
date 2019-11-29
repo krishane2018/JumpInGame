@@ -90,7 +90,7 @@ public class Board {
 		for (ArrayList<Point> p : hash.keySet()) {
 			Point p0 = p.get(0);
 			Point p1 = p.get(1);
-			if (hash.get(p) == "Vertical") {
+			if (hash.get(p).equals("Vertical")) {
 				setIconHelper(Resources.FOX_VERTICAL2, g, p0);
 				setIconHelper(Resources.FOX_VERTICAL1, g, p1);
 			} else {

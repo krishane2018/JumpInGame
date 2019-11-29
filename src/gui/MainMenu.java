@@ -29,7 +29,7 @@ public class MainMenu extends JFrame {
 	private JPanel menu, content, win, done;
 	private JumpInView view;
 	private ArrayList<JButton> buttons;
-	private JMenuItem undo, redo, hint;
+	private JMenuItem undo, redo, hint, save;
 	private ArrayList<JMenuItem> menuItems;
 
 	/**
@@ -52,6 +52,7 @@ public class MainMenu extends JFrame {
 		undo = new JMenuItem("undo");
 		redo = new JMenuItem("redo");
 		hint = new JMenuItem("hint");
+		save = new JMenuItem("save");
 
 		setUpTitleScreen();
 		setUpWinScreen();
@@ -74,6 +75,7 @@ public class MainMenu extends JFrame {
 		menuItems.add(undo);
 		menuItems.add(redo);
 		menuItems.add(hint);
+		menuItems.add(save);
 
 		for (JMenuItem j : menuItems) {
 			options.add(j);
@@ -107,13 +109,17 @@ public class MainMenu extends JFrame {
 		buttons.add(play);
 		JButton exit1 = MainMenuButton("EXIT");
 		buttons.add(exit1);
+		JButton cont = MainMenuButton("CONTINUE");
+		buttons.add(cont);
 		menu.setLayout(null);
-		play.setBounds(350, 250, 100, 50);
-		exit1.setBounds(350, 350, 100, 50);
+		play.setBounds(300, 250, 200, 50);
+		exit1.setBounds(300, 350, 200, 50);
+		cont.setBounds(300, 450, 200, 50);
 		logo.setBounds(160, 0, 500, 300);
+		for(JButton button : buttons) {
+			menu.add(button);
+		}
 		menu.add(logo);
-		menu.add(play);
-		menu.add(exit1);
 		menu.setBackground(new Color(152, 233, 233));
 	}
 
