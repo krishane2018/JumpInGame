@@ -32,8 +32,13 @@ public class XMLHandler extends DefaultHandler {
 	private int level;
 	private String direction;
 	
+	private int wantedLevel;
 	
 	public XMLHandler() {
+		this(-2);
+	}
+	
+	public XMLHandler(int wantedLevel) {
 		board = new GameObject[5][5];
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
@@ -56,6 +61,7 @@ public class XMLHandler extends DefaultHandler {
 		coordinate2 = new Point();
 		level = -1;
 		direction = "";
+		this.wantedLevel=wantedLevel;
 	}
 	
 	@Override
