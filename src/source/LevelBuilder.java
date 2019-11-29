@@ -68,21 +68,24 @@ public class LevelBuilder {
 //		}
 //	}
 	
-	public void removeGameObject (Point p) {
+	public boolean removeGameObject (Point p) {
 		GameObject[][] board = gameBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
 		String className = space.getClass().getSimpleName();
-		if (className.equalsIgnoreCase("Fox")) {
+		if(space.getName().equals("")) {
+			return false;
+		}else if (className.equalsIgnoreCase("Fox")) {
 			Fox tempFox = (Fox)space;
 			Point p2 = tempFox.getCoordinate().equals(p) ? tempFox.getCoordinate2() : tempFox.getCoordinate();
 			board[p.y][p.x] = new GameObject(p);
-			Integer counter = Integer.valueOf(space.getName().charAt(1));
+			Integer counter = Character.getNumericValue(space.getName().charAt(1));
 			factory.addRemovedCounter(className.toLowerCase(), counter);
 			board[p2.y][p2.x] = new GameObject(p2);
 		}
 		else {
 			board[p.y][p.x] = new GameObject(p);
 		}
+		return true;
 	}
 	
 	public boolean addGameObject(Point p, String object, String direction) {
@@ -90,6 +93,8 @@ public class LevelBuilder {
 		GameObject[][] board = gameBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
 		if (g==null) {
+			factory.reduceCounter(object);
+			System.out.println("invalid fox out of bounds");
 			return false;
 		}
 		else if (object.equalsIgnoreCase("Fox")) {
@@ -104,6 +109,7 @@ public class LevelBuilder {
 			} 
 			else {
 				factory.reduceCounter(object);
+				System.out.println("invalid fox");
 			}
 		}
 		else  {
@@ -116,6 +122,7 @@ public class LevelBuilder {
 				return true;
 			} else {
 				factory.reduceCounter(object);
+				System.out.println("invalid mushroom/rabbit");
 			}
 		}
 		return false;
@@ -131,36 +138,43 @@ public class LevelBuilder {
 		return space.getName().equals("");
 	}
 
-	public static void main(String[] args) {
-		String direction;
-		String point;
-		String[] coords;
-		String object;
-		
-		LevelBuilder bob = new LevelBuilder();
-		Scanner input = new Scanner(System.in);
-		System.out.println(bob.gameBeingBuilt.toString());
-		
-		while (true) {
-			direction = "";
-			System.out.println("Enter point");
-			point = input.nextLine();
-			coords = point.split(",");
-			
-			System.out.println("Enter object");
-			object = input.nextLine();
-			if (object.equalsIgnoreCase("Fox")) {
-				System.out.println("Enter direction");
-				direction = input.nextLine();
-			}
-			bob.addGameObject(new Point(Integer.valueOf(coords[0]), Integer.valueOf(coords[1])), object, direction);
-			System.out.println(bob.gameBeingBuilt.toString());
-			System.out.println("Enter q for quit");
-			if (input.nextLine().equalsIgnoreCase("q")) {
-				break;
-			}
-		}
-		
-	}
+//	public static void main(String[] args) {
+//		String direction;
+//		String point;
+//		String[] coords;
+//		String object;
+//		
+//		LevelBuilder bob = new LevelBuilder();
+//		Scanner input = new Scanner(System.in);
+//		System.out.println(bob.gameBeingBuilt.toString());
+//		
+//		while (true) {
+//			direction = "";
+//			System.out.println("Enter point");
+//			point = input.nextLine();
+//			coords = point.split(",");
+//			System.out.println("Enter object");
+//			object = input.nextLine();
+//			if (object.equalsIgnoreCase("Fox")) {
+//				System.out.println("Enter direction");
+//				direction = input.nextLine();
+//			}
+//			bob.addGameObject(new Point(Integer.valueOf(coords[0]), Integer.valueOf(coords[1])), object, direction);
+//			System.out.println(bob.gameBeingBuilt.toString());
+//			System.out.println("Enter q for quit");
+//			System.out.println("Enter r for remove");
+//			String kush = input.nextLine();
+//			if (kush.equalsIgnoreCase("q")) {
+//				break;
+//			}else if (kush.equalsIgnoreCase("r")) {
+//				System.out.println("Enter point");
+//				point = input.nextLine();
+//				coords = point.split(",");
+//				bob.removeGameObject(new Point(Integer.valueOf(coords[0]), Integer.valueOf(coords[1])));
+//				System.out.println(bob.gameBeingBuilt.toString());
+//			}
+//		}
+//		
+//	}
 	
 }

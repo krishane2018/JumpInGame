@@ -149,6 +149,8 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		} else if (e.getActionCommand().equals("EXIT")) {
 			JButton src = (JButton) e.getSource();
 			SwingUtilities.getWindowAncestor((JPanel) src.getParent()).dispose();
+		} else if (e.getActionCommand().equals("CREATOR")) {
+			view.creatorView();
 		}
 		
 	}
