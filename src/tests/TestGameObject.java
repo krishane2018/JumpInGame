@@ -72,4 +72,8 @@ class TestGameObject {
 			    new GameObject(new Point(1,5));
 			  });	
 	}
+	@Test testToXML(){
+		GameObject Mush1 = new GameObject(new Point(0, 1), "M1");
+		assertTrue(Mush1.toXML().equals("<name>M1</name>\n<x1>0</x1>\n<y1>1</y1>"));
+	}
 }
