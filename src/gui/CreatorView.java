@@ -12,7 +12,7 @@ import source.JumpIn;
 
 public class CreatorView {
 	private GameButton[][] buttons;
-	private SelectorButton mushroom, rabbit, hFox, vFox, play;
+	private SelectorButton mushroom, rabbit, hFox, vFox, remove, save;
 	private JPanel panel, creator, sidePanel;
 	private GridLayout g;
 	private final int ROWS = JumpIn.NUM_ROWS;
@@ -25,20 +25,24 @@ public class CreatorView {
 		panel = new JPanel(new BorderLayout());
 		sidePanel = new JPanel();
 		creator = new JPanel();
-		mushroom = new SelectorButton("","Mushroom");
-		rabbit = new SelectorButton("","Rabbit");
-		hFox = new SelectorButton("","HFox");
-		vFox = new SelectorButton("","VFox");
-		play = new SelectorButton("PLAY","Play");
+		mushroom = new SelectorButton("", "Mushroom");
+		rabbit = new SelectorButton("", "Rabbit");
+		hFox = new SelectorButton("", "HFox");
+		vFox = new SelectorButton("", "VFox");
+		remove = new SelectorButton("REMOVE", "Remove");
+		remove.setPreferredSize(new Dimension(145,70));
+		save = new SelectorButton("SAVE", "Save");
+		save.setPreferredSize(new Dimension(145,70));
 
 		buttonList = new ArrayList<SelectorButton>();
-		
+
 		buttonList.add(hFox);
 		buttonList.add(mushroom);
 		buttonList.add(rabbit);
 		buttonList.add(vFox);
-		buttonList.add(play);
-		
+		buttonList.add(remove);
+		buttonList.add(save);
+
 		setUpCreator();
 		setUpSidePanel();
 
@@ -57,7 +61,8 @@ public class CreatorView {
 		sidePanel.add(vFox);
 		hFox.setIcon(Resources.FOX_HORIZONTAL1);
 		sidePanel.add(hFox);
-		sidePanel.add(play);
+		sidePanel.add(remove);
+		sidePanel.add(save);
 		sidePanel.setPreferredSize(new Dimension(160, 800));
 	}
 
@@ -80,10 +85,8 @@ public class CreatorView {
 		return buttons;
 	}
 
-	public ArrayList<SelectorButton> getButtonList(){
+	public ArrayList<SelectorButton> getButtonList() {
 		return buttonList;
 	}
-	
-
 
 }

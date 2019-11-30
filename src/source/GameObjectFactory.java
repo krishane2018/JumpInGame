@@ -64,6 +64,7 @@ public class GameObjectFactory {
 	}
 	
 	public void reduceCounter(String object) {
+		System.out.println(object);
 		int initialCounter = nameCounters.get(object);
 		nameCounters.put(object, initialCounter-1);
 	}
