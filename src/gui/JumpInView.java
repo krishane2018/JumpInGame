@@ -86,7 +86,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * a piece on the board (initial location(s), final location(s), chosen piece)
 	 */
 	public void handleEvent(JumpInEvent e) {
-		System.out.println("In handle eventttt");
 		Point initialLocation = e.getInitialLocation1();
 		Point finalLocation1 = e.getFinalLocation1();
 		if(e.getChosenPiece() instanceof Rabbit) {

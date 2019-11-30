@@ -72,6 +72,10 @@ public class JumpIn {
 		solverMoves = new LinkedList<Move>();
 		solver();
 	}
+	
+	public JumpIn(int level) {
+		this(level, false);
+	}
 
 	/**
 	 * @return the solverMoves
@@ -387,7 +391,6 @@ public class JumpIn {
 		boolean win = checkWin();
 		
 		for(JumpInView v : getViewListeners()) {
-			System.out.println("In process commands");
 			v.handleEvent(event);
 			if(win) {
 				v.handleWin();
@@ -507,12 +510,10 @@ public class JumpIn {
 			showOptions(initial, false);
 			Move move = new Move(initial, finalLocation, g);
 			processCommand(new Move(initial, finalLocation, g));
-			System.out.println("not done");
 			if (!(solverMoves.poll().equals(move))) {
 				System.out.println(solverMoves);
 				solver();
 			}
-			System.out.println("done");
 			return true;
 		} else if (g instanceof Fox) {
 			boolean selectedInOptions = false;
@@ -586,7 +587,6 @@ public class JumpIn {
 					if (s != "" && s.charAt(0) == 'F') {
 						ArrayList<Point> pos = new ArrayList<Point>();
 						Fox f = (Fox) gameBoard[j][i];
-						System.out.println(f.getDirection());
 						pos.add(f.getCoordinate());
 						pos.add(f.getCoordinate2());
 						map.put(pos, f.getDirection());
@@ -624,10 +624,23 @@ public class JumpIn {
 	 * @return True if a move was undone, otherwise false
 	 */
 	public boolean undoMove() {
-		JumpInEvent e = undoRedo.undoMove();
+		return undoRedoMove(true);
+	}
+	
+	/**
+	 * Redo a move by getting the last JumpInEvent that was "undone" and update the board accordingly
+	 * @return true if a move was redone, otherwise false.
+	 */
+	public boolean redoMove() {
+		return undoRedoMove(false);
+	}
+	
+	private boolean undoRedoMove(boolean undo) {
+		JumpInEvent e = undo ? undoRedo.undoMove() : undoRedo.redoMove();
 		if(e.isEmpty()) {
 			for (JumpInView v : getViewListeners()) {
-					v.displayError(1);
+					if(undo) v.displayError(1); 
+					else v.displayError(2);
 			}
 			return false;
 		}
@@ -636,28 +649,6 @@ public class JumpIn {
 		} else {
 			Point[] initialLocation = {e.getFinalLocation1(), e.getFinalLocation2()};
 			Point[] finalLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
-			processCommand(new Move (initialLocation, finalLocation, e.getChosenPiece()));
-		}
-		return true;
-	}
-	
-	/**
-	 * Redo a move by getting the last JumpInEvent that was "undone" and update the board accordingly
-	 * @return true if a move was redone, otherwise false.
-	 */
-	public boolean redoMove() {
-		JumpInEvent e = undoRedo.redoMove();
-		if(e.isEmpty()) {
-			for (JumpInView v : getViewListeners()) {
-					v.displayError(2);
-			}
-			return false;
-		}
-		if(e.getChosenPiece() instanceof Rabbit) {
-			processCommand(new Move(e.getInitialLocation1(), e.getFinalLocation1(), e.getChosenPiece()));
-		} else {
-			Point[] initialLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
-			Point[] finalLocation = {e.getFinalLocation1(), e.getFinalLocation2()};
 			processCommand(new Move (initialLocation, finalLocation, e.getChosenPiece()));
 		}
 		return true;

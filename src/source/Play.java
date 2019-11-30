@@ -34,7 +34,6 @@ public class Play {
 		Play.level = level;
 		if (!(level > 0 && level <= 3)) level = 1;
 		model = new JumpIn(level, false);
-		System.out.println(model);
 		view = new JumpInView(model);
 		controller = new JumpInController(view, model);
 	}
@@ -96,7 +95,6 @@ public class Play {
 			model = new JumpIn (modelLevel);
 //			GameObject[][] board = modelLevel.getGameBoard();
 //			model.setGameBoard(board);
-			System.out.println(handler.toString());
 			return model;
 		} catch(SAXException e) {
 			
