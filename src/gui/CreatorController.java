@@ -76,7 +76,6 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 						b.setIcon(Resources.FOX_VERTICAL2);
 						this.board[builder.getFoxCoordinate2().x][builder.getFoxCoordinate2().y]
 								.setIcon(Resources.FOX_VERTICAL1);
-
 					} else if (direction.equals("Horizontal")) {
 						b.setIcon(Resources.FOX_HORIZONTAL1);
 						this.board[builder.getFoxCoordinate2().x][builder.getFoxCoordinate2().y]
@@ -85,18 +84,18 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 				}
 			}
 		} else {
-			builder.removeGameObject(b.getCoordinate());
 			if (isHole(b.getCoordinate())) {
 				b.setIcon(Resources.HOLE);
 			} else {
 				b.setIcon(Resources.GREEN_CIRCLE);
 				System.out.println(b.getCoordinate());
 				if (builder.getObjectName(b.getCoordinate()).equals("Fox")) {
-					this.board[builder.getFoxCoordinate2().y][builder.getFoxCoordinate2().x]
+					this.board[builder.getFoxCoordinate2().x][builder.getFoxCoordinate2().y]
 							.setIcon(Resources.GREEN_CIRCLE);
 					System.out.println(builder.getFoxCoordinate2());
 				}
 			}
+			builder.removeGameObject(b.getCoordinate());
 		}
 	}
 
