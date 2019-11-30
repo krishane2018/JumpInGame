@@ -7,6 +7,9 @@ import java.util.Stack;
 public class GameObjectFactory {
 	private HashMap<String, Integer> nameCounters;
 	private HashMap<String, Stack<Integer>> removedCounters;
+	public static final int NUM_ROWS = 5;
+	public static final int NUM_COLUMNS = NUM_ROWS;
+
 	
 	public GameObjectFactory() {
 		nameCounters = new HashMap<String, Integer>();
@@ -43,12 +46,20 @@ public class GameObjectFactory {
 	private Fox foxMaker (Point p, String direction, int counter) {
 		Point p2 = new Point(p);
 		if (direction.equalsIgnoreCase("vertical")) {
-			p2.y+=1;
+			p2.y=foxMakerHelper(p2.y);
 		}
 		else if (direction.equalsIgnoreCase("horizontal")) {
-			p2.x+=1;
+			p2.x=foxMakerHelper(p2.x);
 		}
 		return new Fox (p, p2, "F"+counter, direction);
+	}
+	
+	private int foxMakerHelper (int coord) {
+		coord += 1;
+		if (coord == NUM_ROWS) {
+			coord -=2;
+		}
+		return coord;
 	}
 	
 	private int nextCounter(String object) {

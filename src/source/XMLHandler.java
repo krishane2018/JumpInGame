@@ -10,16 +10,16 @@ import org.xml.sax.helpers.*;
 
 public class XMLHandler extends DefaultHandler {
 	private StringBuilder data;
-	private GameObject[][] board;
 	private static final Point[] HOLES = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0),
 			new Point(4, 4) };
-	private JumpIn model;
+	private Level levelModel;
 	
 	private boolean rabbitState;
 	private boolean x1;
 	private boolean y1;
 	private boolean x2;
 	private boolean y2;
+	private boolean jumpInState;
 	private boolean nameState;
 	private boolean foxState;
 	private boolean mushState;
@@ -33,18 +33,14 @@ public class XMLHandler extends DefaultHandler {
 	private String direction;
 	
 	private int wantedLevel;
+	private boolean isWantedLevel;
+	private Level wantedLevelModel;
 	
 	public XMLHandler() {
 		this(-2);
 	}
 	
 	public XMLHandler(int wantedLevel) {
-		board = new GameObject[5][5];
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				board[j][i] = new GameObject(new Point(i, j));
-			}
-		}
 		data = null;
 		level = -1;
 		rabbitState = false;
@@ -62,10 +58,15 @@ public class XMLHandler extends DefaultHandler {
 		level = -1;
 		direction = "";
 		this.wantedLevel=wantedLevel;
+		isWantedLevel = false;
+		jumpInState=true;
 	}
 	
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+		if (qName.equals("JumpIn")) {
+			jumpInState = true;
+		}
 		if(qName.equals("name")) {
 			nameState = true;
 		} else if (qName.equals("x1")) {
@@ -94,10 +95,16 @@ public class XMLHandler extends DefaultHandler {
 	// to reduce smellyness maybe make a hashmap of states and their corresponding object
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		boolean justCreated = false;
+		if (jumpInState && isWantedLevel) {
+			wantedLevelModel = levelModel;
+			isWantedLevel = false;
+		}
 		if (levelState) {
 			level = Integer.parseInt(data.toString());
-			model = new JumpIn(level);
-			model.setListeners(new ArrayList<JumpInListener>());
+			if (level == wantedLevel) {
+				isWantedLevel = true;
+			}
+			levelModel = new Level(level);
 			levelState = false;
 		} else if(nameState) {
 			name = new String(data.toString());
@@ -120,8 +127,8 @@ public class XMLHandler extends DefaultHandler {
 		} else if (rabbitState) {
 			if (name != "" && !coordinate1.equals(new Point())) {
 				Rabbit r = new Rabbit(coordinate1, name);
-				model.addListener(r);
-				board[coordinate1.y][coordinate1.x] = r;
+				levelModel.addListener(r);
+				levelModel.placeGameObject(r);
 			}
 			rabbitState = false;
 			justCreated = true;
@@ -129,15 +136,14 @@ public class XMLHandler extends DefaultHandler {
 			if (name != "" && !coordinate1.equals(new Point()) && !coordinate2.equals(new Point())
 					&& direction != "") {
 				Fox f = new Fox(coordinate1, coordinate2, name, direction);
-				model.addListener(f);
-				board[coordinate1.y][coordinate1.x] = f;
-				board[coordinate2.y][coordinate2.x] = f;
+				levelModel.addListener(f);
+				levelModel.placeGameObject(f);
 			}
 			foxState = false;
 			justCreated = true;
 		} else if (mushState) {
 			GameObject g = new GameObject(coordinate1, name);
-			board[coordinate1.y][coordinate1.x] = g;
+			levelModel.placeGameObject(g);
 			mushState = false;
 			justCreated = true;
 		}
@@ -155,12 +161,15 @@ public class XMLHandler extends DefaultHandler {
 		data.append(new String(ch,start,length));
 	} 
 	
-	public GameObject[][] getGameBoard(){
-		return this.board;
+	@Override
+	public void endDocument() {
+		if (wantedLevelModel == null) {
+			wantedLevelModel = levelModel;
+		}
 	}
 	
-	public JumpIn getModel() {
-		return this.model;
+	public Level getWantedLevel() {
+		return wantedLevelModel;
 	}
 	
 	public int getLevel() {
@@ -181,6 +190,7 @@ public class XMLHandler extends DefaultHandler {
 	}
 	
 	public String objectToString(int x, int y) {
+		GameObject[][] board = levelModel.getGameBoard();
 		if (isHole(x, y) && board[y][x] instanceof Rabbit) {
 			return board[y][x].getName() + "H";
 		} else if (isHole(x, y)) {

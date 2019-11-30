@@ -39,7 +39,6 @@ public class JumpIn {
 	private Point[] holes;
 	private UndoRedo undoRedo;
 	private Queue<Move> solverMoves;
-	private boolean newGameState;
 	 
 
 	/**
@@ -48,33 +47,30 @@ public class JumpIn {
 	 * 
 	 * @param level - game level
 	 */
-	public JumpIn(int level, boolean newGameState) {
-		this.level = level;
-		listeners = new ArrayList<JumpInListener>();
-		undoRedo = new UndoRedo();
-		levelSelector = new LevelSelector(level, this);
-		gameBoard = levelSelector.getBoard();
-		holes = LevelSelector.getHoles();
-		parser = new Parser();
-		solverMoves = new LinkedList<Move>();
-		this.newGameState = newGameState;
-		solver();
-	}
 	
-	public JumpIn(int level, GameObject[][] board) {
-		this.level = level;
-		listeners = new ArrayList<JumpInListener>();
+	public JumpIn(Level l) {
+		this.level = l.getLevel();
+		listeners = l.getListeners();
 		undoRedo = new UndoRedo();
-		levelSelector = new LevelSelector(level, this);
-		gameBoard = board;
-		holes = LevelSelector.getHoles();
+//		levelSelector = new LevelSelector(level, this);
+		gameBoard = l.getGameBoard();
+		holes = Level.getHoles();
 		parser = new Parser();
 		solverMoves = new LinkedList<Move>();
 		solver();
 	}
 	
-	public JumpIn(int level) {
-		this(level, true);
+	public JumpIn(int level, boolean isSaved) {
+		this.level = level;
+		Level modelLevel = LevelSelector.getLevel(level, isSaved);
+		listeners = modelLevel.getListeners();
+		undoRedo = new UndoRedo();
+//		levelSelector = new LevelSelector(level, this);
+		gameBoard = modelLevel.getGameBoard();
+		holes = Level.getHoles();
+		parser = new Parser();
+		solverMoves = new LinkedList<Move>();
+		solver();
 	}
 
 	/**
@@ -564,8 +560,7 @@ public class JumpIn {
 	 * @return an array list of all the coordinates of the mushrooms
 	 */
 	public ArrayList<Point> getInitialMushroomPositions() {
-		if(newGameState) return levelSelector.getMushroomPositions();
-		else return getInitialPositions('M');
+		 return getInitialPositions('M');
 	}
 	
 	/**
@@ -573,8 +568,7 @@ public class JumpIn {
 	 * @return an array list of all the coordinates of the mushrooms
 	 */
 	public ArrayList<Point> getInitialRabbitPositions() {
-		if(newGameState) return levelSelector.getRabbitInitialPositions();
-		else return getInitialPositions('R');
+		return getInitialPositions('R');
 	}
 	
 	/**
@@ -583,8 +577,8 @@ public class JumpIn {
 	 * their orientation (vertical or horizontal) (value)
 	 */
 	public HashMap<ArrayList<Point>, String> getInitialFoxPositions() {
-		if(newGameState) return levelSelector.getFoxInitialPositions();
-		else {
+//		if(newGameState) return levelSelector.getFoxInitialPositions();
+//		else {
 			HashMap<ArrayList<Point> ,String> map = new HashMap<ArrayList<Point>,String>();
 			for (int i = 0; i < NUM_ROWS; i++) {
 				for (int j = 0; j < NUM_COLUMNS; j++) {
@@ -600,7 +594,7 @@ public class JumpIn {
 				}
 			}
 			return map;
-		}
+//		}
 	}
 	
 	public ArrayList<Point> getInitialPositions(char type){
@@ -676,10 +670,6 @@ public class JumpIn {
 	 */
 	public void setUndoState(boolean state) {
 		undoRedo.setState(state);
-	}
-	
-	public void setNewGameState(boolean state) {
-		newGameState = state;
 	}
 	
 	public String toXML() {

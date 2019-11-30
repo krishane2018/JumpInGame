@@ -16,7 +16,7 @@ import org.w3c.dom.NodeList;
 
 public class LevelBuilder {
 
-	public JumpIn gameBeingBuilt;
+	public Level levelBeingBuilt;
 	private GameObjectFactory factory;
 	private static final String filePath = new File("").getAbsolutePath()+"\\levels.xml";
 	
@@ -25,13 +25,7 @@ public class LevelBuilder {
 	}
 	
 	private void reset() {
-		GameObject[][] board = new GameObject[5][5];
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				board[j][i] = new GameObject(new Point(i, j));
-			}
-		}
-		gameBeingBuilt = new JumpIn(nextLevelNumber(), board);
+		levelBeingBuilt = new Level(nextLevelNumber());
 		factory = new GameObjectFactory();
 	}
 	
@@ -52,8 +46,8 @@ public class LevelBuilder {
 		return numLevels;
 	}
 	
-	public boolean isValidGame() {
-		return gameBeingBuilt.solver();
+	private boolean isValidGame(JumpIn game) {
+		return game.solver();
 	}
 		
 //	public void saveLevel() {
@@ -69,28 +63,23 @@ public class LevelBuilder {
 //	}
 	
 	public boolean removeGameObject (Point p) {
-		GameObject[][] board = gameBeingBuilt.getGameBoard();
+		GameObject[][] board = levelBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
 		String className = space.getClass().getSimpleName();
 		if(space.getName().equals("")) {
 			return false;
-		}else if (className.equalsIgnoreCase("Fox")) {
-			Fox tempFox = (Fox)space;
-			Point p2 = tempFox.getCoordinate().equals(p) ? tempFox.getCoordinate2() : tempFox.getCoordinate();
-			board[p.y][p.x] = new GameObject(p);
+		} 
+		else {
+			levelBeingBuilt.removeGameObject(p);
 			Integer counter = Character.getNumericValue(space.getName().charAt(1));
 			factory.addRemovedCounter(className.toLowerCase(), counter);
-			board[p2.y][p2.x] = new GameObject(p2);
-		}
-		else {
-			board[p.y][p.x] = new GameObject(p);
-		}
-		return true;
+			return true;
+		}	
 	}
 	
 	public boolean addGameObject(Point p, String object, String direction) {
 		GameObject g = factory.getGameObject(p, object, direction);
-		GameObject[][] board = gameBeingBuilt.getGameBoard();
+		GameObject[][] board = levelBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
 		if (g==null) {
 			factory.reduceCounter(object);
@@ -102,9 +91,8 @@ public class LevelBuilder {
 			Point p2 = f.getCoordinate2();
 			GameObject space2 = board[p2.y][p2.x];
 			if (validSpaceFox(space)&&validSpaceFox(space2)) {
-				board[p.y][p.x] = f;
-				board[p2.y][p2.x] = f;
-				gameBeingBuilt.addListener(f);
+				levelBeingBuilt.placeGameObject(f);
+				levelBeingBuilt.addListener(f);
 				return true;
 			} 
 			else {
@@ -114,9 +102,9 @@ public class LevelBuilder {
 		}
 		else  {
 			if (validSpaceGameObject(space)) {
-				board[p.y][p.x] = g;
-				try {
-					gameBeingBuilt.addListener((MovableAnimal)g);
+				levelBeingBuilt.placeGameObject(g);
+			try {
+					levelBeingBuilt.addListener((MovableAnimal)g);
 				}
 				catch (Exception e) {}
 				return true;
@@ -130,7 +118,7 @@ public class LevelBuilder {
 	}
 	
 	private boolean validSpaceFox(GameObject space) {
-		List<Point> list = Arrays.asList(LevelSelector.getHoles());
+		List<Point> list = Arrays.asList(Level.getHoles());
 		return space.getName().equals("") && !list.contains(space.getCoordinate());
 	}
 	
@@ -146,7 +134,7 @@ public class LevelBuilder {
 		
 		LevelBuilder bob = new LevelBuilder();
 		Scanner input = new Scanner(System.in);
-		System.out.println(bob.gameBeingBuilt.toString());
+		System.out.println(new JumpIn(bob.levelBeingBuilt).toString());
 		
 		while (true) {
 			direction = "";
@@ -160,7 +148,7 @@ public class LevelBuilder {
 				direction = input.nextLine();
 			}
 			bob.addGameObject(new Point(Integer.valueOf(coords[0]), Integer.valueOf(coords[1])), object, direction);
-			System.out.println(bob.gameBeingBuilt.toString());
+			System.out.println(new JumpIn(bob.levelBeingBuilt).toString());
 			System.out.println("Enter q for quit");
 			System.out.println("Enter r for remove");
 			String kush = input.nextLine();
@@ -171,7 +159,7 @@ public class LevelBuilder {
 				point = input.nextLine();
 				coords = point.split(",");
 				bob.removeGameObject(new Point(Integer.valueOf(coords[0]), Integer.valueOf(coords[1])));
-				System.out.println(bob.gameBeingBuilt.toString());
+				System.out.println(new JumpIn(bob.levelBeingBuilt).toString());
 			}
 		}
 		

@@ -150,7 +150,7 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		} else if (e.getActionCommand().equals("PLAY!")) {
 			view.getMMenu().showGame();
 		} else if (e.getActionCommand().equals("NEXT")) {
-			Play.nextLevel();
+			Play.nextLevel("levels.xml");
 		} else if (e.getActionCommand().equals("EXIT")) {
 			JButton src = (JButton) e.getSource();
 			SwingUtilities.getWindowAncestor((JPanel) src.getParent()).dispose();

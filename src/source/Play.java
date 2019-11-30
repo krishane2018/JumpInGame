@@ -33,7 +33,8 @@ public class Play {
 	public static void play(int level) {
 		Play.level = level;
 		if (!(level > 0 && level <= 3)) level = 1;
-		model = new JumpIn(level, true);
+		model = new JumpIn(level, false);
+		System.out.println(model);
 		view = new JumpInView(model);
 		controller = new JumpInController(view, model);
 	}
@@ -43,7 +44,8 @@ public class Play {
 	 * Move onto the next level by updating the view with the new model, remove listeners from the old 
 	 * controller and create a new model + controller.
 	 */
-	public static void nextLevel() {
+	public static void nextLevel(String file) {
+		filename = file;
 		Play.level = level + 1;
 		if (Play.level > 3) {
 			view.handleDone();
@@ -61,7 +63,6 @@ public class Play {
 		if (!(level > 0 && level <= 3)) level = 1;
 		controller.removeListener();
 		model = importFromXMLFile(filename);
-		model.setNewGameState(false);
 		view.setModel(model);
 		view.createNextBoard();
 		controller = new JumpInController(view, model);
@@ -72,7 +73,7 @@ public class Play {
 	private static void changeBoard(boolean nextLevel) throws IOException {
 		controller.removeListener();
 		if (nextLevel) {
-			model = new JumpIn(level, true);
+			model = new JumpIn(level, false);
 		} else {
 			model = importFromXMLFile(filename);
 			System.out.println(model.toString());
@@ -90,10 +91,11 @@ public class Play {
 			XMLHandler handler = new XMLHandler();
 			parser = sax.newSAXParser();
 			parser.parse(new File(filename), handler);
-			level = handler.getLevel();
-			model = handler.getModel();
-			GameObject[][] board = handler.getGameBoard();
-			model.setGameBoard(board);
+			Level modelLevel = handler.getWantedLevel();
+			level = modelLevel.getLevel();
+			model = new JumpIn (modelLevel);
+//			GameObject[][] board = modelLevel.getGameBoard();
+//			model.setGameBoard(board);
 			System.out.println(handler.toString());
 			return model;
 		} catch(SAXException e) {
@@ -101,6 +103,6 @@ public class Play {
 		} catch(ParserConfigurationException e) {
 			
 		}
-		return new JumpIn(1);
+		return model;
 	}
 }

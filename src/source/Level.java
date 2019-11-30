@@ -11,8 +11,14 @@ public class Level {
 	
 	public final static int NUM_ROWS = 5;
 	public final static int NUM_COLUMNS = 5;
+	private static final Point[] HOLES = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0),
+			new Point(4, 4) };
 	
 	public Level () {
+		this(-2);
+	}
+	
+	public Level (int l) {
 		gameBoard = new GameObject[NUM_ROWS][NUM_COLUMNS];
 		for (int i = 0; i < NUM_COLUMNS; i++) {
 			for (int j = 0; j < NUM_ROWS; j++) {
@@ -20,7 +26,7 @@ public class Level {
 			}
 		}
 		listeners = new ArrayList<JumpInListener>();
-		level = -1;
+		level = l;
 	}
 	
 	public void addListener(JumpInListener l) {
@@ -41,6 +47,18 @@ public class Level {
 		}
 	}
 	
+	public void removeGameObject (Point p) {
+		GameObject space = gameBoard[p.y][p.x];
+		String className = space.getClass().getSimpleName();
+		gameBoard[p.y][p.x] = new GameObject(p);
+		
+		if (className.equalsIgnoreCase("Fox")) {
+			Fox tempFox = (Fox)space;
+			Point p2 = tempFox.getCoordinate().equals(p) ? tempFox.getCoordinate2() : tempFox.getCoordinate();
+			gameBoard[p2.y][p2.x] = new GameObject(p2);
+		}
+	}
+	
 	public GameObject[][] getGameBoard() {
 		return gameBoard;
 	}
@@ -53,6 +71,15 @@ public class Level {
 		return level;
 	}
 
+	/**
+	 * Get the coordinates of the rabbit holes
+	 * 
+	 * @return an array of Point objects
+	 */
+	public static Point[] getHoles() {
+		return HOLES;
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
