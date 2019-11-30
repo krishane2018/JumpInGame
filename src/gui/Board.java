@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import source.JumpIn;
+import source.Level;
 import source.LevelSelector;
 
 public class Board {
@@ -20,7 +21,7 @@ public class Board {
 	public static void create(JumpInView view, JumpIn model) {
 		// Initializing holes 
 		GameButton[][] g = view.getButtons();
-		for(Point p : LevelSelector.getHoles()) {
+		for(Point p : Level.getHoles()) {
 			g[p.y][p.x].setIcon(Resources.HOLE);
 		}
 		view.setButtons(g);
@@ -28,6 +29,7 @@ public class Board {
 		// Initialize Rabbit Images
 		ImageIcon rabbits[] = {Resources.BROWN_RABBIT, Resources.GREY_RABBIT, Resources.WHITE_RABBIT};
 		ImageIcon rabbitsInHole[] = {Resources.HOLE_WITH_BROWN, Resources.HOLE_WITH_GREY, Resources.HOLE_WITH_WHITE};
+		System.out.println(model);
 		g = iterateThroughImages(rabbits, rabbitsInHole, model.getInitialRabbitPositions(), g);
 		
 		//Initialize Mushroom Images
@@ -46,7 +48,7 @@ public class Board {
 				b1.setIcon(Resources.GREEN_CIRCLE);
 			}
 		}
-		for(Point p : LevelSelector.getHoles()) {
+		for(Point p : Level.getHoles()) {
 			g[p.y][p.x].setIcon(Resources.HOLE);
 		}
 	}
@@ -58,7 +60,7 @@ public class Board {
 				b1.setIcon(Resources.GREEN_CIRCLE);
 			}
 		}
-		for(Point p : LevelSelector.getHoles()) {
+		for(Point p : Level.getHoles()) {
 			g[p.y][p.x].setIcon(Resources.HOLE);
 		}
 	}
@@ -77,7 +79,7 @@ public class Board {
 	private static GameButton[][] iterateThroughImages(ImageIcon[] gameObjects, ImageIcon[] gameObjects2,
 			ArrayList<Point> positions, GameButton[][] g) {
 		int i = 0;
-		List<Point> list = Arrays.asList(LevelSelector.getHoles());
+		List<Point> list = Arrays.asList(Level.getHoles());
 		for (Point p : positions) {
 			if (list.contains(p)) {
 				setIconHelper(gameObjects2[i], g, p);
@@ -102,7 +104,7 @@ public class Board {
 		for (ArrayList<Point> p : hash.keySet()) {
 			Point p0 = p.get(0);
 			Point p1 = p.get(1);
-			if (hash.get(p) == "Vertical") {
+			if (hash.get(p).equals("Vertical")) {
 				setIconHelper(Resources.FOX_VERTICAL2, g, p0);
 				setIconHelper(Resources.FOX_VERTICAL1, g, p1);
 			} else {

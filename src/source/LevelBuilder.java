@@ -2,7 +2,10 @@ package source;
 
 import java.awt.Point;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +19,7 @@ import org.w3c.dom.NodeList;
 
 public class LevelBuilder {
 
-	public JumpIn gameBeingBuilt;
+	public Level levelBeingBuilt;
 	private GameObjectFactory factory;
 	private static final String filePath = new File("").getAbsolutePath() + "\\levels.xml";
 	private Point foxCoordinates;
@@ -26,13 +29,7 @@ public class LevelBuilder {
 	}
 
 	private void reset() {
-		GameObject[][] board = new GameObject[5][5];
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				board[j][i] = new GameObject(new Point(i, j));
-			}
-		}
-		gameBeingBuilt = new JumpIn(nextLevelNumber(), board);
+		levelBeingBuilt = new Level(nextLevelNumber());
 		factory = new GameObjectFactory();
 	}
 
@@ -53,56 +50,73 @@ public class LevelBuilder {
 		return numLevels;
 	}
 
-	public boolean isValidGame() {
-		return gameBeingBuilt.solver();
+	private boolean isValidGame(JumpIn game) {
+		return game.solver();
 	}
 
-//	public void saveLevel() {
-//		if (isValidGame()) {
-//				File f = new File(filePath);
-//				String xml = gameBeingBuilt.toXml();
-//				FileWriter writer;
-//				writer = new FileWriter(f, true);
-//				writer.write(xml);
-//				writer.close();
-//				reset();
-//		}
-//	}
+	public boolean saveLevel() {
+		JumpIn j = new JumpIn(levelBeingBuilt);
+		if (isValidGame(j)) {
+			try {
+				RandomAccessFile f = new RandomAccessFile(filePath, "rw");
+				long length = f.length() - 1;
+				byte b;
+				do {
+				  length -= 1;
+				  f.seek(length);
+				  b = f.readByte();
+				} while(b != 10);
+				f.setLength(length+1);
+				f.close();
+			} catch (Exception e) {
+			}
+				File file = new File(filePath);
+				String xml = j.toXML() + "\n</Levels>";
+				FileWriter writer;
+				try {
+					writer = new FileWriter(file, true);
+					writer.write(xml);
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				reset();
+				return true;
+		}
+		return false;
+	}
 
 	public Point getFoxCoordinate2() {
 		return foxCoordinates;
 	}
 
 	public String getObjectName(Point p) {
-		GameObject[][] board = gameBeingBuilt.getGameBoard();
+		GameObject[][] board = levelBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
 		String className = space.getClass().getSimpleName();
 		System.out.println(className + p);
 		return className;
 	}
-
-	public boolean removeGameObject(Point p) {
-		GameObject[][] board = gameBeingBuilt.getGameBoard();
+	
+	public boolean removeGameObject (Point p) {
+		GameObject[][] board = levelBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
 		String className = space.getClass().getSimpleName();
-		if (space.getName().equals("")) {
+		if(space.getName().equals("")) {
 			return false;
-		} else if (className.equalsIgnoreCase("Fox")) {
-			Fox tempFox = (Fox) space;
-			Point p2 = tempFox.getCoordinate().equals(p) ? tempFox.getCoordinate2() : tempFox.getCoordinate();
-			board[p2.y][p2.x] = new GameObject(p2);
-			foxCoordinates = new Point(p2);
-		}
-		board[p.y][p.x] = new GameObject(p);
-		Integer counter = Character.getNumericValue(space.getName().charAt(1));
-		factory.addRemovedCounter(className.toLowerCase(), counter);
-		return true;
+		} 
+		else {
+			levelBeingBuilt.removeGameObject(p);
+			Integer counter = Character.getNumericValue(space.getName().charAt(1));
+			factory.addRemovedCounter(className.toLowerCase(), counter);
+			return true;
+		}	
 	}
 
 	public boolean addGameObject(Point p, String object, String direction) {
 		object = object.toLowerCase();
 		GameObject g = factory.getGameObject(p, object, direction);
-		GameObject[][] board = gameBeingBuilt.getGameBoard();
+		GameObject[][] board = levelBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
 		if (g == null) {
 			factory.reduceCounter(object);
@@ -113,34 +127,33 @@ public class LevelBuilder {
 			Point p2 = f.getCoordinate2();
 			foxCoordinates = new Point(p2);
 			GameObject space2 = board[p2.y][p2.x];
-			if (validSpaceFox(space) && validSpaceFox(space2)) {
-				board[p.y][p.x] = f;
-				board[p2.y][p2.x] = f;
-				gameBeingBuilt.addListener(f);
+			if (validSpaceFox(space)&&validSpaceFox(space2)) {
+				levelBeingBuilt.placeGameObject(f);
+				levelBeingBuilt.addListener(f);
 				return true;
 			} else {
 				factory.reduceCounter(object);
 				System.out.println("invalid fox");
 			}
-		} else {
-			if (validSpaceGameObject(space)) {
-				board[p.y][p.x] = g;
-				try {
-					gameBeingBuilt.addListener((MovableAnimal) g);
-				} catch (Exception e) {
-				}
-				return true;
-			} else {
-				factory.reduceCounter(object);
-				System.out.println("invalid mushroom/rabbit");
-			}
+		} else  {
+            if (validSpaceGameObject(space)) {
+                levelBeingBuilt.placeGameObject(g);
+            try {
+                    levelBeingBuilt.addListener((MovableAnimal)g);
+                }
+                catch (Exception e) {}
+                return true;
+            } else {
+                factory.reduceCounter(object);
+                System.out.println("invalid mushroom/rabbit");
+            }
 		}
 		return false;
 
 	}
 
 	private boolean validSpaceFox(GameObject space) {
-		List<Point> list = Arrays.asList(LevelSelector.getHoles());
+		List<Point> list = Arrays.asList(Level.getHoles());
 		return space.getName().equals("") && !list.contains(space.getCoordinate());
 	}
 

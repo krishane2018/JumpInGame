@@ -120,7 +120,7 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 			objectName = "Fox";
 			direction = "Vertical";
 		} else if (((SelectorButton) (e.getSource())).getTag().equals("Save")) {
-			if (builder.isValidGame()) {
+			if (builder.saveLevel()) {
 				System.out.println("Is valid game");
 			} else {
 				JOptionPane.showMessageDialog(view.getPanel(), "Not a winnable game", "Is valid",

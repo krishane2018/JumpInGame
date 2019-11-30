@@ -184,5 +184,14 @@ public class Rabbit extends MovableAnimal {
 		// TODO Auto-generated method stub
 		return getCoordinate();
 	}
+	
+	// move to interface maybe so less repeated code
+	@Override
+	public String toXML() {
+		String s = "<Rabbit>\n";
+		s += super.toXML();
+		s += "</Rabbit>";
+		return s;
+	}
 
 }

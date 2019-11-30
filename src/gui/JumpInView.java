@@ -86,10 +86,12 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 * a piece on the board (initial location(s), final location(s), chosen piece)
 	 */
 	public void handleEvent(JumpInEvent e) {
+		System.out.println("In handle eventttt");
 		Point initialLocation = e.getInitialLocation1();
 		Point finalLocation1 = e.getFinalLocation1();
 		if(e.getChosenPiece() instanceof Rabbit) {
 			handleRabbit(initialLocation, finalLocation1);
+			
 		} else if (e.getChosenPiece() instanceof Fox) {
 			handleFox(initialLocation, e.getInitialLocation2(), finalLocation1, e.getFinalLocation2());
 		}
@@ -206,6 +208,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 */
 	public void setModel(JumpIn model) {
 		this.model = model;
+//		Board.create(this, this.model);
 	}
 
 	/**
@@ -277,6 +280,8 @@ public class JumpInView extends JFrame implements JumpInListener {
 				+ "Please pick one of the highlighted options.");
 		else if ( i == 1 ) JOptionPane.showMessageDialog(null, "No more moves to undo.");
 		else if ( i == 2 ) JOptionPane.showMessageDialog(null, "No more moves to redo.");
+		else if ( i == 3 ) JOptionPane.showMessageDialog(null, "Could not save game");
+		else if ( i == 4 ) JOptionPane.showMessageDialog(null, "Could not load game");
 		else return;
 	}
 	

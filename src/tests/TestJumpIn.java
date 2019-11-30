@@ -124,7 +124,6 @@ class TestJumpIn {
 	
 	@Test
 	void testSolverLevel1() {
-		JumpIn jumpIn = new JumpIn(1);
 		Queue<Move> moves = jumpIn.getSolverMoves();
 		while (!(moves.isEmpty())) {
 			Move move = moves.peek();
@@ -135,24 +134,23 @@ class TestJumpIn {
 	
 	@Test
 	void testSolverLevel2() {
-		JumpIn jumpIn = new JumpIn(2);
-		Queue<Move> moves = jumpIn.getSolverMoves();
+		JumpIn jumpIn2 = new JumpIn(2);
+		Queue<Move> moves = jumpIn2.getSolverMoves();
 		while (!(moves.isEmpty())) {
 			Move move = moves.peek();
-			jumpIn.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
+			jumpIn2.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
 		}
-		assertTrue(jumpIn.checkWin());
+		assertTrue(jumpIn2.checkWin());
 	}
 	
 	@Test
 	void testSolverLevel3() {
-		JumpIn jumpIn = new JumpIn(3);
-		Queue<Move> moves = jumpIn.getSolverMoves();
+		Queue<Move> moves = jumpIn3.getSolverMoves();
 		while (!(moves.isEmpty())) {
 			Move move = moves.peek();
-			jumpIn.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
+			jumpIn3.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
 		}
-		assertTrue(jumpIn.checkWin());
+		assertTrue(jumpIn3.checkWin());
 	}
 	
 	/**
