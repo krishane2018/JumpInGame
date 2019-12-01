@@ -432,4 +432,9 @@ class TestFox {
 		fox.setDirection("Horizontal");
 		assertEquals("Horizontal",fox.getDirection());
 	}
+	@Test
+	void testToXML() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		assertEquals(fox.toXML(), "<Fox>\n<name>F1</name>\n<x1>1</x1>\n<y1>1</y1>\n<x2>1</x2>\n<y2>2</y2>\n<direction>Vertical</direction>\n</Fox>");
+	}
 }
