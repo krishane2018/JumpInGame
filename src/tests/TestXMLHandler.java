@@ -18,4 +18,17 @@ import source.Rabbit;
 import source.XMLHandler;
 
 class TestXMLHandler {
+  
+  @BeforeEach
+  void setUp() throws Exception {
+    XMLHandler handler1 = new XMLHandler(1); 
+  }
+  @Test
+  void testIsHoleTrue() {
+    assertTrue(handler1.isHole(2, 2));
+  }
+  @Test
+  void testIsholeFalse() {
+    assertFalse(handler1.isHole(1, 2));
+  }
 }
