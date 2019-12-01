@@ -145,7 +145,9 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 			model.redoMove();
 		} else if (e.getActionCommand().equals("hint")) {
 			view.showHint();
-		} else if (e.getActionCommand().equals("PLAY!")) {
+		} else if (e.getActionCommand().equals("menu")) {
+			view.showMainMenu();
+		}else if (e.getActionCommand().equals("PLAY!")) {
 			view.getMMenu().showGame();
 		} else if (e.getActionCommand().equals("NEXT")) {
 			Play.nextLevel("levels.xml");

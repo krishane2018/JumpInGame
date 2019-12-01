@@ -113,6 +113,10 @@ public class JumpInView extends JFrame implements JumpInListener {
 		mainMenu.creatorView();
 	}
 	
+	public void showMainMenu() {
+		mainMenu.showMenu();
+	}
+	
 	/**
 	 * Private helper function that moves the correct rabbit piece for the GUI
 	 * @param initialLocation - initial rabbit location on grid given as a Point object
