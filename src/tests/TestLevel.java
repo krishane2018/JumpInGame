@@ -11,6 +11,7 @@ import org.junit.jupiter.api.*;
 import source.Fox;
 import source.GameObject;
 import source.Rabbit;
+import source.Level;
 
 class TestLevel {
 
