@@ -30,7 +30,7 @@ public class MainMenu extends JFrame {
 	private JumpInView view;
 	private CreatorView create;
 	private ArrayList<JButton> buttons;
-	private JMenuItem undo, redo, hint, save;
+	private JMenuItem undo, redo, hint, save, mainMenu;
 	private ArrayList<JMenuItem> menuItems;
 
 	/**
@@ -55,6 +55,7 @@ public class MainMenu extends JFrame {
 		redo = new JMenuItem("redo");
 		hint = new JMenuItem("hint");
 		save = new JMenuItem("save");
+		mainMenu = new JMenuItem("menu");
 
 		setUpTitleScreen();
 		setUpWinScreen();
@@ -78,6 +79,7 @@ public class MainMenu extends JFrame {
 		menuItems.add(redo);
 		menuItems.add(hint);
 		menuItems.add(save);
+		menuItems.add(mainMenu);
 
 		for (JMenuItem j : menuItems) {
 			options.add(j);
@@ -228,7 +230,11 @@ public class MainMenu extends JFrame {
 		menuBar.setVisible(true);
 	}
 
+	/**
+	 * Goes back to menu screen
+	 */
 	public void showMenu() {
+		this.setSize(800, 800);
 		layout.show(content, "Menu");
 		menuBar.setVisible(false);
 	}
