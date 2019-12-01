@@ -35,7 +35,7 @@ public class CreatorView {
 		remove.setPreferredSize(new Dimension(145,50));
 		save = new SelectorButton("SAVE", "Save");
 		save.setPreferredSize(new Dimension(145,50));
-		menu = new SelectorButton("MENU", "Menu");
+		menu = new SelectorButton("GO BACK", "Menu");
 		menu.setPreferredSize(new Dimension(145,50));
 
 		buttonList = new ArrayList<SelectorButton>();
