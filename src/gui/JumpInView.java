@@ -37,6 +37,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		int cols = JumpIn.NUM_COLUMNS;
 		
 		model.addListener(this);
+		System.out.println(model.getLevel());
 		buttons = new GameButton[rows][cols];
 		g = new GridLayout(rows, cols, 0, 0);
 		this.panel = new JPanel();
@@ -50,6 +51,9 @@ public class JumpInView extends JFrame implements JumpInListener {
 		}
 		Board.create(this, this.model);
 		this.mainMenu = new MainMenu(this);
+		if(model.getLevel() < 1) {
+			disablePlay();
+		}
 	}
 
 	/**
@@ -310,5 +314,12 @@ public class JumpInView extends JFrame implements JumpInListener {
 		String selectedAnimalType = hint.getChosenAnimal().getClass().getSimpleName();
 		String s = "Hint: Move " + name + " " + selectedAnimalType + " to the square with the coordinates of " + hint.pointToString();
 		JOptionPane.showMessageDialog(null, s);
+	}
+	
+	/**
+	 * Disable play button on home screen
+	 */
+	public void disablePlay() {
+		mainMenu.disablePlay();
 	}
 }

@@ -50,23 +50,33 @@ public class JumpIn {
 	
 	public JumpIn(Level l) {
 		this.level = l.getLevel();
-		listeners = l.getListeners();
-		undoRedo = new UndoRedo();
-//		levelSelector = new LevelSelector(level, this);
-		gameBoard = l.getGameBoard();
-		holes = Level.HOLES;
-		parser = new Parser();
-		solverMoves = new LinkedList<Move>();
-		solver();
+		JumpInSetUp(l);
+		
 	}
 	
 	public JumpIn(int level, boolean isSaved) {
 		this.level = level;
-		Level modelLevel = LevelSelector.getLevel(level, isSaved);
-		listeners = modelLevel.getListeners();
+		Level modelLevel;
+		holes = Level.HOLES;
+		try {
+			modelLevel = LevelSelector.getLevel(level, isSaved);
+			JumpInSetUp(modelLevel);
+		} catch (Exception e) {
+			// If file was empty
+			if(e.getMessage().equalsIgnoreCase("Premature end of file.")) {
+				Level l = new Level();
+				JumpInSetUp(l);
+				this.level = l.getLevel();
+			}
+		}
+	}
+	
+	private void JumpInSetUp(Level l ) {
+		listeners = l.getListeners();
+		System.out.println(listeners.size());
 		undoRedo = new UndoRedo();
 //		levelSelector = new LevelSelector(level, this);
-		gameBoard = modelLevel.getGameBoard();
+		gameBoard = l.getGameBoard();
 		holes = Level.HOLES;
 		parser = new Parser();
 		solverMoves = new LinkedList<Move>();
@@ -96,7 +106,8 @@ public class JumpIn {
 	 */
 	public boolean solver() {
 		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
-		for (int i = 0; i<listeners.size();i++) {
+		System.out.println(listeners.size());
+		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
 				viewListeners.add(listeners.remove(i));

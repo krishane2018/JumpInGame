@@ -31,7 +31,7 @@ public class LevelBuilder {
 	}
 
 	private void reset() {
-		levelBeingBuilt = new Level(nextLevelNumber());
+		levelBeingBuilt = new Level(nextLevelNumber()+1);
 		factory = new GameObjectFactory();
 		listeners = new ArrayList<LevelBuilderListener>();
 	}
@@ -63,6 +63,7 @@ public class LevelBuilder {
 
 	public boolean saveLevel() {
 		JumpIn j = new JumpIn(levelBeingBuilt);
+		System.out.println("In save level " + j.getListeners().size());
 		if (isValidGame(j)) {
 			try {
 				RandomAccessFile f = new RandomAccessFile(filePath, "rw");
@@ -78,7 +79,7 @@ public class LevelBuilder {
 			} catch (Exception e) {
 			}
 				File file = new File(filePath);
-				String xml = j.toXML() + "\n</Levels>";
+				String xml = "<Levels>\n" + j.toXML() + "\n</Levels>";
 				FileWriter writer;
 				try {
 					writer = new FileWriter(file, true);
