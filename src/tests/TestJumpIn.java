@@ -12,6 +12,7 @@ import source.Fox;
 import source.GameObject;
 import source.JumpIn;
 import source.JumpInListener;
+import source.Level;
 import source.LevelSelector;
 import source.Move;
 import source.Rabbit;
@@ -22,14 +23,20 @@ import source.Rabbit;
  *
  */
 class TestJumpIn {
+	private Level level1;
+	private Level level2;
+	private Level level3;
 	private JumpIn jumpIn;
 	private JumpIn jumpIn3;
 	private Point inRabbit, fRabbit, inFox, fFox;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		jumpIn = new JumpIn(1);
-		jumpIn3 = new JumpIn(3);
+		level1 = new Level(1);
+		level2 = new Level(2);
+		level3 = new Level(3);
+		jumpIn = new JumpIn(level1);
+		jumpIn3 = new JumpIn(level3);
 		inRabbit = new Point(0,4);
 		fRabbit = new Point(0,1);
 		inFox = new Point(1,4);
@@ -67,7 +74,7 @@ class TestJumpIn {
 	
 	@Test
 	void testToStringLevel2() {
-		jumpIn = new JumpIn(2);
+		jumpIn = new JumpIn(level2);
 		String level2 = "--------------------------\n"
 				+ "| R1H|  M1|    |    |   H|\n"
 				+ "--------------------------\n"
@@ -109,7 +116,7 @@ class TestJumpIn {
 	
 	@Test
 	void testSetGetGameBoard2() {
-		JumpIn jumpIn = new JumpIn(2);
+		JumpIn jumpIn = new JumpIn(level2);
 		LevelSelector level = new LevelSelector(1,jumpIn);
 		jumpIn.setGameBoard(level.getBoard());
 		assertEquals(level.getBoard(),jumpIn.getGameBoard());
@@ -134,7 +141,7 @@ class TestJumpIn {
 	
 	@Test
 	void testSolverLevel2() {
-		JumpIn jumpIn2 = new JumpIn(2);
+		JumpIn jumpIn2 = new JumpIn(level2);
 		Queue<Move> moves = jumpIn2.getSolverMoves();
 		while (!(moves.isEmpty())) {
 			Move move = moves.peek();
