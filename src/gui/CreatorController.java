@@ -42,10 +42,8 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 	public void mouseClicked(MouseEvent e) {
 		GameButton b = (GameButton) e.getSource();
 		if (!removeState) {
-			System.out.println("in mouse clicked " + b.getCoordinate());
 			builder.addGameObject(b.getCoordinate(), objectName, direction);
 		} else {
-			System.out.println("in remove state controler");
 			builder.removeGameObject(b.getCoordinate());
 		}
 	}
@@ -55,7 +53,6 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 //		String objectName = e.getActionCommand();
 		String objectName = ((SelectorButton) (e.getSource())).getTag();
 		if (objectName.equals("Mushroom") || objectName.equals("Rabbit")) {
-			System.out.println("In actione performed " + objectName);
 			changeState(objectName, false);
 		} else if (objectName.equals("HFox")) {
 			changeState("Fox", false, "Horizontal");
@@ -63,11 +60,10 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 			changeState("Fox", false, "Vertical");
 		} else if (objectName.equals("Save")) {
 			if (builder.saveLevel()) {
-				System.out.println("Is valid game");
-				// add something else
+				JOptionPane.showMessageDialog(view.getPanel(), "Level saved", null ,JOptionPane.PLAIN_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(view.getPanel(), "Not a winnable game", "Is valid",
-						JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(view.getPanel(), "This game is not winnable, please change the "
+						+ "level set-up", "Error",JOptionPane.PLAIN_MESSAGE);
 			}
 		} else if (objectName.equals("Remove")) {
 			removeState = true;

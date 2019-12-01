@@ -96,19 +96,12 @@ public class LevelBuilder {
 	public Point getFoxCoordinate2() {
 		return foxCoordinates;
 	}
-
-	public String getObjectName(Point p) {
-		GameObject[][] board = levelBeingBuilt.getGameBoard();
-		GameObject space = board[p.y][p.x];
-		String className = space.getClass().getSimpleName();
-		System.out.println(className + p);
-		return className;
-	}
 	
 	public boolean removeGameObject (Point p) {
 		GameObject[][] board = levelBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
 		String className = space.getClass().getSimpleName();
+		className = space.getName().charAt(0) == 'M' ? "mushroom" : className;
 		if(space.getName().equals("")) {
 			return false;
 		} 

@@ -99,8 +99,6 @@ public class CreatorView implements LevelBuilderListener {
 
 	@Override
 	public void handleEvent(GameObject piece, boolean removeState) {
-		System.out.println("In handle event" + removeState);
-		System.out.println(piece.getName());
 		GameButton b = this.buttons[piece.getX1()][piece.getY1()];
 		if (piece instanceof Rabbit && !removeState) {
 			if (Level.isHole(b.getCoordinate().x, b.getCoordinate().y)) {
@@ -118,7 +116,6 @@ public class CreatorView implements LevelBuilderListener {
 				this.buttons[f.getX2()][f.getY2()].setIcon(Resources.FOX_HORIZONTAL2);
 			}
 		} else if (piece.getName().charAt(0) == 'M' && !removeState) {
-			System.out.println("in view mushroom");
 			if (Level.isHole(b.getCoordinate().x, b.getCoordinate().y)) {
 				b.setIcon(Resources.HOLE_WITH_MUSHROOM);
 			} else {

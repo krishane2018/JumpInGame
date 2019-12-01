@@ -8,6 +8,7 @@ import source.Fox;
 import source.JumpIn;
 import source.JumpInEvent;
 import source.JumpInListener;
+import source.Level;
 import source.Move;
 import source.Rabbit;
 
@@ -115,11 +116,11 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 */
 	private void handleRabbit(Point initialLocation, Point finalLocation) {
 		setButtonIcon(finalLocation, (ImageIcon)getButtonIcon(initialLocation));
-		if (model.isHole(initialLocation.x, initialLocation.y)) {
+		if (Level.isHole(initialLocation.x, initialLocation.y)) {
 			setFlippedRabbit(finalLocation, initialLocation);
 			setButtonIcon(initialLocation, Resources.HOLE);
 		} else {
-			if (model.isHole(finalLocation.x, finalLocation.y)) {
+			if (Level.isHole(finalLocation.x, finalLocation.y)) {
 				setFlippedRabbit(finalLocation, initialLocation);
 			}
 			setButtonIcon(initialLocation, Resources.GREEN_CIRCLE);

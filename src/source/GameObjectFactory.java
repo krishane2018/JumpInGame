@@ -81,6 +81,7 @@ public class GameObjectFactory {
 	}
 	
 	public void addRemovedCounter (String object, int counter) {
+		System.out.println(object);
 		Stack<Integer> tempStack = removedCounters.get(object);
 		tempStack.add(counter);
 	}
