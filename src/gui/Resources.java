@@ -23,20 +23,30 @@ public class Resources {
 	public final static ImageIcon MUSHROOM = resizeMushroom(new ImageIcon("resources//mushroom.png"));
 	public final static ImageIcon LOGO = new ImageIcon("resources//logo.png");
 	public final static ImageIcon WIN = resizeTrophy(new ImageIcon("resources//win.png"));
-	public final static ImageIcon HOLE_WITH_MUSHROOM = resizeMushroom(new ImageIcon("resources//mushroomInHole.png"));
-	public final static ImageIcon HOLE_WITH_WHITE = resize(new ImageIcon("resources//whiteRabbitInHole.png"));
-	public final static ImageIcon HOLE_WITH_BROWN = resize(new ImageIcon("resources//brownRabbitInHole.png"));
-	public final static ImageIcon HOLE_WITH_GREY = resize(new ImageIcon("resources//greyRabbitInHole.png"));
+	public final static ImageIcon HOLE_WITH_MUSHROOM = resizeMushroomHole(new ImageIcon("resources//mushroomInHole.png"));
+	public final static ImageIcon HOLE_WITH_WHITE = resizeRabbitHole(new ImageIcon("resources//whiteRabbitInHole.png"));
+	public final static ImageIcon HOLE_WITH_BROWN = resizeRabbitHole(new ImageIcon("resources//brownRabbitInHole.png"));
+	public final static ImageIcon HOLE_WITH_GREY = resizeRabbitHole(new ImageIcon("resources//greyRabbitInHole.png"));
 	public final static HashMap<ImageIcon, ImageIcon> FLIPPED_RABBIT = createHashmap();
 	
 	/**
-	 * Resize an image that includes a brown circle, a green circle or rabbit in a hole
+	 * Resize an image that includes a brown circle, a green circle
 	 * @param icon The icon the user would like to resize
 	 * @return the resized image icon
 	 */
 	public static ImageIcon resize(ImageIcon icon) {
 		Image img = icon.getImage();
 		return new ImageIcon(img.getScaledInstance(220, 150, java.awt.Image.SCALE_SMOOTH));
+	}
+	
+	/**
+	 * Resize a rabbit in a hole
+	 * @param icon The icon the user would like to resize
+	 * @return the resized image icon
+	 */
+	public static ImageIcon resizeRabbitHole(ImageIcon icon) {
+		Image img = icon.getImage();
+		return new ImageIcon(img.getScaledInstance(240, 150, java.awt.Image.SCALE_SMOOTH));
 	}
 	
 	private static ImageIcon resizeTrophy(ImageIcon icon) {
@@ -62,6 +72,16 @@ public class Resources {
 	public static ImageIcon resizeMushroom(ImageIcon icon) {
 		Image img = icon.getImage();
 		return new ImageIcon(img.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
+	}
+	
+	/**
+	 * Resize a mushroom in hole image to fit in the button properly
+	 * @param icon The icon the user would like to resize
+	 * @return the resized image icon
+	 */
+	public static ImageIcon resizeMushroomHole(ImageIcon icon) {
+		Image img = icon.getImage();
+		return new ImageIcon(img.getScaledInstance(700, 1000, java.awt.Image.SCALE_SMOOTH));
 	}
 	
 	/**

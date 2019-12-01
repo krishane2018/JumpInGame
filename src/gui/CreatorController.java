@@ -67,6 +67,8 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 			}
 		} else if (objectName.equals("Remove")) {
 			removeState = true;
+		} else if (((SelectorButton) (e.getSource())).getTag().equals("Menu")) {
+			view.getMainMenu().showMenu();
 		}
 	}
 	
