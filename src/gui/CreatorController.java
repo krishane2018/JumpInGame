@@ -6,11 +6,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
 import source.JumpIn;
 import source.LevelBuilder;
+import source.Play;
 
 public class CreatorController extends MouseAdapter implements ActionListener, MouseListener {
 
@@ -67,8 +69,18 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 			}
 		} else if (objectName.equals("Remove")) {
 			removeState = true;
-		} else if (((SelectorButton) (e.getSource())).getTag().equals("Menu")) {
+		} else if (objectName.equals("Menu")) {
 			view.getMainMenu().showMenu();
+			if(!builder.levelsFileIsEmpty()) {
+				view.enablePlay(true);
+				try {
+					Play.loadGame("levels.xml");
+					view.getMainMenu().showMenu();
+				} catch (IOException e1) {
+					// TODO CHANGEEE / add stuff
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
 	

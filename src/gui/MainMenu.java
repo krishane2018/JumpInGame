@@ -250,10 +250,10 @@ public class MainMenu extends JFrame {
 	/**
 	 * Disable the play buttons
 	 */
-	public void disablePlay() {
+	public void enablePlay(boolean enable) {
 		for(JButton b : buttons) {
 			if (b.getActionCommand().equalsIgnoreCase("PLAY!")) {
-				b.setEnabled(false);
+				b.setEnabled(enable);
 			}
 		}
 	}

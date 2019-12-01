@@ -2,6 +2,7 @@ package source;
 
 import java.awt.Point;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -82,9 +83,7 @@ public class LevelBuilder {
 				String xml =  j.toXML() + "\n</Levels>";
 				FileWriter writer;
 				try {
-					FileReader reader = new FileReader(file);
-					System.out.println(reader.read());
-					if(reader.read() == -1) {
+					if(levelsFileIsEmpty()) {
 						xml = "<Levels>\n" + xml;
 					}
 					writer = new FileWriter(file, true);
@@ -99,6 +98,23 @@ public class LevelBuilder {
 		return false;
 	}
 
+	public boolean levelsFileIsEmpty() {
+		File file = new File(filePath);
+		FileReader reader;
+		try {
+			reader = new FileReader(file);
+			boolean ans = reader.read() == -1;
+			reader.close();
+			return ans;
+		} catch (FileNotFoundException e) {
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		}
+	}
+	
 	public Point getFoxCoordinate2() {
 		return foxCoordinates;
 	}

@@ -46,6 +46,8 @@ public class Play {
 	public static void nextLevel(String file) {
 		filename = file;
 		Play.level = level + 1;
+		System.out.print(LevelBuilder.nextLevelNumber() + " in play");
+		System.out.print(level + " level in play");
 		if (Play.level > LevelBuilder.nextLevelNumber()) {
 			view.handleDone();
 		} else {

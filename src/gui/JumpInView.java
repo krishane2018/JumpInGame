@@ -37,7 +37,6 @@ public class JumpInView extends JFrame implements JumpInListener {
 		int cols = JumpIn.NUM_COLUMNS;
 		
 		model.addListener(this);
-		System.out.println(model.getLevel());
 		buttons = new GameButton[rows][cols];
 		g = new GridLayout(rows, cols, 0, 0);
 		this.panel = new JPanel();
@@ -52,7 +51,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		Board.create(this, this.model);
 		this.mainMenu = new MainMenu(this);
 		if(model.getLevel() < 1) {
-			disablePlay();
+			enablePlay(false);
 		}
 	}
 
@@ -323,7 +322,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	/**
 	 * Disable play button on home screen
 	 */
-	public void disablePlay() {
-		mainMenu.disablePlay();
+	public void enablePlay(boolean enable) {
+		mainMenu.enablePlay(enable);
 	}
 }
