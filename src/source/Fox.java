@@ -189,7 +189,7 @@ public class Fox extends MovableAnimal {
 	}
 
 	protected boolean moveLogicHelper(GameObject space) {
-		List<Point> list = Arrays.asList(LevelSelector.getHoles());
+		List<Point> list = Arrays.asList(Level.HOLES);
 		return space.getName().equals("") && !list.contains(space.getCoordinate());
 	}
 
@@ -238,6 +238,17 @@ public class Fox extends MovableAnimal {
 	@Override
 	public Point[] getPosition() {
 		return new Point[] {getCoordinate(), getCoordinate2()};
+	}
+	
+	@Override
+	public String toXML() {
+		String s = "<Fox>\n";
+		s += super.toXML();
+		s += "<x2>" + this.coordinate2.x + "</x2>\n";
+		s += "<y2>" + this.coordinate2.y + "</y2>\n";
+		s += "<direction>" + this.direction + "</direction>\n";
+		s += "</Fox>";
+		return s;
 	}
 
 	

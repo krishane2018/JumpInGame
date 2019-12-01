@@ -8,6 +8,7 @@ import source.Fox;
 import source.JumpIn;
 import source.JumpInEvent;
 import source.JumpInListener;
+import source.Level;
 import source.Move;
 import source.Rabbit;
 
@@ -36,6 +37,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		int cols = JumpIn.NUM_COLUMNS;
 		
 		model.addListener(this);
+		System.out.println(model.getLevel());
 		buttons = new GameButton[rows][cols];
 		g = new GridLayout(rows, cols, 0, 0);
 		this.panel = new JPanel();
@@ -49,6 +51,9 @@ public class JumpInView extends JFrame implements JumpInListener {
 		}
 		Board.create(this, this.model);
 		this.mainMenu = new MainMenu(this);
+		if(model.getLevel() < 1) {
+			disablePlay();
+		}
 	}
 
 	/**
@@ -90,6 +95,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		Point finalLocation1 = e.getFinalLocation1();
 		if(e.getChosenPiece() instanceof Rabbit) {
 			handleRabbit(initialLocation, finalLocation1);
+			
 		} else if (e.getChosenPiece() instanceof Fox) {
 			handleFox(initialLocation, e.getInitialLocation2(), finalLocation1, e.getFinalLocation2());
 		}
@@ -103,6 +109,10 @@ public class JumpInView extends JFrame implements JumpInListener {
 		mainMenu.handleDone();
 	}
 	
+	public void creatorView() {
+		mainMenu.creatorView();
+	}
+	
 	/**
 	 * Private helper function that moves the correct rabbit piece for the GUI
 	 * @param initialLocation - initial rabbit location on grid given as a Point object
@@ -110,11 +120,11 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 */
 	private void handleRabbit(Point initialLocation, Point finalLocation) {
 		setButtonIcon(finalLocation, (ImageIcon)getButtonIcon(initialLocation));
-		if (model.isHole(initialLocation.x, initialLocation.y)) {
+		if (Level.isHole(initialLocation.x, initialLocation.y)) {
 			setFlippedRabbit(finalLocation, initialLocation);
 			setButtonIcon(initialLocation, Resources.HOLE);
 		} else {
-			if (model.isHole(finalLocation.x, finalLocation.y)) {
+			if (Level.isHole(finalLocation.x, finalLocation.y)) {
 				setFlippedRabbit(finalLocation, initialLocation);
 			}
 			setButtonIcon(initialLocation, Resources.GREEN_CIRCLE);
@@ -202,6 +212,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 	 */
 	public void setModel(JumpIn model) {
 		this.model = model;
+//		Board.create(this, this.model);
 	}
 
 	/**
@@ -273,6 +284,8 @@ public class JumpInView extends JFrame implements JumpInListener {
 				+ "Please pick one of the highlighted options.");
 		else if ( i == 1 ) JOptionPane.showMessageDialog(null, "No more moves to undo.");
 		else if ( i == 2 ) JOptionPane.showMessageDialog(null, "No more moves to redo.");
+		else if ( i == 3 ) JOptionPane.showMessageDialog(null, "Could not save game");
+		else if ( i == 4 ) JOptionPane.showMessageDialog(null, "Could not load game");
 		else return;
 	}
 	
@@ -301,5 +314,12 @@ public class JumpInView extends JFrame implements JumpInListener {
 		String selectedAnimalType = hint.getChosenAnimal().getClass().getSimpleName();
 		String s = "Hint: Move " + name + " " + selectedAnimalType + " to the square with the coordinates of " + hint.pointToString();
 		JOptionPane.showMessageDialog(null, s);
+	}
+	
+	/**
+	 * Disable play button on home screen
+	 */
+	public void disablePlay() {
+		mainMenu.disablePlay();
 	}
 }

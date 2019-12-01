@@ -1,6 +1,9 @@
 package source;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -27,6 +30,7 @@ public class JumpIn {
 
 	private GameObject[][] gameBoard;
 	private ArrayList<JumpInListener> listeners;
+
 	private Parser parser;
 	private int level;
 	private LevelSelector levelSelector;
@@ -43,16 +47,44 @@ public class JumpIn {
 	 * 
 	 * @param level - game level
 	 */
-	public JumpIn(int level) {
+	
+	public JumpIn(Level l) {
+		this.level = l.getLevel();
+		JumpInSetUp(l);
+		
+	}
+	
+	public JumpIn(int level, boolean isSaved) {
 		this.level = level;
-		listeners = new ArrayList<JumpInListener>();
+		Level modelLevel;
+		holes = Level.HOLES;
+		try {
+			modelLevel = LevelSelector.getLevel(level, isSaved);
+			JumpInSetUp(modelLevel);
+		} catch (Exception e) {
+			// If file was empty
+			if(e.getMessage().equalsIgnoreCase("Premature end of file.")) {
+				Level l = new Level();
+				JumpInSetUp(l);
+				this.level = l.getLevel();
+			}
+		}
+	}
+	
+	private void JumpInSetUp(Level l ) {
+		listeners = l.getListeners();
+		System.out.println(listeners.size());
 		undoRedo = new UndoRedo();
-		levelSelector = new LevelSelector(level, this);
-		gameBoard = levelSelector.getBoard();
-		holes = LevelSelector.getHoles();
+//		levelSelector = new LevelSelector(level, this);
+		gameBoard = l.getGameBoard();
+		holes = Level.HOLES;
 		parser = new Parser();
 		solverMoves = new LinkedList<Move>();
 		solver();
+	}
+	
+	public JumpIn(int level) {
+		this(level, false);
 	}
 
 	/**
@@ -61,22 +93,31 @@ public class JumpIn {
 	public Queue<Move> getSolverMoves() {
 		return solverMoves;
 	}
+	
+	/**
+	 * @param listeners the listeners to set
+	 */
+	public void setListeners(ArrayList<JumpInListener> listeners) {
+		this.listeners = listeners;
+	}
 
 	/**
 	 * Determines the moves that will lead the user to a successful win.
 	 */
-	public void solver() {
+	public boolean solver() {
 		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
-		for (int i = 0; i<listeners.size();i++) {
+		System.out.println(listeners.size());
+		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
 				viewListeners.add(listeners.remove(i));
 				i--;
 			}
 		}
-		solverHelper(new Stack<Move>(), new Stack<ArrayList<Point>>());
+		boolean isSolved = solverHelper(new Stack<Move>(), new Stack<ArrayList<Point>>());
 		listeners.addAll(viewListeners);
 		undoRedo.clearRedo();
+		return isSolved;
 	}
 	
 	/**
@@ -209,9 +250,9 @@ public class JumpIn {
 	 * @return - string of the game board
 	 */
 	public String objectToString(int x, int y) {
-		if (isHole(x, y) && gameBoard[y][x] instanceof Rabbit) {
+		if (Level.isHole(x, y) && gameBoard[y][x] instanceof Rabbit) {
 			return gameBoard[y][x].getName() + "H";
-		} else if (isHole(x, y)) {
+		} else if (Level.isHole(x, y)) {
 			return "H";
 		} else if (!(gameBoard[y][x].getClass().getSimpleName().equals(""))) {
 			return gameBoard[y][x].getName();
@@ -227,20 +268,6 @@ public class JumpIn {
 		return level;
 	}
 
-	/**
-	 * Checks if a point in the game board is a hole.
-	 * @param x - x coordinate of the board
-	 * @param y - y coordinate of the board
-	 * @return - boolean of if it is a hole
-	 */
-	public boolean isHole(int x, int y) {
-		for (int i = 0; i < holes.length; i++) {
-			if (holes[i].getX() == x && holes[i].getY() == y) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	/**
 	 * Welcome statement for the text based version
@@ -280,7 +307,7 @@ public class JumpIn {
 			if (level >= 3) {
 				System.out.println("You completed all of the levels!");
 			} else {
-				JumpIn game = new JumpIn(level + 1);
+				JumpIn game = new JumpIn(level + 1, true);
 				game.play();
 			}
 		} else if (status == "exit") {
@@ -481,6 +508,7 @@ public class JumpIn {
 			Move move = new Move(initial, finalLocation, g);
 			processCommand(new Move(initial, finalLocation, g));
 			if (!(solverMoves.poll().equals(move))) {
+				System.out.println(solverMoves);
 				solver();
 			}
 			return true;
@@ -530,7 +558,7 @@ public class JumpIn {
 	 * @return an array list of all the coordinates of the mushrooms
 	 */
 	public ArrayList<Point> getInitialMushroomPositions() {
-		return levelSelector.getMushroomPositions();
+		 return getInitialPositions('M');
 	}
 	
 	/**
@@ -538,7 +566,7 @@ public class JumpIn {
 	 * @return an array list of all the coordinates of the mushrooms
 	 */
 	public ArrayList<Point> getInitialRabbitPositions() {
-		return levelSelector.getRabbitInitialPositions();
+		return getInitialPositions('R');
 	}
 	
 	/**
@@ -547,7 +575,36 @@ public class JumpIn {
 	 * their orientation (vertical or horizontal) (value)
 	 */
 	public HashMap<ArrayList<Point>, String> getInitialFoxPositions() {
-		return levelSelector.getFoxInitialPositions();
+//		if(newGameState) return levelSelector.getFoxInitialPositions();
+//		else {
+			HashMap<ArrayList<Point> ,String> map = new HashMap<ArrayList<Point>,String>();
+			for (int i = 0; i < NUM_ROWS; i++) {
+				for (int j = 0; j < NUM_COLUMNS; j++) {
+					String s = gameBoard[j][i].getName();
+					if (s != "" && s.charAt(0) == 'F') {
+						ArrayList<Point> pos = new ArrayList<Point>();
+						Fox f = (Fox) gameBoard[j][i];
+						pos.add(f.getCoordinate());
+						pos.add(f.getCoordinate2());
+						map.put(pos, f.getDirection());
+					}
+				}
+			}
+			return map;
+//		}
+	}
+	
+	public ArrayList<Point> getInitialPositions(char type){
+		ArrayList<Point> pos = new ArrayList<Point>();
+		for (int i = 0; i < NUM_ROWS; i++) {
+			for (int j = 0; j < NUM_COLUMNS; j++) {
+				String s = gameBoard[j][i].getName();
+				if (s != "" && s.charAt(0) == type) {
+					pos.add(new Point(i,j));
+				}
+			}
+		}
+		return pos;
 	}
 	
 	
@@ -564,10 +621,23 @@ public class JumpIn {
 	 * @return True if a move was undone, otherwise false
 	 */
 	public boolean undoMove() {
-		JumpInEvent e = undoRedo.undoMove();
+		return undoRedoMove(true);
+	}
+	
+	/**
+	 * Redo a move by getting the last JumpInEvent that was "undone" and update the board accordingly
+	 * @return true if a move was redone, otherwise false.
+	 */
+	public boolean redoMove() {
+		return undoRedoMove(false);
+	}
+	
+	private boolean undoRedoMove(boolean undo) {
+		JumpInEvent e = undo ? undoRedo.undoMove() : undoRedo.redoMove();
 		if(e.isEmpty()) {
 			for (JumpInView v : getViewListeners()) {
-					v.displayError(1);
+					if(undo) v.displayError(1); 
+					else v.displayError(2);
 			}
 			return false;
 		}
@@ -582,34 +652,53 @@ public class JumpIn {
 	}
 	
 	/**
-	 * Redo a move by getting the last JumpInEvent that was "undone" and update the board accordingly
-	 * @return true if a move was redone, otherwise false.
-	 */
-	public boolean redoMove() {
-		JumpInEvent e = undoRedo.redoMove();
-		if(e.isEmpty()) {
-			for (JumpInView v : getViewListeners()) {
-					v.displayError(2);
-			}
-			return false;
-		}
-		if(e.getChosenPiece() instanceof Rabbit) {
-			processCommand(new Move(e.getInitialLocation1(), e.getFinalLocation1(), e.getChosenPiece()));
-		} else {
-			Point[] initialLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
-			Point[] finalLocation = {e.getFinalLocation1(), e.getFinalLocation2()};
-			processCommand(new Move (initialLocation, finalLocation, e.getChosenPiece()));
-		}
-		return true;
-	}
-	
-	/**
 	 * Set the state of the undoRedo class. True if currently undoing/redoing moves. 
 	 * False if the user is selecting a new object to move.
 	 * @param state
 	 */
 	public void setUndoState(boolean state) {
 		undoRedo.setState(state);
+	}
+	
+	public String toXML() {
+		String s = "<JumpIn>\n";
+		s += "<level>" + this.level + "</level>\n";
+		for(JumpInListener l : getGameObjectListeners()) {
+			if(l instanceof Rabbit) {
+				Rabbit r = (Rabbit)l;
+				s += r.toXML() + "\n";
+			} else {
+				Fox f = (Fox)l;
+				s += f.toXML() + "\n";
+			}
+		}
+		for(Point p : getInitialMushroomPositions()) {
+			s += "<Mushroom>\n";
+			s += gameBoard[p.y][p.x].toXML();
+			s += "</Mushroom>\n";
+		}
+		s += "</JumpIn>";
+		return s;
+	}
+	
+	public String exportToXMLFile(String filename) throws Exception {
+		FileWriter writer;
+		boolean done = false;
+		int count = 0;
+		while (!done) {
+			try {
+				File f = new File(filename);
+				writer = new FileWriter(f, false);
+				writer.write(this.toXML());
+				writer.close();
+				done = true;
+			} catch (IOException e) {
+				count++;
+				filename = "temp.txt";
+				if(count > 1) throw new Exception("Could not write to file");
+			}
+		}
+		return filename;
 	}
 	
 	/**

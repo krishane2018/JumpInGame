@@ -28,8 +28,9 @@ public class MainMenu extends JFrame {
 	private CardLayout layout;
 	private JPanel menu, content, win, done;
 	private JumpInView view;
+	private CreatorView create;
 	private ArrayList<JButton> buttons;
-	private JMenuItem undo, redo, hint;
+	private JMenuItem undo, redo, hint, save;
 	private ArrayList<JMenuItem> menuItems;
 
 	/**
@@ -39,7 +40,8 @@ public class MainMenu extends JFrame {
 	 */
 	public MainMenu(JumpInView view) {
 		this.view = view;
-
+		create = new CreatorView();
+		
 		JPanel panel = new JPanel();
 		layout = new CardLayout();
 		menu = new JPanel();
@@ -52,6 +54,7 @@ public class MainMenu extends JFrame {
 		undo = new JMenuItem("undo");
 		redo = new JMenuItem("redo");
 		hint = new JMenuItem("hint");
+		save = new JMenuItem("save");
 
 		setUpTitleScreen();
 		setUpWinScreen();
@@ -74,6 +77,7 @@ public class MainMenu extends JFrame {
 		menuItems.add(undo);
 		menuItems.add(redo);
 		menuItems.add(hint);
+		menuItems.add(save);
 
 		for (JMenuItem j : menuItems) {
 			options.add(j);
@@ -91,6 +95,7 @@ public class MainMenu extends JFrame {
 	private void setUpContent() {
 		content.setLayout(layout);
 		content.add(this.view.getPanel(), "Game");
+		content.add(this.create.getPanel(), "Creator");
 		content.add(menu, "Menu");
 		content.add(win, "Win");
 		content.add(done, "Done");
@@ -107,16 +112,25 @@ public class MainMenu extends JFrame {
 		buttons.add(play);
 		JButton exit1 = MainMenuButton("EXIT");
 		buttons.add(exit1);
+		JButton creator = MainMenuButton("CREATOR");
+		buttons.add(creator);
+		JButton cont = MainMenuButton("CONTINUE");
+		buttons.add(cont);
 		menu.setLayout(null);
-		play.setBounds(350, 250, 100, 50);
-		exit1.setBounds(350, 350, 100, 50);
+		play.setBounds(330, 250, 140, 50);
+		creator.setBounds(330,320,140,50);
+		exit1.setBounds(330, 390, 140, 50);
 		logo.setBounds(160, 0, 500, 300);
+		for(JButton button : buttons) {
+			menu.add(button);
+		}
 		menu.add(logo);
 		menu.add(play);
+		menu.add(creator);
 		menu.add(exit1);
 		menu.setBackground(new Color(152, 233, 233));
 	}
-
+	
 	/**
 	 * Sets up the win screen.
 	 */
@@ -168,6 +182,11 @@ public class MainMenu extends JFrame {
 		return view;
 	}
 
+	public void creatorView() {
+		this.setSize(960, 800);
+		layout.show(content, "Creator");
+	}
+	
 	/**
 	 * Get the menu items.
 	 * 
@@ -215,6 +234,17 @@ public class MainMenu extends JFrame {
 	public void handleDone() {
 		layout.show(content, "Done");
 		menuBar.setVisible(false);
+	}
+	
+	/**
+	 * Disable the play buttons
+	 */
+	public void disablePlay() {
+		for(JButton b : buttons) {
+			if (b.getActionCommand().equalsIgnoreCase("PLAY!")) {
+				b.setEnabled(false);
+			}
+		}
 	}
 
 }
