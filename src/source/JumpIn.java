@@ -54,7 +54,7 @@ public class JumpIn {
 		undoRedo = new UndoRedo();
 //		levelSelector = new LevelSelector(level, this);
 		gameBoard = l.getGameBoard();
-		holes = Level.getHoles();
+		holes = Level.HOLES;
 		parser = new Parser();
 		solverMoves = new LinkedList<Move>();
 		solver();
@@ -67,7 +67,7 @@ public class JumpIn {
 		undoRedo = new UndoRedo();
 //		levelSelector = new LevelSelector(level, this);
 		gameBoard = modelLevel.getGameBoard();
-		holes = Level.getHoles();
+		holes = Level.HOLES;
 		parser = new Parser();
 		solverMoves = new LinkedList<Move>();
 		solver();
@@ -239,9 +239,9 @@ public class JumpIn {
 	 * @return - string of the game board
 	 */
 	public String objectToString(int x, int y) {
-		if (isHole(x, y) && gameBoard[y][x] instanceof Rabbit) {
+		if (Level.isHole(x, y) && gameBoard[y][x] instanceof Rabbit) {
 			return gameBoard[y][x].getName() + "H";
-		} else if (isHole(x, y)) {
+		} else if (Level.isHole(x, y)) {
 			return "H";
 		} else if (!(gameBoard[y][x].getClass().getSimpleName().equals(""))) {
 			return gameBoard[y][x].getName();
@@ -257,20 +257,6 @@ public class JumpIn {
 		return level;
 	}
 
-	/**
-	 * Checks if a point in the game board is a hole.
-	 * @param x - x coordinate of the board
-	 * @param y - y coordinate of the board
-	 * @return - boolean of if it is a hole
-	 */
-	public boolean isHole(int x, int y) {
-		for (int i = 0; i < holes.length; i++) {
-			if (holes[i].getX() == x && holes[i].getY() == y) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	/**
 	 * Welcome statement for the text based version
