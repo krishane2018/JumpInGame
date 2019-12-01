@@ -15,6 +15,7 @@ import source.JumpInListener;
 import source.LevelSelector;
 import source.Move;
 import source.Rabbit;
+import source.Level;
 
 /**
  * 
@@ -321,4 +322,39 @@ class TestJumpIn {
 		assertTrue(g[2][1] instanceof Fox);
 	}
 	
+	@Test
+	void testGetNumRows() {
+		assertEquals(jumpIn.getNumRows(), 5);
+	}
+	
+	@Test
+	void testGetNumColumns() {
+		assertEquals(jumpIn.getNumColumns(), 5);
+	}
+	
+	@Test
+	void testGetInitialPositionsMushroom() {
+		ArrayList<Point> posLevel1Mushrooms = new ArrayList<Point>();
+		posLevel1Mushrooms.add(new Point(0, 2));
+		posLevel1Mushrooms.add(new Point(0, 3));
+		posLevel1Mushrooms.add(new Point(1, 1));
+		assertEquals(posLevel1Mushrooms, jumpIn.getInitialMushroomPositions());
+	}
+	@Test
+	void testGetInitialPositionsRabbit() {
+		ArrayList<Point> posLevel1Rabbits = new ArrayList<Point>();
+		posLevel1Rabbits.add(new Point(0, 5));
+		posLevel1Rabbits.add(new Point(2, 0));
+		assertEquals(posLevel1Rabbits, jumpIn.getInitialRabbitPositions());
+	}
+	@Test
+	void testGetInitialFoxPositions() {
+		HashMap<ArrayList<Point> ,String> foxMap = new HashMap<ArrayList<Point>,String>();
+		ArrayList<Point> posLevel3Foxes = new ArrayList<Point>();
+		posLevel3Foxes.add(new Point(1, 3));
+		posLevel3Foxes.add(new Point(1, 4));
+		foxMap.put(pos, "Vertical");
+		assertEquals(foxMap, jumpIn3.getInitialFoxPositions());
+	}
+
 }
