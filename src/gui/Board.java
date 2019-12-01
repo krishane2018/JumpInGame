@@ -21,7 +21,7 @@ public class Board {
 	public static void create(JumpInView view, JumpIn model) {
 		// Initializing holes 
 		GameButton[][] g = view.getButtons();
-		for(Point p : Level.getHoles()) {
+		for(Point p : Level.HOLES) {
 			g[p.y][p.x].setIcon(Resources.HOLE);
 		}
 		view.setButtons(g);
@@ -48,7 +48,7 @@ public class Board {
 				b1.setIcon(Resources.GREEN_CIRCLE);
 			}
 		}
-		for(Point p : Level.getHoles()) {
+		for(Point p : Level.HOLES) {
 			g[p.y][p.x].setIcon(Resources.HOLE);
 		}
 	}
@@ -60,7 +60,7 @@ public class Board {
 				b1.setIcon(Resources.GREEN_CIRCLE);
 			}
 		}
-		for(Point p : Level.getHoles()) {
+		for(Point p : Level.HOLES) {
 			g[p.y][p.x].setIcon(Resources.HOLE);
 		}
 	}
@@ -79,7 +79,7 @@ public class Board {
 	private static GameButton[][] iterateThroughImages(ImageIcon[] gameObjects, ImageIcon[] gameObjects2,
 			ArrayList<Point> positions, GameButton[][] g) {
 		int i = 0;
-		List<Point> list = Arrays.asList(Level.getHoles());
+		List<Point> list = Arrays.asList(Level.HOLES);
 		for (Point p : positions) {
 			if (list.contains(p)) {
 				setIconHelper(gameObjects2[i], g, p);

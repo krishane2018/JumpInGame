@@ -11,7 +11,7 @@ public class Level {
 	
 	public final static int NUM_ROWS = 5;
 	public final static int NUM_COLUMNS = 5;
-	private static final Point[] HOLES = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0),
+	public static final Point[] HOLES = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0),
 			new Point(4, 4) };
 	
 	public Level () {
@@ -70,19 +70,21 @@ public class Level {
 	public int getLevel() {
 		return level;
 	}
-
-	/**
-	 * Get the coordinates of the rabbit holes
-	 * 
-	 * @return an array of Point objects
-	 */
-	public static Point[] getHoles() {
-		return HOLES;
-	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	/**
+	 * Checks if a point in the game board is a hole.
+	 * @param x - x coordinate of the board
+	 * @param y - y coordinate of the board
+	 * @return - boolean of if it is a hole
+	 */
+	public static boolean isHole(int x, int y) {
+		for (int i = 0; i < HOLES.length; i++) {
+			if (HOLES[i].getX() == x && HOLES[i].getY() == y) {
+				return true;
+			}
+		}
+		return false;
 	}
+
 
 }

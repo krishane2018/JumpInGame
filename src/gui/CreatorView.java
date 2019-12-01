@@ -8,9 +8,15 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import source.Fox;
+import source.GameObject;
 import source.JumpIn;
+import source.Level;
+import source.LevelBuilder;
+import source.LevelBuilderListener;
+import source.Rabbit;
 
-public class CreatorView {
+public class CreatorView implements LevelBuilderListener {
 	private GameButton[][] buttons;
 	private SelectorButton mushroom, rabbit, hFox, vFox, remove, save, menu;
 	private JPanel panel, creator, sidePanel;
@@ -54,7 +60,9 @@ public class CreatorView {
 		panel.add(creator, BorderLayout.EAST);
 		panel.add(sidePanel, BorderLayout.WEST);
 		Board.createEmpty(this);
-		CreatorController controller = new CreatorController(this);
+		LevelBuilder b = new LevelBuilder();
+		b.addListener(this);
+		CreatorController controller = new CreatorController(this, b);
 	}
 
 	private void setUpSidePanel() {
@@ -97,6 +105,42 @@ public class CreatorView {
 	
 	public MainMenu getMainMenu() {
 		return m;
+	}
+
+	@Override
+	public void handleEvent(GameObject piece, boolean removeState) {
+		GameButton b = this.buttons[piece.getX1()][piece.getY1()];
+		if (piece instanceof Rabbit && !removeState) {
+			if (Level.isHole(b.getCoordinate().x, b.getCoordinate().y)) {
+				b.setIcon(Resources.HOLE_WITH_BROWN);
+			} else {
+				b.setIcon(Resources.BROWN_RABBIT);
+			}
+		} else if (piece instanceof Fox && !removeState) {
+			Fox f = (Fox)piece;
+			if (f.getDirection().equals("Vertical")) {
+				b.setIcon(Resources.FOX_VERTICAL2);
+				this.buttons[f.getX2()][f.getY2()].setIcon(Resources.FOX_VERTICAL1);
+			} else {
+				b.setIcon(Resources.FOX_HORIZONTAL1);
+				this.buttons[f.getX2()][f.getY2()].setIcon(Resources.FOX_HORIZONTAL2);
+			}
+		} else if (piece.getName().charAt(0) == 'M' && !removeState) {
+			if (Level.isHole(b.getCoordinate().x, b.getCoordinate().y)) {
+				b.setIcon(Resources.HOLE_WITH_MUSHROOM);
+			} else {
+				b.setIcon(Resources.MUSHROOM);
+			}
+		} else if (Level.isHole(b.getCoordinate().x,b.getCoordinate().y) && removeState) {
+			b.setIcon(Resources.HOLE);
+		} else if (removeState) {
+			b.setIcon(Resources.GREEN_CIRCLE);
+			if (piece instanceof Fox) {
+				Fox f = (Fox) piece;
+				this.buttons[f.getX2()][f.getY2()].setIcon(Resources.GREEN_CIRCLE);
+			}
+		}
+		
 	}
 
 }

@@ -84,10 +84,8 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 				inMovingState = true;
 			}
 		} else if (inMovingState) {
-			System.out.println("in moving state");
 			finalLocation = b.getCoordinate();
 			boolean moved = model.moveAnimal(initialLocation, finalLocation);
-			System.out.println(model.toString());
 			if(moved) {
 				inMovingState = false;
 				inSelectingState = true;

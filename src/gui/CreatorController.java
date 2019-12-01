@@ -16,14 +16,12 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 
 	private CreatorView view;
 	private LevelBuilder builder;
-	private String objectName = "";
-	private String direction = "";
-	private Point[] holes = new Point[] { new Point(0, 0), new Point(0, 4), new Point(2, 2), new Point(4, 0),
-			new Point(4, 4) };
-	private boolean removeState = false;
+	private String objectName;
+	private String direction;
+	private boolean removeState;
 	private GameButton[][] board;
 
-	public CreatorController(CreatorView view) {
+	public CreatorController(CreatorView view, LevelBuilder builder) {
 		this.view = view;
 		board = view.getButtons();
 		for (int i = 0; i < JumpIn.NUM_ROWS; i++) {
@@ -33,104 +31,55 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 		}
 		for (SelectorButton btn : this.view.getButtonList()) {
 			btn.addActionListener(this);
-			System.out.println(btn.getTag());
 		}
-		builder = new LevelBuilder();
-	}
-
-	/**
-	 * Checks if a point in the game board is a hole.
-	 * 
-	 * @param x - x coordinate of the board
-	 * @param y - y coordinate of the board
-	 * @return - boolean of if it is a hole
-	 */
-	public boolean isHole(Point hole) {
-		for (Point p : holes) {
-			if (p.equals(hole)) {
-				return true;
-			}
-		}
-		return false;
+		this.builder = builder;
+		objectName = "";
+		direction = "";
+		removeState = false;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GameButton b = (GameButton) e.getSource();
 		if (!removeState) {
-			if (builder.addGameObject(b.getCoordinate(), objectName, direction)) {
-				if (objectName.equals("Mushroom")) {
-					if (isHole(b.getCoordinate())) {
-						b.setIcon(Resources.HOLE_WITH_MUSHROOM);
-					} else {
-						b.setIcon(Resources.MUSHROOM);
-					}
-				} else if (objectName.equals("Rabbit")) {
-					if (isHole(b.getCoordinate())) {
-						b.setIcon(Resources.HOLE_WITH_BROWN);
-					} else {
-						b.setIcon(Resources.BROWN_RABBIT);
-					}
-				} else if (objectName.equals("Fox")) {
-					if (direction.equals("Vertical")) {
-						b.setIcon(Resources.FOX_VERTICAL2);
-						this.board[builder.getFoxCoordinate2().x][builder.getFoxCoordinate2().y]
-								.setIcon(Resources.FOX_VERTICAL1);
-					} else if (direction.equals("Horizontal")) {
-						b.setIcon(Resources.FOX_HORIZONTAL1);
-						this.board[builder.getFoxCoordinate2().x][builder.getFoxCoordinate2().y]
-								.setIcon(Resources.FOX_HORIZONTAL2);
-					}
-				}
-			}
+			builder.addGameObject(b.getCoordinate(), objectName, direction);
 		} else {
-			if (isHole(b.getCoordinate())) {
-				b.setIcon(Resources.HOLE);
-			} else {
-				b.setIcon(Resources.GREEN_CIRCLE);
-				System.out.println(b.getCoordinate());
-				if (builder.getObjectName(b.getCoordinate()).equals("Fox")) {
-					this.board[builder.getFoxCoordinate2().x][builder.getFoxCoordinate2().y]
-							.setIcon(Resources.GREEN_CIRCLE);
-					System.out.println(builder.getFoxCoordinate2());
-				}
-			}
 			builder.removeGameObject(b.getCoordinate());
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (((SelectorButton) (e.getSource())).getTag().equals("Mushroom")) {
-			System.out.println("Mushroom");
-			removeState = false;
-			objectName = "Mushroom";
-		} else if (((SelectorButton) (e.getSource())).getTag().equals("Rabbit")) {
-			System.out.println("Rabbit");
-			removeState = false;
-			objectName = "Rabbit";
-		} else if (((SelectorButton) (e.getSource())).getTag().equals("HFox")) {
-			System.out.println("HFox");
-			removeState = false;
-			objectName = "Fox";
-			direction = "Horizontal";
-		} else if (((SelectorButton) (e.getSource())).getTag().equals("VFox")) {
-			System.out.println("VFox");
-			removeState = false;
-			objectName = "Fox";
-			direction = "Vertical";
-		} else if (((SelectorButton) (e.getSource())).getTag().equals("Save")) {
+//		String objectName = e.getActionCommand();
+		String objectName = ((SelectorButton) (e.getSource())).getTag();
+		if (objectName.equals("Mushroom") || objectName.equals("Rabbit")) {
+			changeState(objectName, false);
+		} else if (objectName.equals("HFox")) {
+			changeState("Fox", false, "Horizontal");
+		} else if (objectName.equals("VFox")) {
+			changeState("Fox", false, "Vertical");
+		} else if (objectName.equals("Save")) {
 			if (builder.saveLevel()) {
-				System.out.println("Is valid game");
+				JOptionPane.showMessageDialog(view.getPanel(), "Level saved", null ,JOptionPane.PLAIN_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(view.getPanel(), "Not a winnable game", "Is valid",
-						JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(view.getPanel(), "This game is not winnable, please change the "
+						+ "level set-up", "Error",JOptionPane.PLAIN_MESSAGE);
 			}
-		} else if (((SelectorButton) (e.getSource())).getTag().equals("Remove")) {
+		} else if (objectName.equals("Remove")) {
 			removeState = true;
 		} else if (((SelectorButton) (e.getSource())).getTag().equals("Menu")) {
 			view.getMainMenu().showMenu();
 		}
+	}
+	
+	private void changeState(String objectName, boolean removeState, String direction) {
+		this.removeState = removeState;
+		this.objectName = objectName;
+		this.direction = direction;
+	}
+	
+	private void changeState(String objectName, boolean removeState) {
+		changeState(objectName, removeState, "");
 	}
 
 }

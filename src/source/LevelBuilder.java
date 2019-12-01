@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -23,17 +24,23 @@ public class LevelBuilder {
 	private GameObjectFactory factory;
 	private static final String filePath = new File("").getAbsolutePath() + "\\levels.xml";
 	private Point foxCoordinates;
+	private ArrayList<LevelBuilderListener> listeners;
 
 	public LevelBuilder() {
 		reset();
 	}
 
 	private void reset() {
-		levelBeingBuilt = new Level(nextLevelNumber());
+		levelBeingBuilt = new Level(nextLevelNumber()+1);
 		factory = new GameObjectFactory();
+		listeners = new ArrayList<LevelBuilderListener>();
+	}
+	
+	public void addListener(LevelBuilderListener l) {
+		listeners.add(l);
 	}
 
-	private int nextLevelNumber() {
+	public static int nextLevelNumber() {
 		int numLevels = -1;
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -56,6 +63,7 @@ public class LevelBuilder {
 
 	public boolean saveLevel() {
 		JumpIn j = new JumpIn(levelBeingBuilt);
+		System.out.println("In save level " + j.getListeners().size());
 		if (isValidGame(j)) {
 			try {
 				RandomAccessFile f = new RandomAccessFile(filePath, "rw");
@@ -71,9 +79,14 @@ public class LevelBuilder {
 			} catch (Exception e) {
 			}
 				File file = new File(filePath);
-				String xml = j.toXML() + "\n</Levels>";
+				String xml =  j.toXML() + "\n</Levels>";
 				FileWriter writer;
 				try {
+					FileReader reader = new FileReader(file);
+					System.out.println(reader.read());
+					if(reader.read() == -1) {
+						xml = "<Levels>\n" + xml;
+					}
 					writer = new FileWriter(file, true);
 					writer.write(xml);
 					writer.close();
@@ -89,19 +102,12 @@ public class LevelBuilder {
 	public Point getFoxCoordinate2() {
 		return foxCoordinates;
 	}
-
-	public String getObjectName(Point p) {
-		GameObject[][] board = levelBeingBuilt.getGameBoard();
-		GameObject space = board[p.y][p.x];
-		String className = space.getClass().getSimpleName();
-		System.out.println(className + p);
-		return className;
-	}
 	
 	public boolean removeGameObject (Point p) {
 		GameObject[][] board = levelBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
 		String className = space.getClass().getSimpleName();
+		className = space.getName().charAt(0) == 'M' ? "mushroom" : className;
 		if(space.getName().equals("")) {
 			return false;
 		} 
@@ -109,6 +115,7 @@ public class LevelBuilder {
 			levelBeingBuilt.removeGameObject(p);
 			Integer counter = Character.getNumericValue(space.getName().charAt(1));
 			factory.addRemovedCounter(className.toLowerCase(), counter);
+			updateListeners(space, true);
 			return true;
 		}	
 	}
@@ -125,11 +132,12 @@ public class LevelBuilder {
 		} else if (object.equalsIgnoreCase("Fox")) {
 			Fox f = (Fox) g;
 			Point p2 = f.getCoordinate2();
-			foxCoordinates = new Point(p2);
+			foxCoordinates = p2;
 			GameObject space2 = board[p2.y][p2.x];
-			if (validSpaceFox(space)&&validSpaceFox(space2)) {
+			if (validSpaceFox(space) && validSpaceFox(space2)) {
 				levelBeingBuilt.placeGameObject(f);
 				levelBeingBuilt.addListener(f);
+				updateListeners(g, false);
 				return true;
 			} else {
 				factory.reduceCounter(object);
@@ -142,6 +150,7 @@ public class LevelBuilder {
                     levelBeingBuilt.addListener((MovableAnimal)g);
                 }
                 catch (Exception e) {}
+            updateListeners(g, false);
                 return true;
             } else {
                 factory.reduceCounter(object);
@@ -151,9 +160,15 @@ public class LevelBuilder {
 		return false;
 
 	}
+	
+	private void updateListeners(GameObject g, boolean removeState) {
+        for(LevelBuilderListener l : listeners) {
+			l.handleEvent(g, removeState);
+		}
+	}
 
 	private boolean validSpaceFox(GameObject space) {
-		List<Point> list = Arrays.asList(Level.getHoles());
+		List<Point> list = Arrays.asList(Level.HOLES);
 		return space.getName().equals("") && !list.contains(space.getCoordinate());
 	}
 

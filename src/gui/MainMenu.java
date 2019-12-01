@@ -246,6 +246,17 @@ public class MainMenu extends JFrame {
 		layout.show(content, "Done");
 		menuBar.setVisible(false);
 	}
+	
+	/**
+	 * Disable the play buttons
+	 */
+	public void disablePlay() {
+		for(JButton b : buttons) {
+			if (b.getActionCommand().equalsIgnoreCase("PLAY!")) {
+				b.setEnabled(false);
+			}
+		}
+	}
 
 }
 
