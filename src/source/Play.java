@@ -46,7 +46,7 @@ public class Play {
 	public static void nextLevel(String file) {
 		filename = file;
 		Play.level = level + 1;
-		if (Play.level > 3) {
+		if (Play.level > LevelBuilder.nextLevelNumber()) {
 			view.handleDone();
 		} else {
 			try {
@@ -93,8 +93,6 @@ public class Play {
 			Level modelLevel = handler.getWantedLevel();
 			level = modelLevel.getLevel();
 			model = new JumpIn (modelLevel);
-//			GameObject[][] board = modelLevel.getGameBoard();
-//			model.setGameBoard(board);
 			return model;
 		} catch(SAXException e) {
 			

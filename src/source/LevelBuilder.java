@@ -40,7 +40,7 @@ public class LevelBuilder {
 		listeners.add(l);
 	}
 
-	private int nextLevelNumber() {
+	public static int nextLevelNumber() {
 		int numLevels = -1;
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -79,9 +79,14 @@ public class LevelBuilder {
 			} catch (Exception e) {
 			}
 				File file = new File(filePath);
-				String xml = "<Levels>\n" + j.toXML() + "\n</Levels>";
+				String xml =  j.toXML() + "\n</Levels>";
 				FileWriter writer;
 				try {
+					FileReader reader = new FileReader(file);
+					System.out.println(reader.read());
+					if(reader.read() == -1) {
+						xml = "<Levels>\n" + xml;
+					}
 					writer = new FileWriter(file, true);
 					writer.write(xml);
 					writer.close();
