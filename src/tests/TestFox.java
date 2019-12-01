@@ -452,10 +452,17 @@ class TestFox {
 	}
 	
 	@Test
-	void testEqualsSamePointsDirection() {
+	void testEqualsDiffCoord() {
 		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
-		Fox fox2 = new Fox(new Point(1, 1), new Point(1, 2), "F2", "Vertical");
-		assertTrue(fox.equals(fox2));
+		Fox fox2 = new Fox(new Point(1, 2), new Point(1, 3), "F1", "Vertical");
+		assertFalse(fox.equals(fox2));
+	}
+	
+	@Test
+	void testEqualsDiffName() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		Fox fox2 = new Fox(new Point(1, 2), new Point(1, 2), "G1", "Vertical");
+		assertFalse(fox.equals(fox2));
 	}
 	
 	@Test
