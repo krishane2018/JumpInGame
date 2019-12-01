@@ -40,7 +40,7 @@ public class MainMenu extends JFrame {
 	 */
 	public MainMenu(JumpInView view) {
 		this.view = view;
-		create = new CreatorView();
+		create = new CreatorView(this);
 		
 		JPanel panel = new JPanel();
 		layout = new CardLayout();
@@ -228,6 +228,11 @@ public class MainMenu extends JFrame {
 		menuBar.setVisible(true);
 	}
 
+	public void showMenu() {
+		layout.show(content, "Menu");
+		menuBar.setVisible(false);
+	}
+	
 	/**
 	 * Displays end screen once all levels are finished.
 	 */
