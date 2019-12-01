@@ -189,7 +189,7 @@ public class Fox extends MovableAnimal {
 	}
 
 	protected boolean moveLogicHelper(GameObject space) {
-		List<Point> list = Arrays.asList(Level.getHoles());
+		List<Point> list = Arrays.asList(Level.HOLES);
 		return space.getName().equals("") && !list.contains(space.getCoordinate());
 	}
 

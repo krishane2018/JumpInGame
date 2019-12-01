@@ -50,27 +50,41 @@ public class JumpIn {
 	
 	public JumpIn(Level l) {
 		this.level = l.getLevel();
+		JumpInSetUp(l);
+		
+	}
+	
+	public JumpIn(int level, boolean isSaved) {
+		this.level = level;
+		Level modelLevel;
+		holes = Level.HOLES;
+		try {
+			modelLevel = LevelSelector.getLevel(level, isSaved);
+			JumpInSetUp(modelLevel);
+		} catch (Exception e) {
+			// If file was empty
+			if(e.getMessage().equalsIgnoreCase("Premature end of file.")) {
+				Level l = new Level();
+				JumpInSetUp(l);
+				this.level = l.getLevel();
+			}
+		}
+	}
+	
+	private void JumpInSetUp(Level l ) {
 		listeners = l.getListeners();
+		System.out.println(listeners.size());
 		undoRedo = new UndoRedo();
 //		levelSelector = new LevelSelector(level, this);
 		gameBoard = l.getGameBoard();
-		holes = Level.getHoles();
+		holes = Level.HOLES;
 		parser = new Parser();
 		solverMoves = new LinkedList<Move>();
 		solver();
 	}
 	
-	public JumpIn(int level, boolean isSaved) {
-		this.level = level;
-		Level modelLevel = LevelSelector.getLevel(level, isSaved);
-		listeners = modelLevel.getListeners();
-		undoRedo = new UndoRedo();
-//		levelSelector = new LevelSelector(level, this);
-		gameBoard = modelLevel.getGameBoard();
-		holes = Level.getHoles();
-		parser = new Parser();
-		solverMoves = new LinkedList<Move>();
-		solver();
+	public JumpIn(int level) {
+		this(level, false);
 	}
 
 	/**
@@ -92,7 +106,8 @@ public class JumpIn {
 	 */
 	public boolean solver() {
 		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
-		for (int i = 0; i<listeners.size();i++) {
+		System.out.println(listeners.size());
+		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if(l instanceof JumpInView) {
 				viewListeners.add(listeners.remove(i));
@@ -235,9 +250,9 @@ public class JumpIn {
 	 * @return - string of the game board
 	 */
 	public String objectToString(int x, int y) {
-		if (isHole(x, y) && gameBoard[y][x] instanceof Rabbit) {
+		if (Level.isHole(x, y) && gameBoard[y][x] instanceof Rabbit) {
 			return gameBoard[y][x].getName() + "H";
-		} else if (isHole(x, y)) {
+		} else if (Level.isHole(x, y)) {
 			return "H";
 		} else if (!(gameBoard[y][x].getClass().getSimpleName().equals(""))) {
 			return gameBoard[y][x].getName();
@@ -253,20 +268,6 @@ public class JumpIn {
 		return level;
 	}
 
-	/**
-	 * Checks if a point in the game board is a hole.
-	 * @param x - x coordinate of the board
-	 * @param y - y coordinate of the board
-	 * @return - boolean of if it is a hole
-	 */
-	public boolean isHole(int x, int y) {
-		for (int i = 0; i < holes.length; i++) {
-			if (holes[i].getX() == x && holes[i].getY() == y) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	/**
 	 * Welcome statement for the text based version
@@ -387,7 +388,6 @@ public class JumpIn {
 		boolean win = checkWin();
 		
 		for(JumpInView v : getViewListeners()) {
-			System.out.println("In process commands");
 			v.handleEvent(event);
 			if(win) {
 				v.handleWin();
@@ -507,12 +507,10 @@ public class JumpIn {
 			showOptions(initial, false);
 			Move move = new Move(initial, finalLocation, g);
 			processCommand(new Move(initial, finalLocation, g));
-			System.out.println("not done");
 			if (!(solverMoves.poll().equals(move))) {
 				System.out.println(solverMoves);
 				solver();
 			}
-			System.out.println("done");
 			return true;
 		} else if (g instanceof Fox) {
 			boolean selectedInOptions = false;
@@ -586,7 +584,6 @@ public class JumpIn {
 					if (s != "" && s.charAt(0) == 'F') {
 						ArrayList<Point> pos = new ArrayList<Point>();
 						Fox f = (Fox) gameBoard[j][i];
-						System.out.println(f.getDirection());
 						pos.add(f.getCoordinate());
 						pos.add(f.getCoordinate2());
 						map.put(pos, f.getDirection());
@@ -624,10 +621,23 @@ public class JumpIn {
 	 * @return True if a move was undone, otherwise false
 	 */
 	public boolean undoMove() {
-		JumpInEvent e = undoRedo.undoMove();
+		return undoRedoMove(true);
+	}
+	
+	/**
+	 * Redo a move by getting the last JumpInEvent that was "undone" and update the board accordingly
+	 * @return true if a move was redone, otherwise false.
+	 */
+	public boolean redoMove() {
+		return undoRedoMove(false);
+	}
+	
+	private boolean undoRedoMove(boolean undo) {
+		JumpInEvent e = undo ? undoRedo.undoMove() : undoRedo.redoMove();
 		if(e.isEmpty()) {
 			for (JumpInView v : getViewListeners()) {
-					v.displayError(1);
+					if(undo) v.displayError(1); 
+					else v.displayError(2);
 			}
 			return false;
 		}
@@ -636,28 +646,6 @@ public class JumpIn {
 		} else {
 			Point[] initialLocation = {e.getFinalLocation1(), e.getFinalLocation2()};
 			Point[] finalLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
-			processCommand(new Move (initialLocation, finalLocation, e.getChosenPiece()));
-		}
-		return true;
-	}
-	
-	/**
-	 * Redo a move by getting the last JumpInEvent that was "undone" and update the board accordingly
-	 * @return true if a move was redone, otherwise false.
-	 */
-	public boolean redoMove() {
-		JumpInEvent e = undoRedo.redoMove();
-		if(e.isEmpty()) {
-			for (JumpInView v : getViewListeners()) {
-					v.displayError(2);
-			}
-			return false;
-		}
-		if(e.getChosenPiece() instanceof Rabbit) {
-			processCommand(new Move(e.getInitialLocation1(), e.getFinalLocation1(), e.getChosenPiece()));
-		} else {
-			Point[] initialLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
-			Point[] finalLocation = {e.getFinalLocation1(), e.getFinalLocation2()};
 			processCommand(new Move (initialLocation, finalLocation, e.getChosenPiece()));
 		}
 		return true;
@@ -722,5 +710,6 @@ public class JumpIn {
 		Play.play(1);
 	}
 
+	
 
 }
