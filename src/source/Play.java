@@ -34,7 +34,6 @@ public class Play {
 		Play.level = level;
 		if (!(level > 0 && level <= 3)) level = 1;
 		model = new JumpIn(level, false);
-		System.out.println(model);
 		view = new JumpInView(model);
 		controller = new JumpInController(view, model);
 	}
@@ -47,7 +46,7 @@ public class Play {
 	public static void nextLevel(String file) {
 		filename = file;
 		Play.level = level + 1;
-		if (Play.level > 3) {
+		if (Play.level > LevelBuilder.nextLevelNumber()) {
 			view.handleDone();
 		} else {
 			try {
@@ -94,9 +93,6 @@ public class Play {
 			Level modelLevel = handler.getWantedLevel();
 			level = modelLevel.getLevel();
 			model = new JumpIn (modelLevel);
-//			GameObject[][] board = modelLevel.getGameBoard();
-//			model.setGameBoard(board);
-			System.out.println(handler.toString());
 			return model;
 		} catch(SAXException e) {
 			

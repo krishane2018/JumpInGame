@@ -84,10 +84,8 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 				inMovingState = true;
 			}
 		} else if (inMovingState) {
-			System.out.println("in moving state");
 			finalLocation = b.getCoordinate();
 			boolean moved = model.moveAnimal(initialLocation, finalLocation);
-			System.out.println(model.toString());
 			if(moved) {
 				inMovingState = false;
 				inSelectingState = true;
@@ -154,6 +152,8 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		} else if (e.getActionCommand().equals("EXIT")) {
 			JButton src = (JButton) e.getSource();
 			SwingUtilities.getWindowAncestor((JPanel) src.getParent()).dispose();
+		} else if (e.getActionCommand().equals("CREATOR")) {
+			view.creatorView();
 		} else if (e.getActionCommand().equals("save")) {
 			try {
 				this.filename = model.exportToXMLFile("saveLevel.txt");
