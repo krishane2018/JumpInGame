@@ -23,20 +23,14 @@ public class LevelSelector {
 	private static final String levels = new File("").getAbsolutePath()+"\\levels.xml";
 
 
-	public static Level getLevel(int l, boolean isSaved) {
+	public static Level getLevel(int l, boolean isSaved) throws Exception {
 		String file;
-		file = isSaved?savedProgress:levels;
-		System.out.println(file);
+		file = isSaved ? savedProgress : levels;
 		XMLHandler x = new XMLHandler(l);
 		SAXParserFactory sax;
-		try {
-			sax = SAXParserFactory.newInstance();
-			SAXParser parser = sax.newSAXParser();
-			parser.parse(new File(file), x);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		sax = SAXParserFactory.newInstance();
+		SAXParser parser = sax.newSAXParser();
+		parser.parse(new File(file), x);
 		return x.getWantedLevel();
 	}	
 }
