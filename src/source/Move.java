@@ -219,11 +219,10 @@ public class Move {
 	 */
 	public String getNameType() {
 		if(chosenAnimal.getClass().getSimpleName().equals("Rabbit")) {
-			Rabbit r = (Rabbit) chosenAnimal;
-			return r.getRabbitColour();
+			return "";
 		} else {
 			Fox f = (Fox) chosenAnimal;
-			return f.getDirection();
+			return f.getDirection()+" ";
 		}
 	}
 }
