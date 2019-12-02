@@ -13,7 +13,24 @@ import source.GameObjectFactory;
 import source.Play;
 
 class TestPlay {
-
-
-
+	@BeforeEach 
+	void setUp() Throws Exception {
+		Play play1 =new Play(1);
+	}
+	
+	@Test
+	void testFileIsEmptyTrue() {
+		String filePath = new File("").getAbsolutePath() + "\\empty.xml";
+		assertTrue(play1.fileIsEmpty(filePath));
+	}
+	@Test
+	void testFileIsEmptyNoFile() {
+		String filePath = new File("").getAbsolutePath() + "\\empty2.xml";
+		assertTrue(play1.fileIsEmpty(filePath));
+	}
+	@Test
+	void testFileIsEmptyFalse() {
+		String filePath = new File("").getAbsolutePath() + "\\levels.xml";
+		assertFalse(play1.fileIsEmpty(filePath));
+	}
 }
