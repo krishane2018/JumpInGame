@@ -104,6 +104,8 @@ public class JumpIn {
 	 */
 	public boolean solver() {
 		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
+
+		ArrayList<JumpInListener> foxListeners = new ArrayList<JumpInListener>();
 		System.out.println(listeners.size());
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
@@ -111,7 +113,12 @@ public class JumpIn {
 				viewListeners.add(listeners.remove(i));
 				i--;
 			}
+			else if (l instanceof Fox) {
+				foxListeners.add(listeners.remove(i));
+				i--;
+			}
 		}
+		listeners.addAll(foxListeners);
 		boolean isSolved = solverHelper(new Stack<Move>(), new Stack<ArrayList<Point>>());
 		listeners.addAll(viewListeners);
 		undoRedo.clearRedo();
@@ -246,9 +253,11 @@ public class JumpIn {
 	 * @param y - y coordinate of the game board
 	 * @param x - x coordinate of the game board
 	 * @return - string of the game board
+
 	 */
 	public String objectToString(int x, int y) {
 		if (Level.isHole(x, y) && gameBoard[y][x] instanceof Rabbit) {
+
 			return gameBoard[y][x].getName() + "H";
 		} else if (Level.isHole(x, y)) {
 			return "H";

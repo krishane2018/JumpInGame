@@ -12,6 +12,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import source.Play;
+
 /**
  * 
  * The main menu class is a JFrame that holds all the panels in a card layout.
@@ -28,8 +30,9 @@ public class MainMenu extends JFrame {
 	private CardLayout layout;
 	private JPanel menu, content, win, done;
 	private JumpInView view;
+	private CreatorView create;
 	private ArrayList<JButton> buttons;
-	private JMenuItem undo, redo, hint, save;
+	private JMenuItem undo, redo, hint, save, mainMenu;
 	private ArrayList<JMenuItem> menuItems;
 
 	/**
@@ -39,7 +42,8 @@ public class MainMenu extends JFrame {
 	 */
 	public MainMenu(JumpInView view) {
 		this.view = view;
-
+		create = new CreatorView(this);
+		
 		JPanel panel = new JPanel();
 		layout = new CardLayout();
 		menu = new JPanel();
@@ -53,6 +57,7 @@ public class MainMenu extends JFrame {
 		redo = new JMenuItem("redo");
 		hint = new JMenuItem("hint");
 		save = new JMenuItem("save");
+		mainMenu = new JMenuItem("menu");
 
 		setUpTitleScreen();
 		setUpWinScreen();
@@ -76,6 +81,7 @@ public class MainMenu extends JFrame {
 		menuItems.add(redo);
 		menuItems.add(hint);
 		menuItems.add(save);
+		menuItems.add(mainMenu);
 
 		for (JMenuItem j : menuItems) {
 			options.add(j);
@@ -93,6 +99,7 @@ public class MainMenu extends JFrame {
 	private void setUpContent() {
 		content.setLayout(layout);
 		content.add(this.view.getPanel(), "Game");
+		content.add(this.create.getPanel(), "Creator");
 		content.add(menu, "Menu");
 		content.add(win, "Win");
 		content.add(done, "Done");
@@ -109,12 +116,15 @@ public class MainMenu extends JFrame {
 		buttons.add(play);
 		JButton exit1 = MainMenuButton("EXIT");
 		buttons.add(exit1);
+		JButton creator = MainMenuButton("CREATOR");
+		buttons.add(creator);
 		JButton cont = MainMenuButton("CONTINUE");
 		buttons.add(cont);
 		menu.setLayout(null);
-		play.setBounds(300, 250, 200, 50);
-		exit1.setBounds(300, 350, 200, 50);
-		cont.setBounds(300, 450, 200, 50);
+		play.setBounds(330, 250, 140, 50);
+		creator.setBounds(330,320,140,50);
+		cont.setBounds(330,390,140,50);
+		exit1.setBounds(330, 460, 140, 50);
 		logo.setBounds(160, 0, 500, 300);
 		for(JButton button : buttons) {
 			menu.add(button);
@@ -122,7 +132,7 @@ public class MainMenu extends JFrame {
 		menu.add(logo);
 		menu.setBackground(new Color(152, 233, 233));
 	}
-
+	
 	/**
 	 * Sets up the win screen.
 	 */
@@ -174,6 +184,11 @@ public class MainMenu extends JFrame {
 		return view;
 	}
 
+	public void creatorView() {
+		this.setSize(960, 800);
+		layout.show(content, "Creator");
+	}
+	
 	/**
 	 * Get the menu items.
 	 * 
@@ -216,11 +231,44 @@ public class MainMenu extends JFrame {
 	}
 
 	/**
+	 * Goes back to menu screen
+	 */
+	public void showMenu() {
+		this.setSize(800, 800);
+		layout.show(content, "Menu");
+		menuBar.setVisible(false);
+		if (Play.fileIsEmpty("saveLevel.txt")) {
+			enableContinue(false);
+		} else {
+			enableContinue(true);
+		}
+	}
+	
+	/**
 	 * Displays end screen once all levels are finished.
 	 */
 	public void handleDone() {
 		layout.show(content, "Done");
 		menuBar.setVisible(false);
+	}
+	
+	/**
+	 * Disable the play buttons
+	 */
+	public void enablePlay(boolean enable) {
+		for(JButton b : buttons) {
+			if (b.getActionCommand().equalsIgnoreCase("PLAY!")) {
+				b.setEnabled(enable);
+			}
+		}
+	}
+	
+	public void enableContinue(boolean enable) {
+		for(JButton b : buttons) {
+			if (b.getActionCommand().equalsIgnoreCase("CONTINUE")) {
+				b.setEnabled(enable);
+			}
+		}
 	}
 
 }
