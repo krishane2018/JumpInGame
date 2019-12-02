@@ -75,11 +75,13 @@ public class GameObjectFactory {
 	}
 	
 	public void reduceCounter(String object) {
+		System.out.println(object);
 		int initialCounter = nameCounters.get(object);
 		nameCounters.put(object, initialCounter-1);
 	}
 	
 	public void addRemovedCounter (String object, int counter) {
+		System.out.println(object);
 		Stack<Integer> tempStack = removedCounters.get(object);
 		tempStack.add(counter);
 	}
