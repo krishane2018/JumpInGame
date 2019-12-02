@@ -52,7 +52,7 @@ public class LevelBuilder {
 
 			numLevels = list.getLength();
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			numLevels = 0;
 		}
 		return numLevels;
