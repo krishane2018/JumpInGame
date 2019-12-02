@@ -64,5 +64,9 @@ class TestGameObjectFactory {
 	void testGetGameObjectFoxHorizontal() {
 		assertTrue(factory.getGameObject(new Point(1, 1), "Fox", "Horizontal") instanceof Fox);
 	}
+	@Test
+	void testGetGameObjectInvalid() {
+		assertNull(factory.getGameObject(new Point(1, 1), "Tree", ""));
+	}
 
 }
