@@ -434,7 +434,7 @@ class TestRabbit {
 		r2.setStatus(true);
 		assertFalse(r1.equals(r2));
 	}
-	}
+	
 		
 	@Test
 	void testEqualsDiffName() {
@@ -442,6 +442,6 @@ class TestRabbit {
 		Rabbit r2 = new Rabbit(new Point(2, 3), "R2");
 		assertFalse(r1.equals(r2));
 	}
-	}
+	
 	
 }
