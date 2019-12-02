@@ -33,4 +33,17 @@ class TestPlay {
 		String filePath = new File("").getAbsolutePath() + "\\levels.xml";
 		assertFalse(play1.fileIsEmpty(filePath));
 	}
+	@Test
+	void testImportFromXML() {
+		String filePath = new File("").getAbsolutePath() + "\\levels.xml";
+		JumpIn jump = new JumpIn(1, false);	
+		assertEquals(jump, play1.importFromXML(filePath));
+	}
+	@Test
+	void testNextLevel() {
+		String filePath = new File("").getAbsolutePath() + "\\levels.xml";
+		JumpIn jump = new JumpIn(2, false);	
+		play1.nextLevel(filePath);
+		assertEquals(jump, play1.importFromXML(filePath));
+	}
 }
