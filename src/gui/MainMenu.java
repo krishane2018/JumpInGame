@@ -12,6 +12,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import source.Play;
+
 /**
  * 
  * The main menu class is a JFrame that holds all the panels in a card layout.
@@ -235,6 +237,11 @@ public class MainMenu extends JFrame {
 		this.setSize(800, 800);
 		layout.show(content, "Menu");
 		menuBar.setVisible(false);
+		if (Play.fileIsEmpty("saveLevel.txt")) {
+			enableContinue(false);
+		} else {
+			enableContinue(true);
+		}
 	}
 	
 	/**
@@ -248,10 +255,18 @@ public class MainMenu extends JFrame {
 	/**
 	 * Disable the play buttons
 	 */
-	public void disablePlay() {
+	public void enablePlay(boolean enable) {
 		for(JButton b : buttons) {
 			if (b.getActionCommand().equalsIgnoreCase("PLAY!")) {
-				b.setEnabled(false);
+				b.setEnabled(enable);
+			}
+		}
+	}
+	
+	public void enableContinue(boolean enable) {
+		for(JButton b : buttons) {
+			if (b.getActionCommand().equalsIgnoreCase("CONTINUE")) {
+				b.setEnabled(enable);
 			}
 		}
 	}
