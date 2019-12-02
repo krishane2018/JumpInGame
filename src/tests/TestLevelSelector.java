@@ -15,7 +15,7 @@ class TestLevelSelector {
 	@BeforeEach
 	void setUp() throws Exception {
 	}
-
+	/*
 	@Test
 	void testLevelSelectorConstructorIllegalArgumentSubZero() {
 		assertThrows(IllegalArgumentException.class, () -> {
@@ -28,5 +28,10 @@ class TestLevelSelector {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new LevelSelector(4, new JumpIn(4));
 		});
+	}*/
+	@Test
+	void testGetLevel() {
+		LevelSelector selector;
+		assertTrue(selector.getLevel(1, false) instanceof Level);
 	}
 }
