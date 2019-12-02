@@ -57,6 +57,7 @@ public class Level {
 			Point p2 = tempFox.getCoordinate().equals(p) ? tempFox.getCoordinate2() : tempFox.getCoordinate();
 			gameBoard[p2.y][p2.x] = new GameObject(p2);
 		}
+		listeners.remove(space);
 	}
 	
 	public GameObject[][] getGameBoard() {
@@ -86,5 +87,9 @@ public class Level {
 		return false;
 	}
 
+	public String toString() {
+		return (new JumpIn(this)).toString();
+	}
+	
 
 }

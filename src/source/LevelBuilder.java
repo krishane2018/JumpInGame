@@ -175,6 +175,8 @@ public class LevelBuilder {
 	private boolean validSpaceGameObject(GameObject space) {
 		return space.getName().equals("");
 	}
+	
+	
 
 //	public static void main(String[] args) {
 //		String direction;
