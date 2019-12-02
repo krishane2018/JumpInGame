@@ -1,6 +1,7 @@
 package gui;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.*;
 

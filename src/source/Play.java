@@ -48,8 +48,6 @@ public class Play {
 	public static void nextLevel(String file) {
 		filename = file;
 		Play.level = level + 1;
-		System.out.print(LevelBuilder.nextLevelNumber() + " in play");
-		System.out.print(level + " level in play");
 		if (Play.level > LevelBuilder.nextLevelNumber()) {
 			view.handleDone();
 		} else {
@@ -61,16 +59,19 @@ public class Play {
 		}
 	}	
 	
-	public static void loadGame(String file) throws IOException {
+	public static void loadGame(String file, boolean fromLevel, int level) throws IOException {
 		filename = file;
 		controller.removeListener();
-		model = importFromXMLFile(filename);
+		if(fromLevel) {
+			model = importFromXMLWithLevel(filename, true, 1);
+		} else {
+			model = importFromXMLFile(filename);
+		}
 		view.setModel(model);
 		view.createNextBoard();
 		controller = new JumpInController(view, model);
 		view.getMMenu().showGame();
 	}
-	
 	
 	private static void changeBoard(boolean nextLevel) throws IOException {
 		controller.removeListener();
@@ -86,10 +87,19 @@ public class Play {
 	}
 	
 	private static JumpIn importFromXMLFile(String filename) throws IOException  {
+		return importFromXMLWithLevel(filename, false, -2);
+	}
+	
+	private static JumpIn importFromXMLWithLevel(String filename, boolean fromLevel, int level) throws IOException {
 		SAXParserFactory sax = SAXParserFactory.newInstance();
 		SAXParser parser;
 		try {
-			XMLHandler handler = new XMLHandler();
+			XMLHandler handler;
+			if(fromLevel) {
+				handler = new XMLHandler(level);
+			} else {
+				handler = new XMLHandler();
+			}	
 			parser = sax.newSAXParser();
 			parser.parse(new File(filename), handler);
 			Level modelLevel = handler.getWantedLevel();
@@ -97,9 +107,7 @@ public class Play {
 			model = new JumpIn (modelLevel);
 			return model;
 		} catch(SAXException e) {
-			System.out.println("error");
 			view.showMainMenu();
-//			view.enableContinue(false);
 		} catch(ParserConfigurationException e) {
 			System.out.println("error2");
 		}
