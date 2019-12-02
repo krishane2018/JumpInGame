@@ -27,10 +27,6 @@ public class LevelBuilder {
 	private ArrayList<LevelBuilderListener> listeners;
 
 	public LevelBuilder() {
-		reset();
-	}
-
-	private void reset() {
 		levelBeingBuilt = new Level(nextLevelNumber()+1);
 		factory = new GameObjectFactory();
 		listeners = new ArrayList<LevelBuilderListener>();
@@ -93,7 +89,7 @@ public class LevelBuilder {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				reset();
+				levelBeingBuilt.setLevel(levelBeingBuilt.getLevel()+1);
 				return true;
 		}
 		return false;
