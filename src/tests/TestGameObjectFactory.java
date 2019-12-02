@@ -38,4 +38,14 @@ class TestGameObjectFactory {
 		Fox fox = new Fox (new Point(0, 1), new Point(1, 1), "F1", "Horizontal");
 		assertEqual(factory.foxMaker(new Point(0, 1), "Horizontal", 1), fox);
 	}
+	@Test
+	void testEmptyNextCounter() {
+		assertTrue(factory.getGameObject("mushroom") == 1);
+	}
+	
+	@Test
+	void testReduceNextCounter() {
+		factory.reduceCounter("mushroom");
+		assertTrue(factory.getGameObject(mushroom) == 0);
+	}
 }
