@@ -10,6 +10,7 @@ import source.JumpInEvent;
 import source.JumpInListener;
 import source.Level;
 import source.Move;
+import source.Play;
 import source.Rabbit;
 
 /**
@@ -52,6 +53,8 @@ public class JumpInView extends JFrame implements JumpInListener {
 		this.mainMenu = new MainMenu(this);
 		if(model.getLevel() < 1) {
 			enablePlay(false);
+		} else if (Play.fileIsEmpty("saveLevel.txt")) {
+			mainMenu.enableContinue(false);
 		}
 	}
 

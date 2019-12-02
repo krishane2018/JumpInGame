@@ -64,7 +64,6 @@ public class LevelBuilder {
 
 	public boolean saveLevel() {
 		JumpIn j = new JumpIn(levelBeingBuilt);
-		System.out.println("In save level " + j.getListeners().size());
 		if (isValidGame(j)) {
 			try {
 				RandomAccessFile f = new RandomAccessFile(filePath, "rw");
@@ -83,7 +82,7 @@ public class LevelBuilder {
 				String xml =  j.toXML() + "\n</Levels>";
 				FileWriter writer;
 				try {
-					if(levelsFileIsEmpty()) {
+					if(Play.fileIsEmpty(filePath)) {
 						xml = "<Levels>\n" + xml;
 					}
 					writer = new FileWriter(file, true);
@@ -97,23 +96,6 @@ public class LevelBuilder {
 		}
 		return false;
 	}
-
-	public boolean levelsFileIsEmpty() {
-		File file = new File(filePath);
-		FileReader reader;
-		try {
-			reader = new FileReader(file);
-			boolean ans = reader.read() == -1;
-			reader.close();
-			return ans;
-		} catch (FileNotFoundException e) {
-			return true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return true;
-		}
-	}
 	
 	public Point getFoxCoordinate2() {
 		return foxCoordinates;
@@ -123,7 +105,7 @@ public class LevelBuilder {
 		GameObject[][] board = levelBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
 		String className = space.getClass().getSimpleName();
-		className = space.getName().charAt(0) == 'M' ? "mushroom" : className;
+		className = space.getName()!= "" && space.getName().charAt(0) == 'M' ? "mushroom" : className;
 		if(space.getName().equals("")) {
 			return false;
 		} 

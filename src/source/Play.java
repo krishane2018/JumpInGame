@@ -1,6 +1,8 @@
 package source;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -61,7 +63,6 @@ public class Play {
 	
 	public static void loadGame(String file) throws IOException {
 		filename = file;
-		if (!(level > 0 && level <= 3)) level = 1;
 		controller.removeListener();
 		model = importFromXMLFile(filename);
 		view.setModel(model);
@@ -77,7 +78,6 @@ public class Play {
 			model = new JumpIn(level, false);
 		} else {
 			model = importFromXMLFile(filename);
-			System.out.println(model.toString());
 		}
 		view.setModel(model);
 		view.createNextBoard();
@@ -97,10 +97,29 @@ public class Play {
 			model = new JumpIn (modelLevel);
 			return model;
 		} catch(SAXException e) {
-			
+			System.out.println("error");
+			view.showMainMenu();
+//			view.enableContinue(false);
 		} catch(ParserConfigurationException e) {
-			
+			System.out.println("error2");
 		}
 		return model;
+	}
+	
+	public static boolean fileIsEmpty(String filename) {
+		File file = new File(filename);
+		FileReader reader;
+		try {
+			reader = new FileReader(file);
+			boolean ans = reader.read() == -1;
+			reader.close();
+			return ans;
+		} catch (FileNotFoundException e) {
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		}
 	}
 }
