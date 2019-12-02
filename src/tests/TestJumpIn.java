@@ -16,6 +16,7 @@ import source.LevelSelector;
 import source.Move;
 import source.Rabbit;
 import source.Level;
+import source.Play;
 
 /**
  * 
@@ -356,5 +357,16 @@ class TestJumpIn {
 		foxMap.put(pos, "Vertical");
 		assertEquals(foxMap, jumpIn3.getInitialFoxPositions());
 	}
-
+	@Test
+	void testToXML() {
+		String s = "<JumpIn>\n<level>1</level>\n<Rabbit>\n<name>R1</name>\n<x1>0</x1>\n<y1>2</y1>\n</Rabbit>\n<Mushroom>\n<name>M1</name>\n<x1>0</x1>\n<y1>1</y1>\n</Mushroom>\n</JumpIn>"
+		assertEquals(jumpIn.toXML(), s);
+	}
+	@Test
+	void testExportToXMLFile() {
+		Play play1 = new Play(1)
+		String filePath = new File("").getAbsolutePath() + "\\emptyExportTest.xml";
+		jumpIn.exportToXMLFile(filePath);
+		assertEquals(play1.importFromXMLFile(filePath), jumpIn.toXML());
+	}
 }
