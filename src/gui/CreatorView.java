@@ -143,4 +143,10 @@ public class CreatorView implements LevelBuilderListener {
 		
 	}
 
+	/**
+	 * Disable play button on home screen
+	 */
+	public void enablePlay(boolean enable) {
+		m.enablePlay(enable);
+	}
 }

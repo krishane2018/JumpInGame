@@ -2,6 +2,7 @@ package source;
 
 import java.awt.Point;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class LevelBuilder {
 
 			numLevels = list.getLength();
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			numLevels = 0;
 		}
 		return numLevels;
@@ -59,7 +60,6 @@ public class LevelBuilder {
 
 	public boolean saveLevel() {
 		JumpIn j = new JumpIn(levelBeingBuilt);
-		System.out.println("In save level " + j.getListeners().size());
 		if (isValidGame(j)) {
 			try {
 				RandomAccessFile f = new RandomAccessFile(filePath, "rw");
@@ -78,9 +78,7 @@ public class LevelBuilder {
 				String xml =  j.toXML() + "\n</Levels>";
 				FileWriter writer;
 				try {
-					FileReader reader = new FileReader(file);
-					System.out.println(reader.read());
-					if(reader.read() == -1) {
+					if(Play.fileIsEmpty(filePath)) {
 						xml = "<Levels>\n" + xml;
 					}
 					writer = new FileWriter(file, true);
@@ -94,7 +92,7 @@ public class LevelBuilder {
 		}
 		return false;
 	}
-
+	
 	public Point getFoxCoordinate2() {
 		return foxCoordinates;
 	}
@@ -103,7 +101,7 @@ public class LevelBuilder {
 		GameObject[][] board = levelBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
 		String className = space.getClass().getSimpleName();
-		className = space.getName().charAt(0) == 'M' ? "mushroom" : className;
+		className = space.getName()!= "" && space.getName().charAt(0) == 'M' ? "mushroom" : className;
 		if(space.getName().equals("")) {
 			return false;
 		} 

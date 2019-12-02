@@ -62,12 +62,10 @@ public class JumpIn {
 			modelLevel = LevelSelector.getLevel(level, isSaved);
 			JumpInSetUp(modelLevel);
 		} catch (Exception e) {
-			// If file was empty
-			if(e.getMessage().equalsIgnoreCase("Premature end of file.")) {
-				Level l = new Level();
-				JumpInSetUp(l);
-				this.level = l.getLevel();
-			}
+			Level l = new Level();
+			JumpInSetUp(l);
+			this.level = l.getLevel();
+			
 		}
 	}
 	
@@ -642,13 +640,29 @@ public class JumpIn {
 			return false;
 		}
 		if(e.getChosenPiece() instanceof Rabbit) {
-			processCommand(new Move(e.getFinalLocation1(), e.getInitialLocation1(), e.getChosenPiece()));
+			if(undo) {
+				undoRedoRabbit(e.getFinalLocation1(), e.getInitialLocation1(), e.getChosenPiece());
+			} else {
+				undoRedoRabbit(e.getInitialLocation1(), e.getFinalLocation1(), e.getChosenPiece());
+			}
 		} else {
-			Point[] initialLocation = {e.getFinalLocation1(), e.getFinalLocation2()};
-			Point[] finalLocation = {e.getInitialLocation1(), e.getInitialLocation2()};
-			processCommand(new Move (initialLocation, finalLocation, e.getChosenPiece()));
+			if(undo) {
+				undoRedoFox(e.getFinalLocation1(), e.getFinalLocation2(), e.getInitialLocation1(), e.getInitialLocation2(), e.getChosenPiece());
+			} else {
+				undoRedoFox(e.getInitialLocation1(), e.getInitialLocation2(), e.getFinalLocation1(), e.getFinalLocation2(), e.getChosenPiece());
+			}
 		}
 		return true;
+	}
+	
+	private void undoRedoFox(Point i1, Point i2, Point f1, Point f2, GameObject chosenPiece) {
+		Point[] initialLocation = {i1, i2};
+		Point[] finalLocation = {f1, f2};
+		processCommand(new Move (initialLocation, finalLocation, chosenPiece));
+	}
+	
+	private void undoRedoRabbit(Point i1, Point f1, GameObject chosenPiece) {
+		processCommand(new Move (i1, f1, chosenPiece));
 	}
 	
 	/**
