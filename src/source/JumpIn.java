@@ -572,23 +572,20 @@ public class JumpIn {
 	 * their orientation (vertical or horizontal) (value)
 	 */
 	public HashMap<ArrayList<Point>, String> getInitialFoxPositions() {
-//		if(newGameState) return levelSelector.getFoxInitialPositions();
-//		else {
-			HashMap<ArrayList<Point> ,String> map = new HashMap<ArrayList<Point>,String>();
-			for (int i = 0; i < NUM_ROWS; i++) {
-				for (int j = 0; j < NUM_COLUMNS; j++) {
-					String s = gameBoard[j][i].getName();
-					if (s != "" && s.charAt(0) == 'F') {
-						ArrayList<Point> pos = new ArrayList<Point>();
-						Fox f = (Fox) gameBoard[j][i];
-						pos.add(f.getCoordinate());
-						pos.add(f.getCoordinate2());
-						map.put(pos, f.getDirection());
-					}
+		HashMap<ArrayList<Point> ,String> map = new HashMap<ArrayList<Point>,String>();
+		for (int i = 0; i < NUM_ROWS; i++) {
+			for (int j = 0; j < NUM_COLUMNS; j++) {
+				String s = gameBoard[j][i].getName();
+				if (s != "" && s.charAt(0) == 'F') {
+					ArrayList<Point> pos = new ArrayList<Point>();
+					Fox f = (Fox) gameBoard[j][i];
+					pos.add(f.getCoordinate());
+					pos.add(f.getCoordinate2());
+					map.put(pos, f.getDirection());
 				}
 			}
-			return map;
-//		}
+		}
+		return map;
 	}
 	
 	public ArrayList<Point> getInitialPositions(char type){

@@ -1,5 +1,5 @@
 <JumpIn>
-<level>3</level>
+<level>4</level>
 <Rabbit>
 <name>R1</name>
 <x1>0</x1>

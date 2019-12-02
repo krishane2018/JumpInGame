@@ -2,16 +2,12 @@ package source;
 
 import java.awt.Point;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -52,7 +48,6 @@ public class LevelBuilder {
 
 			numLevels = list.getLength();
 		} catch (Exception e) {
-//			e.printStackTrace();
 			numLevels = 0;
 		}
 		return numLevels;
@@ -66,6 +61,8 @@ public class LevelBuilder {
 		JumpIn j = new JumpIn(levelBeingBuilt);
 		if (isValidGame(j)) {
 			try {
+				// This code removes the last line of the file (closing Levels tag), 
+				// so new level can be added on and then add closing tag after
 				RandomAccessFile f = new RandomAccessFile(filePath, "rw");
 				long length = f.length() - 1;
 				byte b;

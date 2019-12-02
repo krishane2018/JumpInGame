@@ -52,10 +52,9 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		String objectName = e.getActionCommand();
 		String objectName = ((SelectorButton) (e.getSource())).getTag();
 		if (objectName.equals("Mushroom") || objectName.equals("Rabbit")) {
-			changeState(objectName, false);
+			changeState(objectName, false, "");
 		} else if (objectName.equals("HFox")) {
 			changeState("Fox", false, "Horizontal");
 		} else if (objectName.equals("VFox")) {
@@ -77,8 +76,7 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 					Play.updateBoard("levels.xml", false, true, 1);
 					view.getMainMenu().showMenu();
 				} catch (IOException e1) {
-					// TODO CHANGEEE / add stuff
-					e1.printStackTrace();
+					view.displayError(2);
 				}
 			}
 		}
@@ -88,10 +86,6 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 		this.removeState = removeState;
 		this.objectName = objectName;
 		this.direction = direction;
-	}
-	
-	private void changeState(String objectName, boolean removeState) {
-		changeState(objectName, removeState, "");
 	}
 
 }
