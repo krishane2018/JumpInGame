@@ -170,7 +170,6 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 				Play.play(1);
 			}
 		}
-		
 	}
 	
 	/**
