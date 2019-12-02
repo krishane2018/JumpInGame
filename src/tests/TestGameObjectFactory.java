@@ -48,4 +48,21 @@ class TestGameObjectFactory {
 		factory.reduceCounter("mushroom");
 		assertTrue(factory.getGameObject(mushroom) == 0);
 	}
+	@Test
+	void testGetGameObjectMushroom() {
+		assertTrue(factory.getGameObject(new Point(1, 1), "Mushroom", "") instanceof GameObject);
+	}
+	@Test
+	void testGetGameObjectRabbit() {
+		assertTrue(factory.getGameObject(new Point(1, 1), "Rabbit", "") instanceof Rabbit);
+	}
+	@Test
+	void testGetGameObjectFoxVertical() {
+		assertTrue(factory.getGameObject(new Point(1, 1), "Fox", "Vertical") instanceof Fox);
+	}
+	@Test
+	void testGetGameObjectFoxHorizontal() {
+		assertTrue(factory.getGameObject(new Point(1, 1), "Fox", "Horizontal") instanceof Fox);
+	}
+
 }
