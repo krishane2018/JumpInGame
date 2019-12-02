@@ -31,4 +31,8 @@ class TestXMLHandler {
   void testIsholeFalse() {
     assertFalse(handler1.isHole(1, 2));
   }
+  @Test
+  void testGetLevel() {
+    assertEquals(handler1.getLevel, -1);
+  }
 }
