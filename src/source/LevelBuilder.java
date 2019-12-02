@@ -63,7 +63,6 @@ public class LevelBuilder {
 
 	public boolean saveLevel() {
 		JumpIn j = new JumpIn(levelBeingBuilt);
-		System.out.println("In save level " + j.getListeners().size());
 		if (isValidGame(j)) {
 			try {
 				RandomAccessFile f = new RandomAccessFile(filePath, "rw");
