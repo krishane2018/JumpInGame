@@ -121,15 +121,13 @@ public class MainMenu extends JFrame {
 		menu.setLayout(null);
 		play.setBounds(330, 250, 140, 50);
 		creator.setBounds(330,320,140,50);
-		exit1.setBounds(330, 390, 140, 50);
+		cont.setBounds(330,390,140,50);
+		exit1.setBounds(330, 460, 140, 50);
 		logo.setBounds(160, 0, 500, 300);
 		for(JButton button : buttons) {
 			menu.add(button);
 		}
 		menu.add(logo);
-		menu.add(play);
-		menu.add(creator);
-		menu.add(exit1);
 		menu.setBackground(new Color(152, 233, 233));
 	}
 	
