@@ -34,7 +34,6 @@ public class Play {
 	 */
 	public static void play(int level) {
 		Play.level = level;
-		if (!(level > 0 && level <= 3)) level = 1;
 		model = new JumpIn(level, false);
 		view = new JumpInView(model);
 		controller = new JumpInController(view, model);
@@ -46,39 +45,27 @@ public class Play {
 	 * controller and create a new model + controller.
 	 */
 	public static void nextLevel(String file) {
-		filename = file;
 		Play.level = level + 1;
 		if (Play.level > LevelBuilder.nextLevelNumber()) {
 			view.handleDone();
 		} else {
 			try {
-				changeBoard(true);
+				updateBoard(file, true, false, Play.level);
 			} catch (IOException e) {
 				//add something but shouldn't get here bc input = true
 			}
 		}
 	}	
 	
-	public static void loadGame(String file, boolean fromLevel, int level) throws IOException {
+	public static void updateBoard(String file, boolean nextLevel, boolean fromLevel, int level) throws IOException {
 		filename = file;
-		controller.removeListener();
-		if(fromLevel) {
-			model = importFromXMLWithLevel(filename, true, 1);
-		} else {
-			model = importFromXMLFile(filename);
-		}
-		view.setModel(model);
-		view.createNextBoard();
-		controller = new JumpInController(view, model);
-		view.getMMenu().showGame();
-	}
-	
-	private static void changeBoard(boolean nextLevel) throws IOException {
 		controller.removeListener();
 		if (nextLevel) {
 			model = new JumpIn(level, false);
+		} else if(fromLevel) {
+			model = importFromXML(filename, true, 1);
 		} else {
-			model = importFromXMLFile(filename);
+			importFromXML(filename, false, -2);
 		}
 		view.setModel(model);
 		view.createNextBoard();
@@ -86,11 +73,7 @@ public class Play {
 		view.getMMenu().showGame();
 	}
 	
-	private static JumpIn importFromXMLFile(String filename) throws IOException  {
-		return importFromXMLWithLevel(filename, false, -2);
-	}
-	
-	private static JumpIn importFromXMLWithLevel(String filename, boolean fromLevel, int level) throws IOException {
+	private static JumpIn importFromXML(String filename, boolean fromLevel, int level) throws IOException {
 		SAXParserFactory sax = SAXParserFactory.newInstance();
 		SAXParser parser;
 		try {
@@ -103,13 +86,13 @@ public class Play {
 			parser = sax.newSAXParser();
 			parser.parse(new File(filename), handler);
 			Level modelLevel = handler.getWantedLevel();
-			level = modelLevel.getLevel();
+			Play.level = modelLevel.getLevel();
 			model = new JumpIn (modelLevel);
 			return model;
 		} catch(SAXException e) {
 			view.showMainMenu();
 		} catch(ParserConfigurationException e) {
-			System.out.println("error2");
+			view.displayError(4);
 		}
 		return model;
 	}
@@ -123,10 +106,10 @@ public class Play {
 			reader.close();
 			return ans;
 		} catch (FileNotFoundException e) {
+			// If file doesn't exist - want to treat same way if it was empty
 			return true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// add stuff
 			return true;
 		}
 	}

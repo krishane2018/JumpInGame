@@ -33,7 +33,6 @@ public class JumpIn {
 
 	private Parser parser;
 	private int level;
-	private LevelSelector levelSelector;
 	public final static int NUM_ROWS = 5;
 	public final static int NUM_COLUMNS = 5;
 	private Point[] holes;
@@ -54,6 +53,10 @@ public class JumpIn {
 		
 	}
 	
+	public JumpIn(int level) {
+		this(level, false);
+	}
+	
 	public JumpIn(int level, boolean isSaved) {
 		this.level = level;
 		Level modelLevel;
@@ -62,6 +65,7 @@ public class JumpIn {
 			modelLevel = LevelSelector.getLevel(level, isSaved);
 			JumpInSetUp(modelLevel);
 		} catch (Exception e) {
+			// Get first level
 			Level l = new Level();
 			JumpInSetUp(l);
 			this.level = l.getLevel();
@@ -73,16 +77,11 @@ public class JumpIn {
 		listeners = l.getListeners();
 		System.out.println(listeners.size());
 		undoRedo = new UndoRedo();
-//		levelSelector = new LevelSelector(level, this);
 		gameBoard = l.getGameBoard();
 		holes = Level.HOLES;
 		parser = new Parser();
 		solverMoves = new LinkedList<Move>();
 		solver();
-	}
-	
-	public JumpIn(int level) {
-		this(level, false);
 	}
 
 	/**

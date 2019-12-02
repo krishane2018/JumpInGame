@@ -164,7 +164,7 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 			}
 		} else if (e.getActionCommand().equals("CONTINUE")) {
 			try {
-				Play.loadGame("saveLevel.txt", false, -2);
+				Play.updateBoard("saveLevel.txt", false, false, -2);
 			} catch (IOException e1) {
 				view.displayError(4);
 				Play.play(1);

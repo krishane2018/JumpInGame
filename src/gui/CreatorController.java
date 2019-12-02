@@ -74,7 +74,7 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 			if(!Play.fileIsEmpty("levels.xml")) {
 				view.enablePlay(true);
 				try {
-					Play.loadGame("levels.xml", true, 1);
+					Play.updateBoard("levels.xml", false, true, 1);
 					view.getMainMenu().showMenu();
 				} catch (IOException e1) {
 					// TODO CHANGEEE / add stuff
