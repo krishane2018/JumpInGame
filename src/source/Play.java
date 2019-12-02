@@ -1,6 +1,8 @@
 package source;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,7 +36,6 @@ public class Play {
 		Play.level = level;
 		if (!(level > 0 && level <= 3)) level = 1;
 		model = new JumpIn(level, false);
-		System.out.println(model);
 		view = new JumpInView(model);
 		controller = new JumpInController(view, model);
 	}
@@ -47,7 +48,9 @@ public class Play {
 	public static void nextLevel(String file) {
 		filename = file;
 		Play.level = level + 1;
-		if (Play.level > 3) {
+		System.out.print(LevelBuilder.nextLevelNumber() + " in play");
+		System.out.print(level + " level in play");
+		if (Play.level > LevelBuilder.nextLevelNumber()) {
 			view.handleDone();
 		} else {
 			try {
@@ -60,7 +63,6 @@ public class Play {
 	
 	public static void loadGame(String file) throws IOException {
 		filename = file;
-		if (!(level > 0 && level <= 3)) level = 1;
 		controller.removeListener();
 		model = importFromXMLFile(filename);
 		view.setModel(model);
@@ -76,7 +78,6 @@ public class Play {
 			model = new JumpIn(level, false);
 		} else {
 			model = importFromXMLFile(filename);
-			System.out.println(model.toString());
 		}
 		view.setModel(model);
 		view.createNextBoard();
@@ -94,15 +95,31 @@ public class Play {
 			Level modelLevel = handler.getWantedLevel();
 			level = modelLevel.getLevel();
 			model = new JumpIn (modelLevel);
-//			GameObject[][] board = modelLevel.getGameBoard();
-//			model.setGameBoard(board);
-			System.out.println(handler.toString());
 			return model;
 		} catch(SAXException e) {
-			
+			System.out.println("error");
+			view.showMainMenu();
+//			view.enableContinue(false);
 		} catch(ParserConfigurationException e) {
-			
+			System.out.println("error2");
 		}
 		return model;
+	}
+	
+	public static boolean fileIsEmpty(String filename) {
+		File file = new File(filename);
+		FileReader reader;
+		try {
+			reader = new FileReader(file);
+			boolean ans = reader.read() == -1;
+			reader.close();
+			return ans;
+		} catch (FileNotFoundException e) {
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		}
 	}
 }
