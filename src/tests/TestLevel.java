@@ -22,12 +22,12 @@ class TestLevel {
 	
 	@Test
 	void testGetLevel() {
-		assertTrue(level1.getLevel() = 1);
+		assertTrue(level1.getLevel() == 1);
 	}
 	@Test
 	void testSetLevel() {
 		level1.setLevel(3);
-		assertTrue(level1.getLevel() = 3);
+		assertTrue(level1.getLevel() == 3);
 	}
 	@Test
 	void testGetHoles() {
