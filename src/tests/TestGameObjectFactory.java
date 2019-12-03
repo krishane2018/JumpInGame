@@ -44,5 +44,9 @@ class TestGameObjectFactory {
 		assertTrue(factory.getGameObject(p, "Fox", "Horizontal") instanceof Fox);
 	}
 
-}
+	@Test
+	void testConstructor() {
+		assertNotNull(factory);
+	}
 
+}

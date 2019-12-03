@@ -1,5 +1,3 @@
-
-  
 package tests;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,6 +19,11 @@ class TestPlay {
 	@BeforeEach 
 	void setUp() throws Exception {
 		play1 =new Play();
+	}
+	
+	@Test
+	void test() {
+		assertTrue(Play.fileIsEmpty(""));
 	}
 	
 	@Test

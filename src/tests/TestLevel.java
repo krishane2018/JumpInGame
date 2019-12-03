@@ -1,4 +1,3 @@
-
 package tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -135,5 +134,3 @@ class TestLevel {
 	}
   
 }
-
-

@@ -445,5 +445,4 @@ class TestRabbit {
 		assertFalse(r1.equals(r2));
 	}
 	
-	
 }
