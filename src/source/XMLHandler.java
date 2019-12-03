@@ -1,7 +1,6 @@
 package source;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.xml.sax.SAXException;

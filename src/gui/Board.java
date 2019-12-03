@@ -9,7 +9,6 @@ import javax.swing.ImageIcon;
 
 import source.JumpIn;
 import source.Level;
-import source.LevelSelector;
 
 public class Board {
 	
