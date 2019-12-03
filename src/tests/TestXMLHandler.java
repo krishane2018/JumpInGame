@@ -19,9 +19,11 @@ import source.XMLHandler;
 
 class TestXMLHandler {
   
+	private XMLHandler handler1;
+	
   @BeforeEach
   void setUp() throws Exception {
-    XMLHandler handler1 = new XMLHandler(1); 
+    handler1 = new XMLHandler(1); 
   }
   @Test
   void testIsHoleTrue() {
@@ -33,6 +35,6 @@ class TestXMLHandler {
   }
   @Test
   void testGetLevel() {
-    assertEquals(handler1.getLevel, -1);
+    assertEquals(handler1.getLevel(), -1);
   }
 }

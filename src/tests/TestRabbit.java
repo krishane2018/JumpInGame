@@ -10,6 +10,7 @@ import java.util.HashSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import source.Fox;
 import source.GameObject;
 import source.JumpIn;
 import source.JumpInEvent;
@@ -18,7 +19,7 @@ import source.Rabbit;
 
 class TestRabbit {
 
-	GameObject[][] board;
+	private GameObject[][] board;
 
 	@BeforeEach
 	void setUp() {
@@ -396,7 +397,7 @@ class TestRabbit {
 	
 	@Test
 	void testToXML() {
-		Rabbit r1 = new Rabbit(new point(2, 3), "R1");
+		Rabbit r1 = new Rabbit(new Point(2, 3), "R1");
 		assertEquals(r1.toXML(), "<Rabbit>\n<name>R1</name>\n<x1>2</x1>\n<y1>3</y1>\n</Rabbit>");
 	}
 	

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import source.JumpIn;
+import source.Level;
 import source.LevelSelector;
 
 
@@ -30,8 +31,7 @@ class TestLevelSelector {
 		});
 	}*/
 	@Test
-	void testGetLevel() {
-		LevelSelector selector;
-		assertTrue(selector.getLevel(1, false) instanceof Level);
+	void testGetLevel() throws Exception {
+		assertTrue(LevelSelector.getLevel(1, false) instanceof Level);
 	}
 }

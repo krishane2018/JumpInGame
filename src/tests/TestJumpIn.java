@@ -2,7 +2,10 @@ package tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import java.util.Queue;
@@ -42,12 +45,6 @@ class TestJumpIn {
 
 	@AfterEach
 	void tearDown() throws Exception {
-	}
-
-	@Test
-	void testIsHole() {
-		assertEquals(true, jumpIn.isHole(0, 0)&&jumpIn.isHole(0, 4)
-				&&jumpIn.isHole(2, 2)&&jumpIn.isHole(4, 0)&&jumpIn.isHole(4, 4));
 	}
 	
 	@Test
@@ -100,28 +97,6 @@ class TestJumpIn {
 				+ "--------------------------\n";
 		
 		assertEquals(jumpIn3.toString(),level3);
-	}
-	
-	@Test
-	void testSetGetGameBoard1() {
-		LevelSelector level = new LevelSelector(1,jumpIn);
-		jumpIn.setGameBoard(level.getBoard());
-		assertEquals(level.getBoard(),jumpIn.getGameBoard());
-	}
-	
-	@Test
-	void testSetGetGameBoard2() {
-		JumpIn jumpIn = new JumpIn(2);
-		LevelSelector level = new LevelSelector(1,jumpIn);
-		jumpIn.setGameBoard(level.getBoard());
-		assertEquals(level.getBoard(),jumpIn.getGameBoard());
-	}
-	
-	@Test
-	void testSetGetGameBoard3() {
-		LevelSelector level = new LevelSelector(1,jumpIn3);
-		jumpIn3.setGameBoard(level.getBoard());
-		assertEquals(level.getBoard(),jumpIn3.getGameBoard());
 	}
 	
 	@Test
@@ -354,19 +329,21 @@ class TestJumpIn {
 		ArrayList<Point> posLevel3Foxes = new ArrayList<Point>();
 		posLevel3Foxes.add(new Point(1, 3));
 		posLevel3Foxes.add(new Point(1, 4));
-		foxMap.put(pos, "Vertical");
+		foxMap.put(posLevel3Foxes, "Vertical");
 		assertEquals(foxMap, jumpIn3.getInitialFoxPositions());
 	}
+	
 	@Test
 	void testToXML() {
-		String s = "<JumpIn>\n<level>1</level>\n<Rabbit>\n<name>R1</name>\n<x1>0</x1>\n<y1>2</y1>\n</Rabbit>\n<Mushroom>\n<name>M1</name>\n<x1>0</x1>\n<y1>1</y1>\n</Mushroom>\n</JumpIn>"
+		String s = "<JumpIn>\n<level>1</level>\n<Rabbit>\n<name>R1</name>\n<x1>0</x1>\n<y1>2</y1>\n</Rabbit>\n<Mushroom>\n<name>M1</name>\n<x1>0</x1>\n<y1>1</y1>\n</Mushroom>\n</JumpIn>";
 		assertEquals(jumpIn.toXML(), s);
 	}
-	@Test
-	void testExportToXMLFile() {
-		Play play1 = new Play(1)
-		String filePath = new File("").getAbsolutePath() + "\\emptyExportTest.xml";
-		jumpIn.exportToXMLFile(filePath);
-		assertEquals(play1.importFromXMLFile(filePath), jumpIn.toXML());
-	}
+	
+//	@Test
+//	void testExportToXMLFile() {
+//		Play play1 = new Play(1);
+//		String filePath = new File("").getAbsolutePath() + "\\emptyExportTest.xml";
+//		jumpIn.exportToXMLFile(filePath);
+//		assertEquals(play1.importFromXMLFile(filePath), jumpIn.toXML());
+//	}
 }
