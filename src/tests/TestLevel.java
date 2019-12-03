@@ -1,3 +1,4 @@
+
 package tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -116,4 +117,23 @@ class TestLevel {
 		level1.addListener(R1);
 		assertSame(level1.getListeners().get(0), R1);
 	}
+  @Test
+	void testToString() {
+		String board = "--------------------------\n"
+				+ "|   H|    |    |    |   H|\n"
+				+ "--------------------------\n"
+				+ "|    |    |    |    |    |\n"
+				+ "--------------------------\n"
+				+ "|    |    |   H|    |    |\n"
+				+ "--------------------------\n"
+				+ "|    |    |    |    |    |\n"
+				+ "--------------------------\n"
+				+ "|   H|    |    |    |   H|\n"
+				+ "--------------------------\n";
+		
+		assertEquals(level1.toString(),board);
+	}
+  
 }
+
+

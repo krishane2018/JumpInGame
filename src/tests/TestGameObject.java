@@ -73,7 +73,7 @@ class TestGameObject {
 			    new GameObject(new Point(1,5));
 			  });	
 	}
-	
+
 	@Test 
 	void testGetName() {
 		GameObject Mush1 = new GameObject(new Point(0, 1), "M1");
@@ -145,4 +145,5 @@ class TestGameObject {
 		GameObject m2 = new GameObject(new Point(2, 3), "M2");
 		assertFalse(m1.equals(m2));
 	}
+
 }

@@ -1,3 +1,4 @@
+
   
 package tests;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,17 +38,5 @@ class TestPlay {
 		String filePath = new File("").getAbsolutePath() + "\\levels.xml";
 		assertFalse(Play.fileIsEmpty(filePath));
 	}
-//	@Test
-//	void testImportFromXML() {
-//		String filePath = new File("").getAbsolutePath() + "\\levels.xml";
-//		JumpIn jump = new JumpIn(1, false);	
-//		assertEquals(jump, play1.importFromXMLFile(filePath));
-//	}
-//	@Test
-//	void testNextLevel() {
-//		String filePath = new File("").getAbsolutePath() + "\\levels.xml";
-//		JumpIn jump = new JumpIn(2, false);	
-//		play1.nextLevel(filePath);
-//		assertEquals(jump, play1.importFromXMLFile(filePath));
-//	}
 }
+
