@@ -15,28 +15,9 @@ class TestLevelSelector {
 	void setUp() throws Exception {
 		tester = new LevelSelector();
 	}
-	/*
-	@Test
 
-	void testLevelSelectorConstructorIllegalArgumentSubZero() {
-		assertThrows(IllegalArgumentException.class, () -> {
-			new LevelSelector(-1, new JumpIn(-1));
-		});
-	}
-
-	@Test
-	void testLevelSelectorConstructorIllegalArgumentAboveThree() {
-		assertThrows(IllegalArgumentException.class, () -> {
-			new LevelSelector(4, new JumpIn(4));
-		});
-	}*/
 	@Test
 	void testGetLevel() {
-		LevelSelector selector;
-		assertTrue(selector.getLevel(1, false) instanceof Level);
-
-	void testGetLevelNull() {
 		assertNotNull(tester);
-
 	}
 }
