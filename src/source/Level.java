@@ -1,3 +1,4 @@
+
 package source;
 
 import java.awt.Point;
@@ -45,6 +46,7 @@ public class Level {
 			Point p2 = f.getCoordinate2();
 			gameBoard[p2.y][p2.x] = f;
 		}
+		System.out.println((new JumpIn(this)).toString());
 	}
 	
 	public void removeGameObject (Point p) {
@@ -87,6 +89,10 @@ public class Level {
 		return false;
 	}
 
-
+	public String toString() {
+		return (new JumpIn(this)).toString();
+	}
+	
 
 }
+

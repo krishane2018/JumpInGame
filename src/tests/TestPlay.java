@@ -1,3 +1,4 @@
+
   
 package tests;
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,4 +47,10 @@ class TestPlay {
 		play1.nextLevel(filePath);
 		assertEquals(jump, play1.importFromXML(filePath));
 	}
+	@Test
+	void testFileIsEmptyTrue() {
+		assertTrue(Play.fileIsEmpty(""));
+	}
+
 }
+

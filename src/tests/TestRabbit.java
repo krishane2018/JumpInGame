@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import source.GameObject;
 import source.JumpIn;
 import source.JumpInEvent;
+import source.Level;
 import source.Rabbit;
 
 
@@ -342,7 +343,7 @@ class TestRabbit {
 		options.add(optionMaker(2, 0));
 		options.add(optionMaker(2, 4));
 
-		JumpIn game = new JumpIn(3);
+		JumpIn game = new JumpIn(new Level(3));
 		Point point1 = new Point(2, 3);
 		Point[] holes = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0), new Point(4, 4) };
 

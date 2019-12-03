@@ -5,18 +5,19 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import source.JumpIn;
 import source.LevelSelector;
-
-
 
 class TestLevelSelector {
 
+	private LevelSelector tester;
+
 	@BeforeEach
 	void setUp() throws Exception {
+		tester = new LevelSelector();
 	}
 	/*
 	@Test
+
 	void testLevelSelectorConstructorIllegalArgumentSubZero() {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new LevelSelector(-1, new JumpIn(-1));
@@ -33,5 +34,9 @@ class TestLevelSelector {
 	void testGetLevel() {
 		LevelSelector selector;
 		assertTrue(selector.getLevel(1, false) instanceof Level);
+
+	void testGetLevelNull() {
+		assertNotNull(tester);
+
 	}
 }
