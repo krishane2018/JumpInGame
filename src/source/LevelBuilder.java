@@ -23,8 +23,8 @@ public class LevelBuilder {
 
 	public Level levelBeingBuilt;
 	private GameObjectFactory factory;
-	private static final String filePath = new File("").getAbsolutePath() + "\\levels.xml";
-	private Point foxCoordinates;
+	private static String filePath = new File("").getAbsolutePath() + "\\levels.xml";
+	private Point foxCoordinate;
 	private ArrayList<LevelBuilderListener> listeners;
 
 	public LevelBuilder() {
@@ -94,7 +94,7 @@ public class LevelBuilder {
 	}
 	
 	public Point getFoxCoordinate2() {
-		return foxCoordinates;
+		return foxCoordinate;
 	}
 	
 	public boolean removeGameObject (Point p) {
@@ -126,7 +126,7 @@ public class LevelBuilder {
 		} else if (object.equalsIgnoreCase("Fox")) {
 			Fox f = (Fox) g;
 			Point p2 = f.getCoordinate2();
-			foxCoordinates = p2;
+			foxCoordinate = p2;
 			GameObject space2 = board[p2.y][p2.x];
 			if (validSpaceFox(space) && validSpaceFox(space2)) {
 				levelBeingBuilt.placeGameObject(f);
@@ -168,6 +168,10 @@ public class LevelBuilder {
 
 	private boolean validSpaceGameObject(GameObject space) {
 		return space.getName().equals("");
+	}
+
+	public ArrayList<LevelBuilderListener> getListeners() {
+		return listeners;
 	}
 	
 	
