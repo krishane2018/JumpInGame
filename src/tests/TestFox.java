@@ -1,5 +1,6 @@
 package tests;
 
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
@@ -445,8 +446,9 @@ class TestFox {
 		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
 		if (fox.getPosition()[0].equals(new Point(1, 1)) && fox.getPosition()[1].equals(new Point(1, 2))) {
 			assertTrue(true);
-		} else
+		} else {
 			fail();
+		}
 	}
 
 	@Test
