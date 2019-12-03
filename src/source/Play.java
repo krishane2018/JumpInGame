@@ -1,7 +1,6 @@
 package source;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -49,11 +48,15 @@ public class Play {
 		if (Play.level > LevelBuilder.nextLevelNumber()) {
 			view.handleDone();
 		} else {
-			updateBoard(file, true, false, Play.level);
+			try {
+				updateBoard(file, true, false, Play.level);
+			} catch (IOException e) {
+				view.displayError(4);
+			}
 		}
 	}	
 	
-	public static void updateBoard(String file, boolean nextLevel, boolean fromLevel, int level) {
+	public static void updateBoard(String file, boolean nextLevel, boolean fromLevel, int level) throws IOException {
 		filename = file;
 		controller.removeListener();
 		if (nextLevel) {
@@ -69,7 +72,7 @@ public class Play {
 		view.getMMenu().showGame();
 	}
 	
-	private static JumpIn importFromXML(String filename, boolean fromLevel, int level) {
+	private static JumpIn importFromXML(String filename, boolean fromLevel, int level) throws IOException {
 		SAXParserFactory sax = SAXParserFactory.newInstance();
 		SAXParser parser;
 		try {
@@ -105,11 +108,8 @@ public class Play {
 			boolean ans = reader.read() == -1;
 			reader.close();
 			return ans;
-		} catch (FileNotFoundException e) {
-			// If file doesn't exist - want to treat same way if it was empty
-			return true;
-		} catch (IOException e) {
-			// add stuff
+		} catch (Exception e) {
+			// Treat file not found / any error as it is empty (bc it's unreacheable)
 			return true;
 		}
 	}

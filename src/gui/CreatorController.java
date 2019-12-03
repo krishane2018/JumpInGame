@@ -46,7 +46,7 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 		GameButton b = (GameButton) e.getSource();
 		if (!removeState && !objectName.equals("")) {
 			builder.addGameObject(b.getCoordinate(), objectName, direction);
-		} else {
+		} else if (removeState) {
 			builder.removeGameObject(b.getCoordinate());
 		}
 	}
