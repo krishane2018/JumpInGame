@@ -19,22 +19,35 @@ import gui.CreatorView;
 
 public class LevelBuilder {
 
-	public Level levelBeingBuilt;
+	
+	private Level levelBeingBuilt;
 	private GameObjectFactory factory;
 	private static final String filePath = new File("").getAbsolutePath() + "\\levels.xml";
 	private Point foxCoordinates;
 	private ArrayList<LevelBuilderListener> listeners;
 
+	/**
+	 * Constructor to construct LevelBuilder objects.
+	 */
 	public LevelBuilder() {
 		levelBeingBuilt = new Level(nextLevelNumber() + 1);
 		factory = new GameObjectFactory();
 		listeners = new ArrayList<LevelBuilderListener>();
 	}
 
+	/**
+	 * Adds listener to LevelBuilder.
+	 * @param l A listener which listens to the events of this object.
+	 */
+	
 	public void addListener(LevelBuilderListener l) {
 		listeners.add(l);
 	}
 
+	/**
+	 * Returns the number of levels there are currently.
+	 * @return An integer representing the number of levels there are currently.
+	 */
 	public static int nextLevelNumber() {
 		int numLevels = -1;
 		try {
@@ -51,10 +64,19 @@ public class LevelBuilder {
 		return numLevels;
 	}
 
+	/**
+	 * Determines if a game can be solved and therefore is a valid game.
+	 * @param game Game which is being that it is solvable.
+	 * @return A boolean representing whether the game is valid or not.
+	 */
 	private boolean isValidGame(JumpIn game) {
 		return game.solver();
 	}
 
+	/**
+	 * Saves the level that is being built onto an XML file if it is valid.
+	 * @return A boolean representing whether there the level was saved to the XML file. 
+	 */
 	public boolean saveLevel() {
 		JumpIn j = new JumpIn(levelBeingBuilt);
 		if (isValidGame(j)) {
@@ -91,10 +113,19 @@ public class LevelBuilder {
 		return false;
 	}
 
+	/**
+	 * Returns the second coordinate of a Fox object.
+	 * @return A Point representing the second coordinate of the Fox object.
+	 */
 	public Point getFoxCoordinate2() {
 		return foxCoordinates;
 	}
 
+	/**
+	 * Removes a GameObject from the level at the point specified.
+	 * @param p The Point at which the user wants to remove a Game Object from.
+	 * @return A boolean representing whether a GameObject was removed.
+	 */
 	public boolean removeGameObject(Point p) {
 		GameObject[][] board = levelBeingBuilt.getGameBoard();
 		GameObject space = board[p.y][p.x];
@@ -111,6 +142,14 @@ public class LevelBuilder {
 		}
 	}
 
+	/**
+	 * Adds a specified GameObject at the specified point.
+	 * @param p Point where the GameObject will be added.
+	 * @param object Name of the class of the object that will be added.
+	 * @param direction Direction the object is facing.
+	 * @return A boolean representing whether a GameObject has been placed or not.
+	 */
+	
 	public boolean addGameObject(Point p, String object, String direction) {
 		object = object.toLowerCase();
 		GameObject g = factory.getGameObject(p, object, direction);
@@ -148,17 +187,31 @@ public class LevelBuilder {
 
 	}
 
+	/**
+	 * Updates the listeners after an event has happened.
+	 * @param g The GameObject which was affected by the event.
+	 * @param removeState Whether or not a GameObject has been removed from the board.
+	 */
 	private void updateListeners(GameObject g, boolean removeState) {
 		for (LevelBuilderListener l : listeners) {
 			l.handleEvent(g, removeState);
 		}
 	}
-
+	/**
+	 * Indicates whether or not a Fox can be placed into the specified space.  
+	 * @param space The GameObject currently located at the space the Fox is trying to be placed into.
+	 * @return A boolean representing whether or not a Fox can be placed at the specified space.
+	 */
 	private boolean validSpaceFox(GameObject space) {
 		List<Point> list = Arrays.asList(Level.HOLES);
 		return space.getName().equals("") && !list.contains(space.getCoordinate());
 	}
 
+	/**
+	 * Indicates whether or not a Mushroom/Rabbit can be placed into the specified space.  
+	 * @param space The GameObject currently located at the space the Mushroom/Rabbit is trying to be placed into.
+	 * @return A boolean representing whether or not a Mushroom/Rabbit can be placed at the specified space.
+	 */
 	private boolean validSpaceGameObject(GameObject space) {
 		return space.getName().equals("");
 	}
