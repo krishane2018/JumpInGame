@@ -432,9 +432,52 @@ class TestFox {
 		fox.setDirection("Horizontal");
 		assertEquals("Horizontal",fox.getDirection());
 	}
+
 	@Test
 	void testToXML() {
 		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
 		assertEquals(fox.toXML(), "<Fox>\n<name>F1</name>\n<x1>1</x1>\n<y1>1</y1>\n<x2>1</x2>\n<y2>2</y2>\n<direction>Vertical</direction>\n</Fox>");
 	}
+
+	
+	@Test
+	void testGetPosition() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		assertEquals(new Point[]{(1, 1),(1, 2)}, fox.getPosition());
+	}
+	
+	@Test
+	void testEqualsSameObject() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		assertTrue(fox.equals(fox));
+	}
+	
+	@Test
+	void testEqualsDiffCoord() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		Fox fox2 = new Fox(new Point(1, 2), new Point(1, 3), "F1", "Vertical");
+		assertFalse(fox.equals(fox2));
+	}
+	
+	@Test
+	void testEqualsDiffName() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		Fox fox2 = new Fox(new Point(1, 2), new Point(1, 2), "G1", "Vertical");
+		assertFalse(fox.equals(fox2));
+	}
+	
+	@Test
+	void testEqualsRabbit() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		Rabbit rabbit = new Rabbit(new Point(2, 3), "R1");
+		assertFalse(fox.equals(rabbit));
+	}
+	
+	@Test
+	void testEqualsNull() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		Object o = null;
+		assertFalse(fox.equals(o));
+	}
+
 }

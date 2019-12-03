@@ -10,10 +10,16 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ TestFox.class, 
         TestGameObject.class, 
+        TestGameObjectFactory.class,
+        TestJumpIn.class,
+        TestJumpInEvent.class,
+        TestLevel.class,
+        TestLevelBuilder.class,
         TestLevelSelector.class,
         TestMove.class,
         TestRabbit.class,
-        TestUndoRedo.class})
+        TestUndoRedo.class,
+        TestXMLHandler.class})
 public class AllTests {
 
 }

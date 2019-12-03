@@ -16,6 +16,8 @@ import source.Level;
 import source.LevelSelector;
 import source.Move;
 import source.Rabbit;
+import source.Level;
+import source.Play;
 
 /**
  * 
@@ -102,6 +104,7 @@ class TestJumpIn {
 		assertEquals(jumpIn3.toString(),level3);
 	}
 	
+
 //	@Test
 //	void testSetGetGameBoard1() {
 //		LevelSelector level = new LevelSelector();
@@ -124,6 +127,7 @@ class TestJumpIn {
 //		assertEquals(level.getBoard(),jumpIn3.getGameBoard());
 //	}
 	
+
 	@Test
 	void testSolverLevel1() {
 		Queue<Move> moves = jumpIn.getSolverMoves();
@@ -322,4 +326,50 @@ class TestJumpIn {
 		assertTrue(g[2][1] instanceof Fox);
 	}
 	
+	@Test
+	void testGetNumRows() {
+		assertEquals(jumpIn.getNumRows(), 5);
+	}
+	
+	@Test
+	void testGetNumColumns() {
+		assertEquals(jumpIn.getNumColumns(), 5);
+	}
+	
+	@Test
+	void testGetInitialPositionsMushroom() {
+		ArrayList<Point> posLevel1Mushrooms = new ArrayList<Point>();
+		posLevel1Mushrooms.add(new Point(0, 2));
+		posLevel1Mushrooms.add(new Point(0, 3));
+		posLevel1Mushrooms.add(new Point(1, 1));
+		assertEquals(posLevel1Mushrooms, jumpIn.getInitialMushroomPositions());
+	}
+	@Test
+	void testGetInitialPositionsRabbit() {
+		ArrayList<Point> posLevel1Rabbits = new ArrayList<Point>();
+		posLevel1Rabbits.add(new Point(0, 5));
+		posLevel1Rabbits.add(new Point(2, 0));
+		assertEquals(posLevel1Rabbits, jumpIn.getInitialRabbitPositions());
+	}
+	@Test
+	void testGetInitialFoxPositions() {
+		HashMap<ArrayList<Point> ,String> foxMap = new HashMap<ArrayList<Point>,String>();
+		ArrayList<Point> posLevel3Foxes = new ArrayList<Point>();
+		posLevel3Foxes.add(new Point(1, 3));
+		posLevel3Foxes.add(new Point(1, 4));
+		foxMap.put(pos, "Vertical");
+		assertEquals(foxMap, jumpIn3.getInitialFoxPositions());
+	}
+	@Test
+	void testToXML() {
+		String s = "<JumpIn>\n<level>1</level>\n<Rabbit>\n<name>R1</name>\n<x1>0</x1>\n<y1>2</y1>\n</Rabbit>\n<Mushroom>\n<name>M1</name>\n<x1>0</x1>\n<y1>1</y1>\n</Mushroom>\n</JumpIn>"
+		assertEquals(jumpIn.toXML(), s);
+	}
+	@Test
+	void testExportToXMLFile() {
+		Play play1 = new Play(1)
+		String filePath = new File("").getAbsolutePath() + "\\emptyExportTest.xml";
+		jumpIn.exportToXMLFile(filePath);
+		assertEquals(play1.importFromXMLFile(filePath), jumpIn.toXML());
+	}
 }
