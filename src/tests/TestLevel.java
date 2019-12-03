@@ -34,11 +34,6 @@ class TestLevel {
 		assertTrue(level1.getLevel() == 3);
 	}
 	
-//	@Test
-//	void testGetHoles() {
-//		assertEquals(level1.getHoles(), new Point[] { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0),
-//			new Point(4, 4) });
-//	}
 	@Test
 	void testGetGameBoard() {
 		JumpIn jumpIn1 = new JumpIn(1);
@@ -54,28 +49,6 @@ class TestLevel {
 		assertEquals(jumpIn1.toString(),jumpIn2.toString());
 	}
 	
-//	@Test
-//	void testPlaceGameObjectMushroom() {
-//		GameObject Mush1 = new GameObject(new Point(0, 1), "M1");
-//		level1.placeGameObject(Mush1);
-//		assertSame(level1.getGameBoard()[0][1], Mush1);
-//	}
-//	
-//	@Test
-//	void testPlaceGameObjectRabbit() {
-//		Rabbit R1 = new Rabbit(new Point(0, 1), "R1");
-//		level1.placeGameObject(R1);
-//		assertSame(level1.getGameBoard()[0][1], R1);
-//	}
-//	
-//	@Test
-//	void testPlaceGameObjectFox() {
-//		Fox F1 = new Fox(new Point(0, 1), new Point(0, 2), "F1", "Vertical");
-//		level1.placeGameObject(F1);
-//		assertSame(level1.getGameBoard()[0][1], F1);
-//		assertSame(level1.getGameBoard()[0][2], F1);
-//	}
-//	
 	@Test
 	void testRemoveGameObjectMushroom() {
 		GameObject Mush1 = new GameObject(new Point(0, 1), "M1");
