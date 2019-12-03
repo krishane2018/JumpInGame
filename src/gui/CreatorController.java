@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -59,9 +58,9 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GameButton b = (GameButton) e.getSource();
-		if (!removeState) {
+		if (!removeState && !objectName.equals("")) {
 			builder.addGameObject(b.getCoordinate(), objectName, direction);
-		} else {
+		} else if (removeState) {
 			builder.removeGameObject(b.getCoordinate());
 		}
 	}
@@ -71,36 +70,37 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		String objectName = e.getActionCommand();
 		String objectName = ((SelectorButton) (e.getSource())).getTag();
 		if (objectName.equals("Mushroom") || objectName.equals("Rabbit")) {
-			changeState(objectName, false);
+			changeState(objectName, false, "");
 		} else if (objectName.equals("HFox")) {
 			changeState("Fox", false, "Horizontal");
 		} else if (objectName.equals("VFox")) {
 			changeState("Fox", false, "Vertical");
 		} else if (objectName.equals("Save")) {
-			if (builder.saveLevel()) {
-				JOptionPane.showMessageDialog(view.getPanel(), "Level saved", null, JOptionPane.PLAIN_MESSAGE);
-			} else {
-				JOptionPane.showMessageDialog(view.getPanel(),
-						"This game is not winnable, please change the " + "level set-up", "Error",
-						JOptionPane.PLAIN_MESSAGE);
+			try {
+				if (builder.saveLevel()) {
+					JOptionPane.showMessageDialog(view.getPanel(), "Level saved", null ,JOptionPane.PLAIN_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(view.getPanel(), "This game is not winnable, please change the "
+							+ "level set-up", "Error",JOptionPane.PLAIN_MESSAGE);
+				}	
+			} catch (Exception e1) {
+				view.displayError(1);
 			}
 		} else if (objectName.equals("Remove")) {
 			removeState = true;
 		} else if (objectName.equals("Menu")) {
-			view.getMainMenu().showMenu();
-			if (!Play.fileIsEmpty("levels.xml")) {
+			if(!Play.fileIsEmpty("levels.xml")) {
 				view.enablePlay(true);
 				try {
-					Play.loadGame("levels.xml");
+					Play.updateBoard("levels.xml", false, true, 1);
 					view.getMainMenu().showMenu();
 				} catch (IOException e1) {
-					// TODO CHANGEEE / add stuff
-					e1.printStackTrace();
+					view.displayError(2);
 				}
 			}
+			view.getMainMenu().showMenu();
 		}
 	}
 
@@ -115,6 +115,7 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 		this.objectName = objectName;
 		this.direction = direction;
 	}
+
 
 	/**
 	 * switches states

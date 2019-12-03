@@ -9,8 +9,8 @@ public class Level {
 	private ArrayList<JumpInListener> listeners;
 	private int level;
 	
-	public final static int NUM_ROWS = 5;
-	public final static int NUM_COLUMNS = 5;
+	public final static int NUM_ROWS = JumpIn.NUM_ROWS;
+	public final static int NUM_COLUMNS = JumpIn.NUM_COLUMNS;
 	public static final Point[] HOLES = { new Point(0, 0), new Point(2, 2), new Point(0, 4), new Point(4, 0),
 			new Point(4, 4) };
 	

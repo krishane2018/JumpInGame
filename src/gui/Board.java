@@ -9,7 +9,6 @@ import javax.swing.ImageIcon;
 
 import source.JumpIn;
 import source.Level;
-import source.LevelSelector;
 
 public class Board {
 	
@@ -29,7 +28,6 @@ public class Board {
 		// Initialize Rabbit Images
 		ImageIcon rabbits[] = {Resources.BROWN_RABBIT, Resources.GREY_RABBIT, Resources.WHITE_RABBIT};
 		ImageIcon rabbitsInHole[] = {Resources.HOLE_WITH_BROWN, Resources.HOLE_WITH_GREY, Resources.HOLE_WITH_WHITE};
-		System.out.println(model);
 		g = iterateThroughImages(rabbits, rabbitsInHole, model.getInitialRabbitPositions(), g);
 		
 		//Initialize Mushroom Images

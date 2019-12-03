@@ -35,7 +35,6 @@ public class Fox extends MovableAnimal {
 		}
 		this.direction = direction;
 		Point[] points = correctPointOrdering(new Point[] {p1, p2});
-		System.out.println(Arrays.toString(points));
 		p1.setLocation(points[0]);
 		p2.setLocation(points[1]);
 
