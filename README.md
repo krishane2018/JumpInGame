@@ -23,8 +23,6 @@ press the hint button.
 
 
 Changes:
-We added an undo and a redo option to the game, and also a hint option. This allows for moves to be 
-undone and then redone, and also for the game to give the user hints of what move to do.
-This required the creation of the UndoRedo class, and the test cases for this class. Changes were
-also made to existing classes to include the UndoRedo logic and the solver. We also seperated the 
-classes into seperate packages.
+We added save and load options to the game, allowing a levl to be saved and then loaded to be played later. 
+This required the creation of Level, LevelBuilder, XMLHandler, GameObjectFactory, and Play, along 
+with the tests for classes and changes to existing classes to allow for save and load features.
