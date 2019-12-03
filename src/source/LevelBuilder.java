@@ -87,7 +87,7 @@ public class LevelBuilder {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
+				levelBeingBuilt.setLevel(levelBeingBuilt.getLevel()+1);
 				return true;
 		}
 		return false;
@@ -166,13 +166,11 @@ public class LevelBuilder {
 		return space.getName().equals("") && !list.contains(space.getCoordinate());
 	}
 
-
 	private boolean validSpaceGameObject(GameObject space) {
 		return space.getName().equals("");
 	}
 	
 	
-
 
 //	public static void main(String[] args) {
 //		String direction;
