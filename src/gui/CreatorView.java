@@ -20,8 +20,8 @@ import source.Rabbit;
 
 /**
  * 
- * This Class is the panel for the creator view. It is one panel containing
- * two panels, the side panel and the board, and sets up the buttons.
+ * This Class is the panel for the creator view. It is one panel containing two
+ * panels, the side panel and the board, and sets up the buttons.
  * 
  * @author Kush Gopeechund
  *
@@ -38,10 +38,11 @@ public class CreatorView implements LevelBuilderListener {
 
 	/**
 	 * Sets up view
+	 * 
 	 * @param m
 	 */
 	public CreatorView(MainMenu m) {
-		this.mainMenu=m;
+		this.mainMenu = m;
 		buttons = new GameButton[ROWS][COLS];
 		g = new GridLayout(ROWS, COLS, 0, 0);
 		panel = new JPanel(new BorderLayout());
@@ -52,11 +53,11 @@ public class CreatorView implements LevelBuilderListener {
 		hFox = new SelectorButton("", "HFox");
 		vFox = new SelectorButton("", "VFox");
 		remove = new SelectorButton("REMOVE", "Remove");
-		remove.setPreferredSize(new Dimension(145,50));
+		remove.setPreferredSize(new Dimension(145, 50));
 		save = new SelectorButton("SAVE", "Save");
-		save.setPreferredSize(new Dimension(145,50));
+		save.setPreferredSize(new Dimension(145, 50));
 		menu = new SelectorButton("GO BACK", "Menu");
-		menu.setPreferredSize(new Dimension(145,50));
+		menu.setPreferredSize(new Dimension(145, 50));
 
 		buttonList = new ArrayList<SelectorButton>();
 
@@ -113,6 +114,7 @@ public class CreatorView implements LevelBuilderListener {
 
 	/**
 	 * getter for panel
+	 * 
 	 * @return
 	 */
 	public JPanel getPanel() {
@@ -121,6 +123,7 @@ public class CreatorView implements LevelBuilderListener {
 
 	/**
 	 * Getter for buttons
+	 * 
 	 * @return
 	 */
 	public GameButton[][] getButtons() {
@@ -129,14 +132,16 @@ public class CreatorView implements LevelBuilderListener {
 
 	/**
 	 * Getter for button list
+	 * 
 	 * @return
 	 */
 	public ArrayList<SelectorButton> getButtonList() {
 		return buttonList;
 	}
-	
+
 	/**
 	 * Getter for the main menu
+	 * 
 	 * @return
 	 */
 	public MainMenu getMainMenu() {
@@ -150,9 +155,9 @@ public class CreatorView implements LevelBuilderListener {
 	public void handleEvent(GameObject piece, boolean removeState) {
 		GameButton b = this.buttons[piece.getX1()][piece.getY1()];
 		if (piece instanceof Rabbit && !removeState) {
-			setIconHelper(b,Resources.HOLE_WITH_BROWN,Resources.BROWN_RABBIT);
+			setIconHelper(b, Resources.HOLE_WITH_BROWN, Resources.BROWN_RABBIT);
 		} else if (piece instanceof Fox && !removeState) {
-			Fox f = (Fox)piece;
+			Fox f = (Fox) piece;
 			if (f.getDirection().equals("Vertical")) {
 				setIconHelperFox(b, piece, Resources.FOX_VERTICAL2, Resources.FOX_VERTICAL1);
 			} else {
@@ -160,22 +165,22 @@ public class CreatorView implements LevelBuilderListener {
 			}
 		} else if (piece.getName().charAt(0) == 'M' && !removeState) {
 			setIconHelper(b, Resources.HOLE_WITH_MUSHROOM, Resources.MUSHROOM);
-		} else if (Level.isHole(b.getCoordinate().x,b.getCoordinate().y) && removeState) {
+		} else if (Level.isHole(b.getCoordinate().x, b.getCoordinate().y) && removeState) {
 			b.setIcon(Resources.HOLE);
 		} else if (removeState) {
 			b.setIcon(Resources.GREEN_CIRCLE);
 			if (piece instanceof Fox) {
-				setIconHelperFox(b, piece,Resources.GREEN_CIRCLE,Resources.GREEN_CIRCLE);
+				setIconHelperFox(b, piece, Resources.GREEN_CIRCLE, Resources.GREEN_CIRCLE);
 			}
 		}
 	}
-	
+
 	private void setIconHelperFox(GameButton b, GameObject piece, ImageIcon first, ImageIcon second) {
-		Fox f = (Fox)piece;
+		Fox f = (Fox) piece;
 		b.setIcon(first);
 		this.buttons[f.getX2()][f.getY2()].setIcon(second);
 	}
-	
+
 	private void setIconHelper(GameButton b, ImageIcon withHole, ImageIcon normal) {
 		if (Level.isHole(b.getCoordinate().x, b.getCoordinate().y)) {
 			b.setIcon(withHole);
@@ -183,11 +188,14 @@ public class CreatorView implements LevelBuilderListener {
 			b.setIcon(normal);
 		}
 	}
-	
+
 	public static void displayError(int i) {
-		if ( i == 1 ) JOptionPane.showMessageDialog(null, "Could not save level");
-		else if ( i == 2 ) JOptionPane.showMessageDialog(null, "Could not load game, please check");
-		else return;
+		if (i == 1)
+			JOptionPane.showMessageDialog(null, "Could not save level");
+		else if (i == 2)
+			JOptionPane.showMessageDialog(null, "Could not load game, please check");
+		else
+			return;
 	}
 
 	/**
