@@ -24,12 +24,14 @@ import source.Rabbit;
  */
 class TestJumpIn {
 	private JumpIn jumpIn;
+	private JumpIn jumpIn2;
 	private JumpIn jumpIn3;
 	private Point inRabbit, fRabbit, inFox, fFox;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		jumpIn = new JumpIn(1);
+		jumpIn2 = new JumpIn(2);
 		jumpIn3 = new JumpIn(3);
 		inRabbit = new Point(0,4);
 		fRabbit = new Point(0,1);
@@ -38,45 +40,44 @@ class TestJumpIn {
 		jumpIn.setUndoState(false);
 		jumpIn3.setUndoState(false);
 	}
-
 	@AfterEach
 	void tearDown() throws Exception {
 	}
 	
-//	@Test
-//	void testToStringLevel1() {
-//		String level1 = "--------------------------\n"
-//				+ "|   H|    |  R1|    |   H|\n"
-//				+ "--------------------------\n"
-//				+ "|    |  M3|    |    |    |\n"
-//				+ "--------------------------\n"
-//				+ "|  M1|    |   H|    |    |\n"
-//				+ "--------------------------\n"
-//				+ "|  M2|    |    |    |    |\n"
-//				+ "--------------------------\n"
-//				+ "| R2H|    |    |    |   H|\n"
-//				+ "--------------------------\n";
-//		
-//		assertEquals(jumpIn.toString(),level1);
-//	}
+ 	@Test
+  	void testToStringLevel1() {
+  		String level1 = "--------------------------\n"
+  				+ "|   H|    |  R1|    |   H|\n"
+ 				+ "--------------------------\n"
+  				+ "|    |  M3|    |    |    |\n"
+  				+ "--------------------------\n"
+  				+ "|  M1|    |   H|    |    |\n"
+  				+ "--------------------------\n"
+  				+ "|  M2|    |    |    |    |\n"
+  				+ "--------------------------\n"
+ 				+ "| R2H|    |    |    |   H|\n"
+ 				+ "--------------------------\n";
+ 		
+ 		assertEquals(jumpIn.toString(),level1);
+ 	}
 	
-//	@Test
-//	void testToStringLevel2() {
-//		jumpIn = new JumpIn(2);
-//		String level2 = "--------------------------\n"
-//				+ "| R1H|  M1|    |    |   H|\n"
-//				+ "--------------------------\n"
-//				+ "|    |    |  M2|    |    |\n"
-//				+ "--------------------------\n"
-//				+ "|    |  M3|   H|  R2|    |\n"
-//				+ "--------------------------\n"
-//				+ "|    |    |    |    |    |\n"
-//				+ "--------------------------\n"
-//				+ "|   H|    |    |    |   H|\n"
-//				+ "--------------------------\n";
-//		
-//		assertEquals(jumpIn.toString(),level2);
-//	}
+ 	@Test
+ 	void testToStringLevel2() {
+ 		jumpIn = new JumpIn(2);
+ 		String level2 = "--------------------------\n"
+ 				+ "| R1H|  M1|    |    |   H|\n"
+ 				+ "--------------------------\n"
+ 				+ "|    |    |  M2|    |    |\n"
+ 				+ "--------------------------\n"
+ 				+ "|    |  M3|   H|  R2|    |\n"
+ 				+ "--------------------------\n"
+ 				+ "|    |    |    |    |    |\n"
+ 				+ "--------------------------\n"
+ 				+ "|   H|    |    |    |   H|\n"
+ 				+ "--------------------------\n";
+ 		
+ 		assertEquals(jumpIn.toString(),level2);
+ 	}
 	
 	@Test
 	void testToStringLevel3() {
