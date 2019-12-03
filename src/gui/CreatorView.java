@@ -16,6 +16,14 @@ import source.LevelBuilder;
 import source.LevelBuilderListener;
 import source.Rabbit;
 
+/**
+ * 
+ * This Class is the panel for the creator view. It is one panel containing
+ * two panels, the side panel and the board, and sets up the buttons.
+ * 
+ * @author Kush Gopeechund
+ *
+ */
 public class CreatorView implements LevelBuilderListener {
 	private GameButton[][] buttons;
 	private SelectorButton mushroom, rabbit, hFox, vFox, remove, save, menu;
@@ -26,6 +34,10 @@ public class CreatorView implements LevelBuilderListener {
 	private ArrayList<SelectorButton> buttonList;
 	private MainMenu m;
 
+	/**
+	 * Sets up view
+	 * @param m
+	 */
 	public CreatorView(MainMenu m) {
 		this.m=m;
 		buttons = new GameButton[ROWS][COLS];
@@ -65,6 +77,9 @@ public class CreatorView implements LevelBuilderListener {
 		CreatorController controller = new CreatorController(this, b);
 	}
 
+	/**
+	 * Setting the side panel
+	 */
 	private void setUpSidePanel() {
 		mushroom.setIcon(Resources.MUSHROOM);
 		sidePanel.add(mushroom);
@@ -80,6 +95,9 @@ public class CreatorView implements LevelBuilderListener {
 		sidePanel.setPreferredSize(new Dimension(160, 800));
 	}
 
+	/**
+	 * Setting up the grid
+	 */
 	private void setUpCreator() {
 		creator.setLayout(g);
 		for (int i = 0; i < ROWS; i++) {
@@ -91,22 +109,41 @@ public class CreatorView implements LevelBuilderListener {
 		creator.setPreferredSize(new Dimension(800, 800));
 	}
 
+	/**
+	 * getter for panel
+	 * @return
+	 */
 	public JPanel getPanel() {
 		return panel;
 	}
 
+	/**
+	 * Getter for buttons
+	 * @return
+	 */
 	public GameButton[][] getButtons() {
 		return buttons;
 	}
 
+	/**
+	 * Getter for button list
+	 * @return
+	 */
 	public ArrayList<SelectorButton> getButtonList() {
 		return buttonList;
 	}
 	
+	/**
+	 * Getter for the main menu
+	 * @return
+	 */
 	public MainMenu getMainMenu() {
 		return m;
 	}
 
+	/**
+	 * Handles events of adding and removing game objects
+	 */
 	@Override
 	public void handleEvent(GameObject piece, boolean removeState) {
 		GameButton b = this.buttons[piece.getX1()][piece.getY1()];

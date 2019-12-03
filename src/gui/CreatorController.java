@@ -14,6 +14,13 @@ import source.JumpIn;
 import source.LevelBuilder;
 import source.Play;
 
+/**
+ * 
+ * Controller for the creator view
+ * 
+ * @author Kush Gopeechund
+ *
+ */
 public class CreatorController extends MouseAdapter implements ActionListener, MouseListener {
 
 	private CreatorView view;
@@ -23,6 +30,11 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 	private boolean removeState;
 	private GameButton[][] board;
 
+	/**
+	 * 
+	 * @param view
+	 * @param builder
+	 */
 	public CreatorController(CreatorView view, LevelBuilder builder) {
 		this.view = view;
 		board = view.getButtons();
@@ -40,6 +52,10 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 		removeState = false;
 	}
 
+	/**
+	 * depending on whether an object is being removed or added, it does the desired
+	 * action
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GameButton b = (GameButton) e.getSource();
@@ -50,6 +66,9 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 		}
 	}
 
+	/**
+	 * depending on the event, this method handles it
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 //		String objectName = e.getActionCommand();
@@ -62,16 +81,17 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 			changeState("Fox", false, "Vertical");
 		} else if (objectName.equals("Save")) {
 			if (builder.saveLevel()) {
-				JOptionPane.showMessageDialog(view.getPanel(), "Level saved", null ,JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(view.getPanel(), "Level saved", null, JOptionPane.PLAIN_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(view.getPanel(), "This game is not winnable, please change the "
-						+ "level set-up", "Error",JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(view.getPanel(),
+						"This game is not winnable, please change the " + "level set-up", "Error",
+						JOptionPane.PLAIN_MESSAGE);
 			}
 		} else if (objectName.equals("Remove")) {
 			removeState = true;
 		} else if (objectName.equals("Menu")) {
 			view.getMainMenu().showMenu();
-			if(!Play.fileIsEmpty("levels.xml")) {
+			if (!Play.fileIsEmpty("levels.xml")) {
 				view.enablePlay(true);
 				try {
 					Play.loadGame("levels.xml");
@@ -83,13 +103,24 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 			}
 		}
 	}
-	
+
+	/**
+	 * switches state
+	 * @param objectName
+	 * @param removeState
+	 * @param direction
+	 */
 	private void changeState(String objectName, boolean removeState, String direction) {
 		this.removeState = removeState;
 		this.objectName = objectName;
 		this.direction = direction;
 	}
-	
+
+	/**
+	 * switches states
+	 * @param objectName
+	 * @param removeState
+	 */
 	private void changeState(String objectName, boolean removeState) {
 		changeState(objectName, removeState, "");
 	}
