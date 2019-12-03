@@ -54,6 +54,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		this.mainMenu = new MainMenu(this);
 		if(model.getLevel() < 1) {
 			enablePlay(false);
+			displayError(6);
 		} else if (Play.fileIsEmpty("saveLevel.txt")) {
 			mainMenu.enableContinue(false);
 		}
@@ -296,6 +297,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		else if ( i == 3 ) JOptionPane.showMessageDialog(null, "Could not save game");
 		else if ( i == 4 ) JOptionPane.showMessageDialog(null, "Could not load game");
 		else if ( i == 5 ) JOptionPane.showMessageDialog(null, "Could not load saved game - level 1 has been loaded");
+		else if ( i == 6 ) JOptionPane.showMessageDialog(null, "Game does not have any levels. Please create a level by clicking creator.");
 		else return;
 	}
 	

@@ -49,15 +49,11 @@ public class Play {
 		if (Play.level > LevelBuilder.nextLevelNumber()) {
 			view.handleDone();
 		} else {
-			try {
-				updateBoard(file, true, false, Play.level);
-			} catch (IOException e) {
-				//add something but shouldn't get here bc input = true
-			}
+			updateBoard(file, true, false, Play.level);
 		}
 	}	
 	
-	public static void updateBoard(String file, boolean nextLevel, boolean fromLevel, int level) throws IOException {
+	public static void updateBoard(String file, boolean nextLevel, boolean fromLevel, int level) {
 		filename = file;
 		controller.removeListener();
 		if (nextLevel) {
@@ -73,7 +69,7 @@ public class Play {
 		view.getMMenu().showGame();
 	}
 	
-	private static JumpIn importFromXML(String filename, boolean fromLevel, int level) throws IOException {
+	private static JumpIn importFromXML(String filename, boolean fromLevel, int level) {
 		SAXParserFactory sax = SAXParserFactory.newInstance();
 		SAXParser parser;
 		try {
@@ -84,7 +80,11 @@ public class Play {
 				handler = new XMLHandler();
 			}	
 			parser = sax.newSAXParser();
-			parser.parse(new File(filename), handler);
+			try {
+				parser.parse(new File(filename), handler);
+			} catch (IOException e) {
+				view.displayError(4);
+			}
 			Level modelLevel = handler.getWantedLevel();
 			Play.level = modelLevel.getLevel();
 			model = new JumpIn (modelLevel);

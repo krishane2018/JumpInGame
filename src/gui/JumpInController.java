@@ -146,6 +146,14 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		} else if (e.getActionCommand().equals("hint")) {
 			view.showHint();
 		} else if (e.getActionCommand().equals("menu")) {
+			if(!Play.fileIsEmpty("levels.xml")) {
+				view.enablePlay(true);
+				try {
+					Play.updateBoard("levels.xml", false, true, 1);
+				} catch (IOException e1) {
+					view.displayError(2);
+				}
+			}
 			view.showMainMenu();
 		}else if (e.getActionCommand().equals("PLAY!")) {
 			view.getMMenu().showGame();
@@ -159,7 +167,9 @@ public class JumpInController extends MouseAdapter implements MouseListener, Act
 		} else if (e.getActionCommand().equals("save")) {
 			try {
 				this.filename = model.exportToXMLFile("saveLevel.txt");
-			} catch (Exception e1) {
+			} catch (IOException e1) {
+				view.displayError(3);
+			} catch (Exception e2) {
 				view.displayError(3);
 			}
 		} else if (e.getActionCommand().equals("CONTINUE")) {

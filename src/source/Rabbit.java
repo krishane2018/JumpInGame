@@ -181,7 +181,6 @@ public class Rabbit extends MovableAnimal {
 
 	@Override
 	public Point getPosition() {
-		// TODO Auto-generated method stub
 		return getCoordinate();
 	}
 	

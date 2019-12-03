@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,7 +44,7 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GameButton b = (GameButton) e.getSource();
-		if (!removeState) {
+		if (!removeState && !objectName.equals("")) {
 			builder.addGameObject(b.getCoordinate(), objectName, direction);
 		} else {
 			builder.removeGameObject(b.getCoordinate());
@@ -60,16 +61,19 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 		} else if (objectName.equals("VFox")) {
 			changeState("Fox", false, "Vertical");
 		} else if (objectName.equals("Save")) {
-			if (builder.saveLevel()) {
-				JOptionPane.showMessageDialog(view.getPanel(), "Level saved", null ,JOptionPane.PLAIN_MESSAGE);
-			} else {
-				JOptionPane.showMessageDialog(view.getPanel(), "This game is not winnable, please change the "
-						+ "level set-up", "Error",JOptionPane.PLAIN_MESSAGE);
+			try {
+				if (builder.saveLevel()) {
+					JOptionPane.showMessageDialog(view.getPanel(), "Level saved", null ,JOptionPane.PLAIN_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(view.getPanel(), "This game is not winnable, please change the "
+							+ "level set-up", "Error",JOptionPane.PLAIN_MESSAGE);
+				}	
+			} catch (Exception e1) {
+				view.displayError(1);
 			}
 		} else if (objectName.equals("Remove")) {
 			removeState = true;
 		} else if (objectName.equals("Menu")) {
-			view.getMainMenu().showMenu();
 			if(!Play.fileIsEmpty("levels.xml")) {
 				view.enablePlay(true);
 				try {
@@ -79,6 +83,7 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 					view.displayError(2);
 				}
 			}
+			view.getMainMenu().showMenu();
 		}
 	}
 	
