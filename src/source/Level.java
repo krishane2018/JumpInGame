@@ -1,4 +1,3 @@
-
 package source;
 
 import java.awt.Point;
@@ -95,4 +94,3 @@ public class Level {
 	
 
 }
-
