@@ -99,13 +99,19 @@ public class JumpIn {
 	 */
 	public boolean solver() {
 		ArrayList<JumpInListener> viewListeners = new ArrayList<JumpInListener>();
+		ArrayList<JumpInListener> foxListeners = new ArrayList<JumpInListener>();
 		for (int i = 0; i < listeners.size(); i++) {
 			JumpInListener l = listeners.get(i);
 			if (l instanceof JumpInView) {
 				viewListeners.add(listeners.remove(i));
 				i--;
 			}
+			else if (l instanceof Fox) {
+				foxListeners.add(listeners.remove(i));
+				i--;
+			}
 		}
+		listeners.addAll(foxListeners);
 		boolean isSolved = solverHelper(new Stack<Move>(), new Stack<ArrayList<Point>>());
 		listeners.addAll(viewListeners);
 		undoRedo.clearRedo();

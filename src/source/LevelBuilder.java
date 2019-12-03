@@ -15,6 +15,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import gui.CreatorView;
+
 public class LevelBuilder {
 
 	public Level levelBeingBuilt;
@@ -24,10 +26,6 @@ public class LevelBuilder {
 	private ArrayList<LevelBuilderListener> listeners;
 
 	public LevelBuilder() {
-		reset();
-	}
-
-	private void reset() {
 		levelBeingBuilt = new Level(nextLevelNumber() + 1);
 		factory = new GameObjectFactory();
 		listeners = new ArrayList<LevelBuilderListener>();
@@ -57,31 +55,37 @@ public class LevelBuilder {
 		return game.solver();
 	}
 
-	public boolean saveLevel() throws Exception,IOException {
+	public boolean saveLevel() {
 		JumpIn j = new JumpIn(levelBeingBuilt);
 		if (isValidGame(j)) {
-			// This code removes the last line of the file (closing Levels tag),
-			// so new level can be added on and then add closing tag after
-			RandomAccessFile f = new RandomAccessFile(filePath, "rw");
-			long length = f.length() - 1;
-			byte b;
-			do {
-				length -= 1;
-				f.seek(length);
-				b = f.readByte();
-			} while (b != 10);
-			f.setLength(length + 1);
-			f.close();
+			try {
+				RandomAccessFile f = new RandomAccessFile(filePath, "rw");
+				long length = f.length() - 1;
+				byte b;
+				do {
+					length -= 1;
+					f.seek(length);
+					b = f.readByte();
+				} while (b != 10);
+				f.setLength(length + 1);
+				f.close();
+			} catch (Exception e) {
+				// Leave empty - works as intended
+			}
 			File file = new File(filePath);
 			String xml = j.toXML() + "\n</Levels>";
 			FileWriter writer;
-			if (Play.fileIsEmpty(filePath)) {
-				xml = "<Levels>\n" + xml;
+			try {
+				if (Play.fileIsEmpty(filePath)) {
+					xml = "<Levels>\n" + xml;
+				}
+				writer = new FileWriter(file, true);
+				writer.write(xml);
+				writer.close();
+			} catch (IOException e) {
+				CreatorView.displayError(1);
 			}
-			writer = new FileWriter(file, true);
-			writer.write(xml);
-			writer.close();
-			reset();
+			levelBeingBuilt.setLevel(levelBeingBuilt.getLevel() + 1);
 			return true;
 		}
 		return false;
@@ -131,9 +135,9 @@ public class LevelBuilder {
 		} else {
 			if (validSpaceGameObject(space)) {
 				levelBeingBuilt.placeGameObject(g);
-				if(g instanceof Fox || g instanceof Rabbit) {
+				if (g instanceof Fox || g instanceof Rabbit) {
 					levelBeingBuilt.addListener((MovableAnimal) g);
-				} 
+				}
 				updateListeners(g, false);
 				return true;
 			} else {

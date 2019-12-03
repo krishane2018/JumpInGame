@@ -323,7 +323,7 @@ public class JumpInView extends JFrame implements JumpInListener {
 		Move hint = model.getSolverMoves().peek();
 		String name = hint.getNameType();
 		String selectedAnimalType = hint.getChosenAnimal().getClass().getSimpleName();
-		String s = "Hint: Move " + name + " " + selectedAnimalType + " to the square with the coordinates of " + hint.pointToString();
+		String s = "Hint: Move " + name + selectedAnimalType + " to the square with the coordinates of " + hint.pointToString();
 		JOptionPane.showMessageDialog(null, s);
 	}
 	

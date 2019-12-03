@@ -147,7 +147,7 @@ public class CreatorView implements LevelBuilderListener {
 		}
 	}
 	
-	public void displayError(int i) {
+	public static void displayError(int i) {
 		if ( i == 1 ) JOptionPane.showMessageDialog(null, "Could not save level");
 		else if ( i == 2 ) JOptionPane.showMessageDialog(null, "Could not load game, please check");
 		else return;
