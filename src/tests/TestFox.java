@@ -1,4 +1,5 @@
 package tests;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.*;
 import source.Fox;
 import source.GameObject;
 import source.Rabbit;
-
 
 class TestFox {
 
@@ -343,7 +343,7 @@ class TestFox {
 		}
 		assertTrue(options.equals(setOptions));
 	}
-	
+
 	@Test
 	void testNumberOptionsVerticalHorizontalFoxBlocking() {
 		Fox fox = new Fox(new Point(1, 3), new Point(2, 3), "F1", "Horizontal");
@@ -357,7 +357,7 @@ class TestFox {
 		ArrayList<Object> returnedOptions = fox2.determineOptions(board);
 		assertEquals(returnedOptions.size(), 1);
 	}
-	
+
 	@Test
 	void testCorrectOptionsVerticalHorizontalFoxBlocking() {
 		Fox fox = new Fox(new Point(1, 3), new Point(2, 3), "F1", "Horizontal");
@@ -366,7 +366,7 @@ class TestFox {
 		board[3][2] = fox;
 
 		HashSet<HashSet<Point>> options = new HashSet<HashSet<Point>>();
-		options.add(new HashSet<Point>(Arrays.asList(new Point[] {new Point(1,0), new Point(1,1)})));
+		options.add(new HashSet<Point>(Arrays.asList(new Point[] { new Point(1, 0), new Point(1, 1) })));
 		Fox fox2 = new Fox(new Point(1, 1), new Point(1, 2), "F2", "Vertical");
 		board[1][1] = fox2;
 		board[2][1] = fox2;
@@ -394,18 +394,18 @@ class TestFox {
 			new Fox(new Point(0, 1), new Point(0, -1), "F1", "north");
 		});
 	}
-	
+
 	@Test
 	void testGetCoordinates2() {
 		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
-		assertEquals(new Point(1,2), fox.getCoordinate2());
+		assertEquals(new Point(1, 2), fox.getCoordinate2());
 	}
-	
+
 	@Test
 	void testSetCoordinate2() {
 		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
-		fox.setCoordinate2(new Point(1,3));
-		assertEquals(new Point(1,3),fox.getCoordinate2());
+		fox.setCoordinate2(new Point(1, 3));
+		assertEquals(new Point(1, 3), fox.getCoordinate2());
 	}
 
 	@Test
@@ -413,23 +413,73 @@ class TestFox {
 		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
 		assertEquals(1, fox.getX2());
 	}
-	
+
 	@Test
 	void testGetY2() {
 		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
-		assertEquals(2,fox.getY2());
+		assertEquals(2, fox.getY2());
 	}
-	
+
 	@Test
 	void testGetDirection() {
 		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
-		assertEquals("Vertical",fox.getDirection());
+		assertEquals("Vertical", fox.getDirection());
 	}
-	
+
 	@Test
 	void testSetDirection() {
 		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
 		fox.setDirection("Horizontal");
-		assertEquals("Horizontal",fox.getDirection());
+		assertEquals("Horizontal", fox.getDirection());
+	}
+
+	@Test
+	void testToXML() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		assertEquals(fox.toXML(),
+				"<Fox>\n<name>F1</name>\n<x1>1</x1>\n<y1>1</y1>\n<x2>1</x2>\n<y2>2</y2>\n<direction>Vertical</direction>\n</Fox>");
+	}
+
+	@Test
+	void testGetPosition() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		if (fox.getPosition()[0].equals(new Point(1, 1)) && fox.getPosition()[1].equals(new Point(1, 2))) {
+			assertTrue(true);
+		} else
+			fail();
+	}
+
+	@Test
+	void testEqualsSameObject() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		assertTrue(fox.equals(fox));
+	}
+
+	@Test
+	void testEqualsDiffCoord() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		Fox fox2 = new Fox(new Point(1, 2), new Point(1, 3), "F1", "Vertical");
+		assertFalse(fox.equals(fox2));
+	}
+
+	@Test
+	void testEqualsDiffName() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		Fox fox2 = new Fox(new Point(1, 2), new Point(1, 2), "G1", "Vertical");
+		assertFalse(fox.equals(fox2));
+	}
+
+	@Test
+	void testEqualsRabbit() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		Rabbit rabbit = new Rabbit(new Point(2, 3), "R1");
+		assertFalse(fox.equals(rabbit));
+	}
+
+	@Test
+	void testEqualsNull() {
+		Fox fox = new Fox(new Point(1, 1), new Point(1, 2), "F1", "Vertical");
+		Object o = null;
+		assertFalse(fox.equals(o));
 	}
 }

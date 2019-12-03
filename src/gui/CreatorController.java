@@ -13,6 +13,13 @@ import source.JumpIn;
 import source.LevelBuilder;
 import source.Play;
 
+/**
+ * 
+ * Controller for the creator view
+ * 
+ * @author Kush Gopeechund
+ *
+ */
 public class CreatorController extends MouseAdapter implements ActionListener, MouseListener {
 
 	private CreatorView view;
@@ -22,6 +29,11 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 	private boolean removeState;
 	private GameButton[][] board;
 
+	/**
+	 * 
+	 * @param view
+	 * @param builder
+	 */
 	public CreatorController(CreatorView view, LevelBuilder builder) {
 		this.view = view;
 		board = view.getButtons();
@@ -39,6 +51,10 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 		removeState = false;
 	}
 
+	/**
+	 * depending on whether an object is being removed or added, it does the desired
+	 * action
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GameButton b = (GameButton) e.getSource();
@@ -49,6 +65,9 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 		}
 	}
 
+	/**
+	 * depending on the event, this method handles it
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String objectName = ((SelectorButton) (e.getSource())).getTag();
@@ -84,11 +103,27 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 			view.getMainMenu().showMenu();
 		}
 	}
-	
+
+	/**
+	 * switches state
+	 * @param objectName
+	 * @param removeState
+	 * @param direction
+	 */
 	private void changeState(String objectName, boolean removeState, String direction) {
 		this.removeState = removeState;
 		this.objectName = objectName;
 		this.direction = direction;
+	}
+
+
+	/**
+	 * switches states
+	 * @param objectName
+	 * @param removeState
+	 */
+	private void changeState(String objectName, boolean removeState) {
+		changeState(objectName, removeState, "");
 	}
 
 }
