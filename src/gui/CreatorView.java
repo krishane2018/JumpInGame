@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import source.Fox;
@@ -24,10 +26,10 @@ public class CreatorView implements LevelBuilderListener {
 	private final int ROWS = JumpIn.NUM_ROWS;
 	private final int COLS = JumpIn.NUM_COLUMNS;
 	private ArrayList<SelectorButton> buttonList;
-	private MainMenu m;
+	private MainMenu mainMenu;
 
 	public CreatorView(MainMenu m) {
-		this.m=m;
+		this.mainMenu=m;
 		buttons = new GameButton[ROWS][COLS];
 		g = new GridLayout(ROWS, COLS, 0, 0);
 		panel = new JPanel(new BorderLayout());
@@ -104,49 +106,57 @@ public class CreatorView implements LevelBuilderListener {
 	}
 	
 	public MainMenu getMainMenu() {
-		return m;
+		return mainMenu;
 	}
 
 	@Override
 	public void handleEvent(GameObject piece, boolean removeState) {
 		GameButton b = this.buttons[piece.getX1()][piece.getY1()];
 		if (piece instanceof Rabbit && !removeState) {
-			if (Level.isHole(b.getCoordinate().x, b.getCoordinate().y)) {
-				b.setIcon(Resources.HOLE_WITH_BROWN);
-			} else {
-				b.setIcon(Resources.BROWN_RABBIT);
-			}
+			setIconHelper(b,Resources.HOLE_WITH_BROWN,Resources.BROWN_RABBIT);
 		} else if (piece instanceof Fox && !removeState) {
 			Fox f = (Fox)piece;
 			if (f.getDirection().equals("Vertical")) {
-				b.setIcon(Resources.FOX_VERTICAL2);
-				this.buttons[f.getX2()][f.getY2()].setIcon(Resources.FOX_VERTICAL1);
+				setIconHelperFox(b, piece, Resources.FOX_VERTICAL2, Resources.FOX_VERTICAL1);
 			} else {
-				b.setIcon(Resources.FOX_HORIZONTAL1);
-				this.buttons[f.getX2()][f.getY2()].setIcon(Resources.FOX_HORIZONTAL2);
+				setIconHelperFox(b, piece, Resources.FOX_HORIZONTAL1, Resources.FOX_HORIZONTAL2);
 			}
 		} else if (piece.getName().charAt(0) == 'M' && !removeState) {
-			if (Level.isHole(b.getCoordinate().x, b.getCoordinate().y)) {
-				b.setIcon(Resources.HOLE_WITH_MUSHROOM);
-			} else {
-				b.setIcon(Resources.MUSHROOM);
-			}
+			setIconHelper(b, Resources.HOLE_WITH_MUSHROOM, Resources.MUSHROOM);
 		} else if (Level.isHole(b.getCoordinate().x,b.getCoordinate().y) && removeState) {
 			b.setIcon(Resources.HOLE);
 		} else if (removeState) {
 			b.setIcon(Resources.GREEN_CIRCLE);
 			if (piece instanceof Fox) {
-				Fox f = (Fox) piece;
-				this.buttons[f.getX2()][f.getY2()].setIcon(Resources.GREEN_CIRCLE);
+				setIconHelperFox(b, piece,Resources.GREEN_CIRCLE,Resources.GREEN_CIRCLE);
 			}
 		}
-		
+	}
+	
+	private void setIconHelperFox(GameButton b, GameObject piece, ImageIcon first, ImageIcon second) {
+		Fox f = (Fox)piece;
+		b.setIcon(first);
+		this.buttons[f.getX2()][f.getY2()].setIcon(second);
+	}
+	
+	private void setIconHelper(GameButton b, ImageIcon withHole, ImageIcon normal) {
+		if (Level.isHole(b.getCoordinate().x, b.getCoordinate().y)) {
+			b.setIcon(withHole);
+		} else {
+			b.setIcon(normal);
+		}
+	}
+	
+	public static void displayError(int i) {
+		if ( i == 1 ) JOptionPane.showMessageDialog(null, "Could not save level");
+		else if ( i == 2 ) JOptionPane.showMessageDialog(null, "Could not load game, please check");
+		else return;
 	}
 
 	/**
 	 * Disable play button on home screen
 	 */
 	public void enablePlay(boolean enable) {
-		m.enablePlay(enable);
+		mainMenu.enablePlay(enable);
 	}
 }

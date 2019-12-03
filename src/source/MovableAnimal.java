@@ -16,7 +16,6 @@ public abstract class MovableAnimal extends GameObject implements JumpInListener
 	public MovableAnimal(Point p, String name) {
 		super(p, name);
 		options = new ArrayList<Object>();
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * Returns the position of the MovableAnimal.
