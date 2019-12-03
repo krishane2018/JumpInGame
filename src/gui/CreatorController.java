@@ -80,18 +80,19 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 		} else if (objectName.equals("Save")) {
 			try {
 				if (builder.saveLevel()) {
-					JOptionPane.showMessageDialog(view.getPanel(), "Level saved", null ,JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(view.getPanel(), "Level saved", null, JOptionPane.PLAIN_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(view.getPanel(), "This game is not winnable, please change the "
-							+ "level set-up", "Error",JOptionPane.PLAIN_MESSAGE);
-				}	
+					JOptionPane.showMessageDialog(view.getPanel(),
+							"This game is not winnable, please change the " + "level set-up", "Error",
+							JOptionPane.PLAIN_MESSAGE);
+				}
 			} catch (Exception e1) {
 				view.displayError(1);
 			}
 		} else if (objectName.equals("Remove")) {
 			removeState = true;
 		} else if (objectName.equals("Menu")) {
-			if(!Play.fileIsEmpty("levels.xml")) {
+			if (!Play.fileIsEmpty("levels.xml")) {
 				view.enablePlay(true);
 				try {
 					Play.updateBoard("levels.xml", false, true, 1);
@@ -106,6 +107,7 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 
 	/**
 	 * switches state
+	 * 
 	 * @param objectName
 	 * @param removeState
 	 * @param direction
@@ -116,9 +118,9 @@ public class CreatorController extends MouseAdapter implements ActionListener, M
 		this.direction = direction;
 	}
 
-
 	/**
 	 * switches states
+	 * 
 	 * @param objectName
 	 * @param removeState
 	 */

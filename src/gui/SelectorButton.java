@@ -18,6 +18,7 @@ public class SelectorButton extends JButton {
 
 	/**
 	 * Sets up the name and tag
+	 * 
 	 * @param text
 	 * @param tag
 	 */
@@ -31,6 +32,7 @@ public class SelectorButton extends JButton {
 
 	/**
 	 * getter for the tag to make the buttons unique
+	 * 
 	 * @return
 	 */
 	public String getTag() {
