@@ -3,6 +3,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import java.util.Queue;
@@ -12,8 +14,6 @@ import source.Fox;
 import source.GameObject;
 import source.JumpIn;
 import source.JumpInListener;
-import source.Level;
-import source.LevelSelector;
 import source.Move;
 import source.Rabbit;
 
@@ -24,14 +24,12 @@ import source.Rabbit;
  */
 class TestJumpIn {
 	private JumpIn jumpIn;
-	private JumpIn jumpIn2;
 	private JumpIn jumpIn3;
 	private Point inRabbit, fRabbit, inFox, fFox;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		jumpIn = new JumpIn(1);
-		jumpIn2 = new JumpIn(2);
 		jumpIn3 = new JumpIn(3);
 		inRabbit = new Point(0,4);
 		fRabbit = new Point(0,1);
@@ -44,12 +42,6 @@ class TestJumpIn {
 	@AfterEach
 	void tearDown() throws Exception {
 	}
-
-//	@Test
-//	void testIsHole() {
-//		assertEquals(true, jumpIn.isHole(0, 0)&&jumpIn.isHole(0, 4)
-//				&&jumpIn.isHole(2, 2)&&jumpIn.isHole(4, 0)&&jumpIn.isHole(4, 4));
-//	}
 	
 	@Test
 	void testToStringLevel1() {
@@ -58,9 +50,9 @@ class TestJumpIn {
 				+ "--------------------------\n"
 				+ "|    |  M3|    |    |    |\n"
 				+ "--------------------------\n"
-				+ "|  M2|    |   H|    |    |\n"
+				+ "|  M1|    |   H|    |    |\n"
 				+ "--------------------------\n"
-				+ "|  M1|    |    |    |    |\n"
+				+ "|  M2|    |    |    |    |\n"
 				+ "--------------------------\n"
 				+ "| R2H|    |    |    |   H|\n"
 				+ "--------------------------\n";
@@ -70,6 +62,7 @@ class TestJumpIn {
 	
 	@Test
 	void testToStringLevel2() {
+		jumpIn = new JumpIn(2);
 		String level2 = "--------------------------\n"
 				+ "| R1H|  M1|    |    |   H|\n"
 				+ "--------------------------\n"
@@ -82,7 +75,7 @@ class TestJumpIn {
 				+ "|   H|    |    |    |   H|\n"
 				+ "--------------------------\n";
 		
-		assertEquals(jumpIn2.toString(),level2);
+		assertEquals(jumpIn.toString(),level2);
 	}
 	
 	@Test
@@ -102,28 +95,6 @@ class TestJumpIn {
 		assertEquals(jumpIn3.toString(),level3);
 	}
 	
-//	@Test
-//	void testSetGetGameBoard1() {
-//		LevelSelector level = new LevelSelector();
-//		jumpIn.setGameBoard(level.getLevel(1, true));
-//		assertEquals(level.getBoard(),jumpIn.getGameBoard());
-//	}
-//	
-//	@Test
-//	void testSetGetGameBoard2() {
-//		JumpIn jumpIn = new JumpIn(level2);
-//		LevelSelector level = new LevelSelector(1,jumpIn);
-//		jumpIn.setGameBoard(level.getBoard());
-//		assertEquals(level.getBoard(),jumpIn.getGameBoard());
-//	}
-//	
-//	@Test
-//	void testSetGetGameBoard3() {
-//		LevelSelector level = new LevelSelector(1,jumpIn3);
-//		jumpIn3.setGameBoard(level.getBoard());
-//		assertEquals(level.getBoard(),jumpIn3.getGameBoard());
-//	}
-	
 	@Test
 	void testSolverLevel1() {
 		Queue<Move> moves = jumpIn.getSolverMoves();
@@ -136,6 +107,7 @@ class TestJumpIn {
 	
 	@Test
 	void testSolverLevel2() {
+		JumpIn jumpIn2 = new JumpIn(2);
 		Queue<Move> moves = jumpIn2.getSolverMoves();
 		while (!(moves.isEmpty())) {
 			Move move = moves.peek();
@@ -144,15 +116,15 @@ class TestJumpIn {
 		assertTrue(jumpIn2.checkWin());
 	}
 	
-//	@Test
-//	void testSolverLevel3() {
-//		Queue<Move> moves = jumpIn3.getSolverMoves();
-//		while (!(moves.isEmpty())) {
-//			Move move = moves.peek();
-//			jumpIn3.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
-//		}
-//		assertTrue(jumpIn3.checkWin());
-//	}
+	@Test
+	void testSolverLevel3() {
+		Queue<Move> moves = jumpIn3.getSolverMoves();
+		while (!(moves.isEmpty())) {
+			Move move = moves.peek();
+			jumpIn3.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
+		}
+		assertTrue(jumpIn3.checkWin());
+	}
 	
 	/**
 	 * Author: Aashna Narang
@@ -322,4 +294,52 @@ class TestJumpIn {
 		assertTrue(g[2][1] instanceof Fox);
 	}
 	
+	@Test
+	void testGetNumRows() {
+		assertEquals(jumpIn.getNumRows(), 5);
+	}
+	
+	@Test
+	void testGetNumColumns() {
+		assertEquals(jumpIn.getNumColumns(), 5);
+	}
+	
+	@Test
+	void testGetInitialPositionsMushroom() {
+		ArrayList<Point> posLevel1Mushrooms = new ArrayList<Point>();
+		posLevel1Mushrooms.add(new Point(0, 2));
+		posLevel1Mushrooms.add(new Point(0, 3));
+		posLevel1Mushrooms.add(new Point(1, 1));
+		assertEquals(posLevel1Mushrooms, jumpIn.getInitialMushroomPositions());
+	}
+	@Test
+	void testGetInitialPositionsRabbit() {
+		ArrayList<Point> posLevel1Rabbits = new ArrayList<Point>();
+		posLevel1Rabbits.add(new Point(0, 5));
+		posLevel1Rabbits.add(new Point(2, 0));
+		assertEquals(posLevel1Rabbits, jumpIn.getInitialRabbitPositions());
+	}
+	@Test
+	void testGetInitialFoxPositions() {
+		HashMap<ArrayList<Point> ,String> foxMap = new HashMap<ArrayList<Point>,String>();
+		ArrayList<Point> posLevel3Foxes = new ArrayList<Point>();
+		posLevel3Foxes.add(new Point(1, 3));
+		posLevel3Foxes.add(new Point(1, 4));
+		foxMap.put(posLevel3Foxes, "Vertical");
+		assertEquals(foxMap, jumpIn3.getInitialFoxPositions());
+	}
+	
+	@Test
+	void testToXML() {
+		String s = "<JumpIn>\n<level>1</level>\n<Rabbit>\n<name>R1</name>\n<x1>0</x1>\n<y1>2</y1>\n</Rabbit>\n<Mushroom>\n<name>M1</name>\n<x1>0</x1>\n<y1>1</y1>\n</Mushroom>\n</JumpIn>";
+		assertEquals(jumpIn.toXML(), s);
+	}
+	
+//	@Test
+//	void testExportToXMLFile() {
+//		Play play1 = new Play(1);
+//		String filePath = new File("").getAbsolutePath() + "\\emptyExportTest.xml";
+//		jumpIn.exportToXMLFile(filePath);
+//		assertEquals(play1.importFromXMLFile(filePath), jumpIn.toXML());
+//	}
 }

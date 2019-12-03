@@ -10,6 +10,7 @@ import java.util.HashSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import source.Fox;
 import source.GameObject;
 import source.JumpIn;
 import source.JumpInEvent;
@@ -19,7 +20,7 @@ import source.Rabbit;
 
 class TestRabbit {
 
-	GameObject[][] board;
+	private GameObject[][] board;
 
 	@BeforeEach
 	void setUp() {
@@ -387,6 +388,61 @@ class TestRabbit {
 	void testGetStatusFalse() {
 		Rabbit r1 = new Rabbit(new Point(2, 1), "R1");
 		assertFalse(r1.getStatus());
+	}
+	
+	@Test
+	void testGetPosition() {
+		Rabbit r1 = new Rabbit(new Point(2, 1), "R1");
+		assertEquals(new Point(2, 1), r1.getPosition());
+	}
+	
+	@Test
+	void testToXML() {
+		Rabbit r1 = new Rabbit(new Point(2, 3), "R1");
+		assertEquals(r1.toXML(), "<Rabbit>\n<name>R1</name>\n<x1>2</x1>\n<y1>3</y1>\n</Rabbit>");
+	}
+	
+	@Test
+	void testEqualsNull() {
+		Rabbit r1 = new Rabbit(new Point(2, 3), "R1");
+		Object o = null;
+		assertFalse(r1.equals(o));
+	}
+		
+	@Test
+	void testEqualsFox() {
+		Rabbit r1 = new Rabbit(new Point(2, 3), "R1");
+		Fox fox = new Fox(new Point(1,1), new Point(1, 2), "F1", "Vertical");
+		assertFalse(r1.equals(fox));
+	}
+		
+	@Test
+	void testEqualsSame() {
+		Rabbit r1 = new Rabbit(new Point(2, 3), "R1");
+		assertTrue(r1.equals(r1));
+	}
+		
+	@Test
+	void testEqualsDiffCoord() {
+		Rabbit r1 = new Rabbit(new Point(2, 3), "R1");
+		Rabbit r2 = new Rabbit(new Point(2, 4), "R1");
+		assertFalse(r1.equals(r2));
+	}
+		
+	@Test
+	void testEqualsDiffStatus() {
+		Rabbit r1 = new Rabbit(new Point(2, 3), "R1");
+		Rabbit r2 = new Rabbit(new Point(2, 3), "R1");
+		r2.setStatus(true);
+		assertFalse(r1.equals(r2));
+	}
+	
+		
+	@Test
+	void testEqualsDiffName() {
+		Rabbit r1 = new Rabbit(new Point(2, 3), "R1");
+		Rabbit r2 = new Rabbit(new Point(2, 3), "R2");
+		assertFalse(r1.equals(r2));
 	}
 	
 }
