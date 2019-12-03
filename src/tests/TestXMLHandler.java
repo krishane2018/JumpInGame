@@ -25,14 +25,7 @@ class TestXMLHandler {
   void setUp() throws Exception {
     handler1 = new XMLHandler(1); 
   }
-  @Test
-  void testIsHoleTrue() {
-    assertTrue(handler1.isHole(2, 2));
-  }
-  @Test
-  void testIsholeFalse() {
-    assertFalse(handler1.isHole(1, 2));
-  }
+
   @Test
   void testGetLevel() {
     assertEquals(handler1.getLevel(), -1);
