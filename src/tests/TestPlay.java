@@ -24,11 +24,6 @@ class TestPlay {
 	}
 	
 	@Test
-	void testFileIsEmptyTrue() {
-		String filePath = new File("").getAbsolutePath() + "\\empty.xml";
-		assertTrue(Play.fileIsEmpty(filePath));
-	}
-	@Test
 	void testFileIsEmptyNoFile() {
 		String filePath = new File("").getAbsolutePath() + "\\empty2.xml";
 		assertTrue(Play.fileIsEmpty(filePath));

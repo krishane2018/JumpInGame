@@ -43,11 +43,6 @@ class TestGameObjectFactory {
 	void testGetGameObjectFoxHorizontal() {
 		assertTrue(factory.getGameObject(p, "Fox", "Horizontal") instanceof Fox);
 	}
-	
-//	@Test
-//	void testGetGameObjectInvalid() {
-//		assertEquals(null, factory.getGameObject(p, "Tree", ""));
-//	}
 
 }
 

@@ -2,7 +2,6 @@ package tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,11 +14,8 @@ import source.Fox;
 import source.GameObject;
 import source.JumpIn;
 import source.JumpInListener;
-import source.LevelSelector;
 import source.Move;
 import source.Rabbit;
-import source.Level;
-import source.Play;
 
 /**
  * 
