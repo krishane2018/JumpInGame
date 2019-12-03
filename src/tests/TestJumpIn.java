@@ -44,40 +44,22 @@ class TestJumpIn {
 	void tearDown() throws Exception {
 	}
 	
- 	@Test
-  	void testToStringLevel1() {
-  		String level1 = "--------------------------\n"
-  				+ "|   H|    |  R1|    |   H|\n"
- 				+ "--------------------------\n"
-  				+ "|    |  M3|    |    |    |\n"
-  				+ "--------------------------\n"
-  				+ "|  M1|    |   H|    |    |\n"
-  				+ "--------------------------\n"
-  				+ "|  M2|    |    |    |    |\n"
-  				+ "--------------------------\n"
- 				+ "| R2H|    |    |    |   H|\n"
- 				+ "--------------------------\n";
- 		
- 		assertEquals(jumpIn.toString(),level1);
- 	}
-	
- 	@Test
- 	void testToStringLevel2() {
- 		jumpIn = new JumpIn(2);
- 		String level2 = "--------------------------\n"
- 				+ "| R1H|  M1|    |    |   H|\n"
- 				+ "--------------------------\n"
- 				+ "|    |    |  M2|    |    |\n"
- 				+ "--------------------------\n"
- 				+ "|    |  M3|   H|  R2|    |\n"
- 				+ "--------------------------\n"
- 				+ "|    |    |    |    |    |\n"
- 				+ "--------------------------\n"
- 				+ "|   H|    |    |    |   H|\n"
- 				+ "--------------------------\n";
- 		
- 		assertEquals(jumpIn.toString(),level2);
- 	}
+	@Test
+	void testToStringLevel1() {
+		String level1 = "--------------------------\n"
+				+ "|   H|    |  R1|    |   H|\n"
+				+ "--------------------------\n"
+				+ "|    |  M3|    |    |    |\n"
+				+ "--------------------------\n"
+				+ "|  M2|    |   H|    |    |\n"
+				+ "--------------------------\n"
+				+ "|  M1|    |    |    |    |\n"
+				+ "--------------------------\n"
+				+ "| R2H|    |    |    |   H|\n"
+				+ "--------------------------\n";
+		
+		assertEquals(jumpIn.toString(),level1);
+	}
 	
 	@Test
 	void testToStringLevel3() {
@@ -105,17 +87,7 @@ class TestJumpIn {
 		}
 		assertTrue(jumpIn.checkWin());
 	}
-	
-//	@Test
-//	void testSolverLevel2() {
-//		JumpIn jumpIn2 = new JumpIn(2);
-//		Queue<Move> moves = jumpIn2.getSolverMoves();
-//		while (!(moves.isEmpty())) {
-//			Move move = moves.peek();
-//			jumpIn2.moveAnimal(move.getInitialLocation(), move.getFinalLocation());			
-//		}
-//		assertTrue(jumpIn2.checkWin());
-//	}
+
 	
 	@Test
 	void testSolverLevel3() {
@@ -147,12 +119,6 @@ class TestJumpIn {
 		assertEquals(1, jumpIn.getLevel());
 	}
 	
-//	@Test 
-//	void testObjectToString() {
-//		assertEquals("R2H", jumpIn.objectToString(0, 4));
-//		assertEquals("H", jumpIn.objectToString(0, 0));
-//		assertEquals("M2", jumpIn.objectToString(0, 3));
-//	}
 	
 	@Test
 	void testAddListener() {
@@ -313,13 +279,7 @@ class TestJumpIn {
 		posLevel1Mushrooms.add(new Point(1, 1));
 		assertEquals(posLevel1Mushrooms, jumpIn.getInitialMushroomPositions());
 	}
-//	@Test
-//	void testGetInitialPositionsRabbit() {
-//		ArrayList<Point> posLevel1Rabbits = new ArrayList<Point>();
-//		posLevel1Rabbits.add(new Point(0, 5));
-//		posLevel1Rabbits.add(new Point(2, 0));
-//		assertEquals(posLevel1Rabbits, jumpIn.getInitialRabbitPositions());
-//	}
+
 	@Test
 	void testGetInitialFoxPositions() {
 		HashMap<ArrayList<Point> ,String> foxMap = new HashMap<ArrayList<Point>,String>();
@@ -330,17 +290,5 @@ class TestJumpIn {
 		assertEquals(foxMap, jumpIn3.getInitialFoxPositions());
 	}
 	
-//	@Test
-//	void testToXML() {
-//		String s = "<JumpIn>\n<level>1</level>\n<Rabbit>\n<name>R1</name>\n<x1>0</x1>\n<y1>2</y1>\n</Rabbit>\n<Mushroom>\n<name>M1</name>\n<x1>0</x1>\n<y1>1</y1>\n</Mushroom>\n</JumpIn>";
-//		assertEquals(jumpIn.toXML(), s);
-//	}
-	
-//	@Test
-//	void testExportToXMLFile() {
-//		Play play1 = new Play(1);
-//		String filePath = new File("").getAbsolutePath() + "\\emptyExportTest.xml";
-//		jumpIn.exportToXMLFile(filePath);
-//		assertEquals(play1.importFromXMLFile(filePath), jumpIn.toXML());
-//	}
+
 }
